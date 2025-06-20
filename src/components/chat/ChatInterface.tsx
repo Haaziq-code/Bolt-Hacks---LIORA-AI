@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Send, Mic, Square, Volume2, VolumeX, Trash2, Sparkles, ArrowLeft, Globe, Brain, Shield, BookOpen, Users, Heart, GraduationCap } from 'lucide-react';
+import { Send, Mic, Square, Volume2, VolumeX, Trash2, Sparkles, ArrowLeft, Globe, Brain, Shield, BookOpen, Users, Heart, GraduationCap, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { useChat } from '../../hooks/useChat';
@@ -446,7 +446,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
             {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </motion.button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
