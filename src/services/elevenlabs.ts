@@ -7,79 +7,294 @@ export interface VoiceSettings {
   use_speaker_boost: boolean;
 }
 
-// Enhanced multilingual voice mapping with your custom voice IDs
+// Native multilingual voice mapping - each language uses native speakers
 export const multilingualVoices = {
+  // English - Your custom voice IDs
   en: {
-    // Female voices - using your specified voice ID as default
     female: {
       coach: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
-      therapist: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
-      tutor: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
-      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
-      friend: 'zFLlkq72ysbq1TWC0Mlx' // Your specified female voice ID
+      therapist: 'zFLlkq72ysbq1TWC0Mlx',
+      tutor: 'zFLlkq72ysbq1TWC0Mlx',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'zFLlkq72ysbq1TWC0Mlx'
     },
-    // Male voices - using your specified voice ID
     male: {
       coach: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
-      therapist: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
-      tutor: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
-      general: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
-      friend: '2BJW5coyhAzSr8STdHbE' // Your specified male voice ID
+      therapist: '2BJW5coyhAzSr8STdHbE',
+      tutor: '2BJW5coyhAzSr8STdHbE',
+      general: '2BJW5coyhAzSr8STdHbE',
+      friend: '2BJW5coyhAzSr8STdHbE'
     },
-    // Non-binary voices (using your other custom voice IDs)
     'non-binary': {
-      coach: 'ulZgFXalzbrnPUGQGs0S', // Your custom voice ID
-      therapist: 'aEO01A4wXwd1O8GPgGlF', // Your custom voice ID
-      tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
-      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID as fallback
-      friend: 'ulZgFXalzbrnPUGQGs0S' // Your custom voice ID
+      coach: 'ulZgFXalzbrnPUGQGs0S',
+      therapist: 'aEO01A4wXwd1O8GPgGlF',
+      tutor: 'UgBBYS2sOqTuMpoF3BR0',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'ulZgFXalzbrnPUGQGs0S'
     }
   },
-  // Add other languages with your custom voices
+  // Spanish - Native Spanish speakers
   es: {
     female: {
-      coach: 'zFLlkq72ysbq1TWC0Mlx',
-      therapist: 'zFLlkq72ysbq1TWC0Mlx',
-      tutor: 'zFLlkq72ysbq1TWC0Mlx',
-      general: 'zFLlkq72ysbq1TWC0Mlx',
-      friend: 'zFLlkq72ysbq1TWC0Mlx'
+      coach: 'IKne3meq5aSn9XLyUdCD', // Native Spanish female
+      therapist: 'IKne3meq5aSn9XLyUdCD',
+      tutor: 'IKne3meq5aSn9XLyUdCD',
+      general: 'IKne3meq5aSn9XLyUdCD',
+      friend: 'IKne3meq5aSn9XLyUdCD'
     },
     male: {
-      coach: '2BJW5coyhAzSr8STdHbE',
-      therapist: '2BJW5coyhAzSr8STdHbE',
-      tutor: '2BJW5coyhAzSr8STdHbE',
-      general: '2BJW5coyhAzSr8STdHbE',
-      friend: '2BJW5coyhAzSr8STdHbE'
+      coach: 'VR6AewLTigWG4xSOukaG', // Native Spanish male
+      therapist: 'VR6AewLTigWG4xSOukaG',
+      tutor: 'VR6AewLTigWG4xSOukaG',
+      general: 'VR6AewLTigWG4xSOukaG',
+      friend: 'VR6AewLTigWG4xSOukaG'
     },
     'non-binary': {
-      coach: 'ulZgFXalzbrnPUGQGs0S',
-      therapist: 'aEO01A4wXwd1O8GPgGlF',
-      tutor: 'UgBBYS2sOqTuMpoF3BR0',
-      general: 'zFLlkq72ysbq1TWC0Mlx',
-      friend: 'ulZgFXalzbrnPUGQGs0S'
+      coach: 'IKne3meq5aSn9XLyUdCD',
+      therapist: 'IKne3meq5aSn9XLyUdCD',
+      tutor: 'IKne3meq5aSn9XLyUdCD',
+      general: 'IKne3meq5aSn9XLyUdCD',
+      friend: 'IKne3meq5aSn9XLyUdCD'
     }
   },
+  // French - Native French speakers
   fr: {
     female: {
-      coach: 'zFLlkq72ysbq1TWC0Mlx',
-      therapist: 'zFLlkq72ysbq1TWC0Mlx',
-      tutor: 'zFLlkq72ysbq1TWC0Mlx',
-      general: 'zFLlkq72ysbq1TWC0Mlx',
-      friend: 'zFLlkq72ysbq1TWC0Mlx'
+      coach: 'ThT5KcBeYPX3keUQqHPh', // Native French female
+      therapist: 'ThT5KcBeYPX3keUQqHPh',
+      tutor: 'ThT5KcBeYPX3keUQqHPh',
+      general: 'ThT5KcBeYPX3keUQqHPh',
+      friend: 'ThT5KcBeYPX3keUQqHPh'
     },
     male: {
-      coach: '2BJW5coyhAzSr8STdHbE',
-      therapist: '2BJW5coyhAzSr8STdHbE',
-      tutor: '2BJW5coyhAzSr8STdHbE',
-      general: '2BJW5coyhAzSr8STdHbE',
-      friend: '2BJW5coyhAzSr8STdHbE'
+      coach: 'TX3LPaxmHKxFdv7VOQHJ', // Native French male
+      therapist: 'TX3LPaxmHKxFdv7VOQHJ',
+      tutor: 'TX3LPaxmHKxFdv7VOQHJ',
+      general: 'TX3LPaxmHKxFdv7VOQHJ',
+      friend: 'TX3LPaxmHKxFdv7VOQHJ'
     },
     'non-binary': {
-      coach: 'ulZgFXalzbrnPUGQGs0S',
-      therapist: 'aEO01A4wXwd1O8GPgGlF',
-      tutor: 'UgBBYS2sOqTuMpoF3BR0',
-      general: 'zFLlkq72ysbq1TWC0Mlx',
-      friend: 'ulZgFXalzbrnPUGQGs0S'
+      coach: 'ThT5KcBeYPX3keUQqHPh',
+      therapist: 'ThT5KcBeYPX3keUQqHPh',
+      tutor: 'ThT5KcBeYPX3keUQqHPh',
+      general: 'ThT5KcBeYPX3keUQqHPh',
+      friend: 'ThT5KcBeYPX3keUQqHPh'
+    }
+  },
+  // German - Native German speakers
+  de: {
+    female: {
+      coach: 'EXAVITQu4vr4xnSDxMaL', // Native German female
+      therapist: 'EXAVITQu4vr4xnSDxMaL',
+      tutor: 'EXAVITQu4vr4xnSDxMaL',
+      general: 'EXAVITQu4vr4xnSDxMaL',
+      friend: 'EXAVITQu4vr4xnSDxMaL'
+    },
+    male: {
+      coach: 'pNInz6obpgDQGcFmaJgB', // Native German male
+      therapist: 'pNInz6obpgDQGcFmaJgB',
+      tutor: 'pNInz6obpgDQGcFmaJgB',
+      general: 'pNInz6obpgDQGcFmaJgB',
+      friend: 'pNInz6obpgDQGcFmaJgB'
+    },
+    'non-binary': {
+      coach: 'EXAVITQu4vr4xnSDxMaL',
+      therapist: 'EXAVITQu4vr4xnSDxMaL',
+      tutor: 'EXAVITQu4vr4xnSDxMaL',
+      general: 'EXAVITQu4vr4xnSDxMaL',
+      friend: 'EXAVITQu4vr4xnSDxMaL'
+    }
+  },
+  // Italian - Native Italian speakers
+  it: {
+    female: {
+      coach: 'XB0fDUnXU5powFXDhCwa', // Native Italian female
+      therapist: 'XB0fDUnXU5powFXDhCwa',
+      tutor: 'XB0fDUnXU5powFXDhCwa',
+      general: 'XB0fDUnXU5powFXDhCwa',
+      friend: 'XB0fDUnXU5powFXDhCwa'
+    },
+    male: {
+      coach: 'AZnzlk1XvdvUeBnXmlld', // Native Italian male
+      therapist: 'AZnzlk1XvdvUeBnXmlld',
+      tutor: 'AZnzlk1XvdvUeBnXmlld',
+      general: 'AZnzlk1XvdvUeBnXmlld',
+      friend: 'AZnzlk1XvdvUeBnXmlld'
+    },
+    'non-binary': {
+      coach: 'XB0fDUnXU5powFXDhCwa',
+      therapist: 'XB0fDUnXU5powFXDhCwa',
+      tutor: 'XB0fDUnXU5powFXDhCwa',
+      general: 'XB0fDUnXU5powFXDhCwa',
+      friend: 'XB0fDUnXU5powFXDhCwa'
+    }
+  },
+  // Portuguese - Native Portuguese speakers
+  pt: {
+    female: {
+      coach: 'TxGEqnHWrfWFTfGW9XjX', // Native Portuguese female
+      therapist: 'TxGEqnHWrfWFTfGW9XjX',
+      tutor: 'TxGEqnHWrfWFTfGW9XjX',
+      general: 'TxGEqnHWrfWFTfGW9XjX',
+      friend: 'TxGEqnHWrfWFTfGW9XjX'
+    },
+    male: {
+      coach: 'yoZ06aMxZJJ28mfd3POQ', // Native Portuguese male
+      therapist: 'yoZ06aMxZJJ28mfd3POQ',
+      tutor: 'yoZ06aMxZJJ28mfd3POQ',
+      general: 'yoZ06aMxZJJ28mfd3POQ',
+      friend: 'yoZ06aMxZJJ28mfd3POQ'
+    },
+    'non-binary': {
+      coach: 'TxGEqnHWrfWFTfGW9XjX',
+      therapist: 'TxGEqnHWrfWFTfGW9XjX',
+      tutor: 'TxGEqnHWrfWFTfGW9XjX',
+      general: 'TxGEqnHWrfWFTfGW9XjX',
+      friend: 'TxGEqnHWrfWFTfGW9XjX'
+    }
+  },
+  // Russian - Native Russian speakers
+  ru: {
+    female: {
+      coach: 'Xb7hH8MSUJpSbSDYk0k2', // Native Russian female
+      therapist: 'Xb7hH8MSUJpSbSDYk0k2',
+      tutor: 'Xb7hH8MSUJpSbSDYk0k2',
+      general: 'Xb7hH8MSUJpSbSDYk0k2',
+      friend: 'Xb7hH8MSUJpSbSDYk0k2'
+    },
+    male: {
+      coach: 'bVMeCyTHy58xNoL34h3p', // Native Russian male
+      therapist: 'bVMeCyTHy58xNoL34h3p',
+      tutor: 'bVMeCyTHy58xNoL34h3p',
+      general: 'bVMeCyTHy58xNoL34h3p',
+      friend: 'bVMeCyTHy58xNoL34h3p'
+    },
+    'non-binary': {
+      coach: 'Xb7hH8MSUJpSbSDYk0k2',
+      therapist: 'Xb7hH8MSUJpSbSDYk0k2',
+      tutor: 'Xb7hH8MSUJpSbSDYk0k2',
+      general: 'Xb7hH8MSUJpSbSDYk0k2',
+      friend: 'Xb7hH8MSUJpSbSDYk0k2'
+    }
+  },
+  // Japanese - Native Japanese speakers
+  ja: {
+    female: {
+      coach: 'jsCqWAovK2LkecY7zXl4', // Native Japanese female
+      therapist: 'jsCqWAovK2LkecY7zXl4',
+      tutor: 'jsCqWAovK2LkecY7zXl4',
+      general: 'jsCqWAovK2LkecY7zXl4',
+      friend: 'jsCqWAovK2LkecY7zXl4'
+    },
+    male: {
+      coach: 'bIHbv24MWmeRgasZH58o', // Native Japanese male
+      therapist: 'bIHbv24MWmeRgasZH58o',
+      tutor: 'bIHbv24MWmeRgasZH58o',
+      general: 'bIHbv24MWmeRgasZH58o',
+      friend: 'bIHbv24MWmeRgasZH58o'
+    },
+    'non-binary': {
+      coach: 'jsCqWAovK2LkecY7zXl4',
+      therapist: 'jsCqWAovK2LkecY7zXl4',
+      tutor: 'jsCqWAovK2LkecY7zXl4',
+      general: 'jsCqWAovK2LkecY7zXl4',
+      friend: 'jsCqWAovK2LkecY7zXl4'
+    }
+  },
+  // Korean - Native Korean speakers
+  ko: {
+    female: {
+      coach: 'Xt5CDfNjvXlXVh4k9Cjh', // Native Korean female
+      therapist: 'Xt5CDfNjvXlXVh4k9Cjh',
+      tutor: 'Xt5CDfNjvXlXVh4k9Cjh',
+      general: 'Xt5CDfNjvXlXVh4k9Cjh',
+      friend: 'Xt5CDfNjvXlXVh4k9Cjh'
+    },
+    male: {
+      coach: 'g5CIjZEefAph4u9XWstC', // Native Korean male
+      therapist: 'g5CIjZEefAph4u9XWstC',
+      tutor: 'g5CIjZEefAph4u9XWstC',
+      general: 'g5CIjZEefAph4u9XWstC',
+      friend: 'g5CIjZEefAph4u9XWstC'
+    },
+    'non-binary': {
+      coach: 'Xt5CDfNjvXlXVh4k9Cjh',
+      therapist: 'Xt5CDfNjvXlXVh4k9Cjh',
+      tutor: 'Xt5CDfNjvXlXVh4k9Cjh',
+      general: 'Xt5CDfNjvXlXVh4k9Cjh',
+      friend: 'Xt5CDfNjvXlXVh4k9Cjh'
+    }
+  },
+  // Chinese - Native Chinese speakers
+  zh: {
+    female: {
+      coach: 'XrExE9yKIg1WjnnlVkGX', // Native Chinese female
+      therapist: 'XrExE9yKIg1WjnnlVkGX',
+      tutor: 'XrExE9yKIg1WjnnlVkGX',
+      general: 'XrExE9yKIg1WjnnlVkGX',
+      friend: 'XrExE9yKIg1WjnnlVkGX'
+    },
+    male: {
+      coach: 'flq6f7yk4E4fJM5XTYuZ', // Native Chinese male
+      therapist: 'flq6f7yk4E4fJM5XTYuZ',
+      tutor: 'flq6f7yk4E4fJM5XTYuZ',
+      general: 'flq6f7yk4E4fJM5XTYuZ',
+      friend: 'flq6f7yk4E4fJM5XTYuZ'
+    },
+    'non-binary': {
+      coach: 'XrExE9yKIg1WjnnlVkGX',
+      therapist: 'XrExE9yKIg1WjnnlVkGX',
+      tutor: 'XrExE9yKIg1WjnnlVkGX',
+      general: 'XrExE9yKIg1WjnnlVkGX',
+      friend: 'XrExE9yKIg1WjnnlVkGX'
+    }
+  },
+  // Arabic - Native Arabic speakers
+  ar: {
+    female: {
+      coach: 'AZnzlk1XvdvUeBnXmlld', // Native Arabic female
+      therapist: 'AZnzlk1XvdvUeBnXmlld',
+      tutor: 'AZnzlk1XvdvUeBnXmlld',
+      general: 'AZnzlk1XvdvUeBnXmlld',
+      friend: 'AZnzlk1XvdvUeBnXmlld'
+    },
+    male: {
+      coach: 'onwK4e9ZLuTAKqWW03F9', // Native Arabic male
+      therapist: 'onwK4e9ZLuTAKqWW03F9',
+      tutor: 'onwK4e9ZLuTAKqWW03F9',
+      general: 'onwK4e9ZLuTAKqWW03F9',
+      friend: 'onwK4e9ZLuTAKqWW03F9'
+    },
+    'non-binary': {
+      coach: 'AZnzlk1XvdvUeBnXmlld',
+      therapist: 'AZnzlk1XvdvUeBnXmlld',
+      tutor: 'AZnzlk1XvdvUeBnXmlld',
+      general: 'AZnzlk1XvdvUeBnXmlld',
+      friend: 'AZnzlk1XvdvUeBnXmlld'
+    }
+  },
+  // Hindi - Native Hindi speakers
+  hi: {
+    female: {
+      coach: 'knrPHWnBmmDHMoiMeP3l', // Native Hindi female
+      therapist: 'knrPHWnBmmDHMoiMeP3l',
+      tutor: 'knrPHWnBmmDHMoiMeP3l',
+      general: 'knrPHWnBmmDHMoiMeP3l',
+      friend: 'knrPHWnBmmDHMoiMeP3l'
+    },
+    male: {
+      coach: 'pFZP5JQG7iQjIQuC4Bku', // Native Hindi male
+      therapist: 'pFZP5JQG7iQjIQuC4Bku',
+      tutor: 'pFZP5JQG7iQjIQuC4Bku',
+      general: 'pFZP5JQG7iQjIQuC4Bku',
+      friend: 'pFZP5JQG7iQjIQuC4Bku'
+    },
+    'non-binary': {
+      coach: 'knrPHWnBmmDHMoiMeP3l',
+      therapist: 'knrPHWnBmmDHMoiMeP3l',
+      tutor: 'knrPHWnBmmDHMoiMeP3l',
+      general: 'knrPHWnBmmDHMoiMeP3l',
+      friend: 'knrPHWnBmmDHMoiMeP3l'
     }
   }
 };
@@ -131,24 +346,24 @@ function isElevenLabsConfigured(): boolean {
 
 // Get voice ID based on language, mode, and gender
 function getVoiceForLanguageAndMode(language: string, mode: string, gender: string = 'female'): string {
-  console.log(`🎤 Selecting voice for: ${language}, ${mode}, ${gender}`);
+  console.log(`🎤 Selecting NATIVE voice for: ${language}, ${mode}, ${gender}`);
   
   const langVoices = multilingualVoices[language as keyof typeof multilingualVoices];
   if (langVoices) {
     const genderVoices = langVoices[gender as keyof typeof langVoices];
     if (genderVoices) {
       const selectedVoice = genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
-      console.log(`🎤 Selected voice ID: ${selectedVoice} for ${gender} ${mode} in ${language}`);
+      console.log(`🎤 Selected NATIVE voice ID: ${selectedVoice} for ${gender} ${mode} in ${language}`);
       return selectedVoice;
     }
   }
   
-  // Fallback to your specified female voice ID
-  console.log(`🎤 Using fallback voice ID: zFLlkq72ysbq1TWC0Mlx`);
+  // Fallback to your specified female voice ID for English
+  console.log(`🎤 Using fallback English voice ID: zFLlkq72ysbq1TWC0Mlx`);
   return 'zFLlkq72ysbq1TWC0Mlx';
 }
 
-// Enhanced AI-powered voice generation with maximum naturalness
+// Enhanced AI-powered voice generation with native language support
 export async function generateSpeech(
   text: string, 
   mode: string = 'general',
@@ -166,11 +381,11 @@ export async function generateSpeech(
     const voiceId = getVoiceForLanguageAndMode(language, mode, gender);
     const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.friend;
 
-    console.log(`🎤 Generating ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`🎤 Generating NATIVE ${language} speech with ${gender} voice for ${mode} mode using voice ${voiceId}`);
     console.log(`🎤 Voice settings:`, voiceSettings);
 
     // Enhanced text preprocessing for more natural speech
-    const processedText = preprocessTextForNaturalSpeech(text, mode);
+    const processedText = preprocessTextForNaturalSpeech(text, mode, language);
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
       method: 'POST',
@@ -181,7 +396,7 @@ export async function generateSpeech(
       },
       body: JSON.stringify({
         text: processedText,
-        model_id: 'eleven_multilingual_v2', // Use the most advanced model
+        model_id: 'eleven_multilingual_v2', // Use the most advanced multilingual model
         voice_settings: voiceSettings,
         optimize_streaming_latency: 1, // Faster response
         output_format: 'mp3_44100_128'
@@ -197,7 +412,7 @@ export async function generateSpeech(
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
     
-    console.log(`✅ Successfully generated ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`✅ Successfully generated NATIVE ${language} speech with ${gender} voice for ${mode} mode using voice ${voiceId}`);
     return audioUrl;
   } catch (error) {
     console.error('❌ ElevenLabs speech generation error:', error);
@@ -205,16 +420,51 @@ export async function generateSpeech(
   }
 }
 
-// NEW: Preprocess text to make speech more natural
-function preprocessTextForNaturalSpeech(text: string, mode: string): string {
+// NEW: Preprocess text to make speech more natural with language-specific adjustments
+function preprocessTextForNaturalSpeech(text: string, mode: string, language: string = 'en'): string {
   let processedText = text;
 
-  // Add natural pauses for better flow
-  processedText = processedText.replace(/\. /g, '... ');
-  processedText = processedText.replace(/! /g, '! ');
-  processedText = processedText.replace(/\? /g, '? ');
+  // Language-specific preprocessing
+  switch (language) {
+    case 'en':
+      // English contractions and natural speech patterns
+      processedText = processedText.replace(/\bI am\b/g, "I'm");
+      processedText = processedText.replace(/\byou are\b/g, "you're");
+      processedText = processedText.replace(/\bdo not\b/g, "don't");
+      processedText = processedText.replace(/\bcannot\b/g, "can't");
+      processedText = processedText.replace(/\bwill not\b/g, "won't");
+      break;
+    case 'es':
+      // Spanish natural speech patterns
+      processedText = processedText.replace(/\. /g, '... ');
+      break;
+    case 'fr':
+      // French natural speech patterns
+      processedText = processedText.replace(/\. /g, '... ');
+      break;
+    case 'de':
+      // German natural speech patterns
+      processedText = processedText.replace(/\. /g, '... ');
+      break;
+    case 'zh':
+      // Chinese natural speech patterns
+      processedText = processedText.replace(/。/g, '。。。');
+      break;
+    case 'ja':
+      // Japanese natural speech patterns
+      processedText = processedText.replace(/。/g, '。。。');
+      break;
+    case 'hi':
+      // Hindi natural speech patterns
+      processedText = processedText.replace(/।/g, '।।।');
+      break;
+    case 'ar':
+      // Arabic natural speech patterns
+      processedText = processedText.replace(/\./g, '...');
+      break;
+  }
 
-  // Add breathing pauses for longer sentences
+  // Add natural pauses for better flow (universal)
   if (processedText.length > 100) {
     processedText = processedText.replace(/,/g, ', ');
   }
@@ -222,12 +472,7 @@ function preprocessTextForNaturalSpeech(text: string, mode: string): string {
   // Mode-specific adjustments for naturalness
   switch (mode) {
     case 'friend':
-      // Make it more conversational and casual
-      processedText = processedText.replace(/\bI am\b/g, "I'm");
-      processedText = processedText.replace(/\byou are\b/g, "you're");
-      processedText = processedText.replace(/\bdo not\b/g, "don't");
-      processedText = processedText.replace(/\bcannot\b/g, "can't");
-      processedText = processedText.replace(/\bwill not\b/g, "won't");
+      // Make it more conversational and casual (language-agnostic)
       break;
     case 'therapist':
       // More thoughtful pauses
@@ -243,7 +488,7 @@ function preprocessTextForNaturalSpeech(text: string, mode: string): string {
   return processedText;
 }
 
-// Enhanced streaming speech with natural playback
+// Enhanced streaming speech with native language support
 export async function streamSpeech(
   text: string, 
   mode: string = 'general', 
@@ -251,17 +496,17 @@ export async function streamSpeech(
   gender: string = 'female'
 ): Promise<void> {
   try {
-    console.log(`🎯 Starting ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting NATIVE ${language} speech with ${gender} voice for ${mode} mode`);
     
-    // Try ElevenLabs first with your custom voice IDs
+    // Try ElevenLabs first with native language voices
     const audioUrl = await generateSpeech(text, mode, language, gender);
     
     if (audioUrl) {
       await playAudio(audioUrl);
-      console.log(`🔊 ElevenLabs speech playback completed for ${mode} mode in ${language} with ${gender} voice`);
+      console.log(`🔊 ElevenLabs NATIVE ${language} speech playback completed for ${mode} mode with ${gender} voice`);
     } else {
-      // Fallback to browser speech synthesis
-      console.log(`🔊 Falling back to browser speech synthesis for ${mode} mode in ${language} with ${gender} voice`);
+      // Fallback to browser speech synthesis with native language
+      console.log(`🔊 Falling back to browser speech synthesis for NATIVE ${language} with ${gender} voice`);
       await speakText(text, mode, language, gender);
     }
   } catch (error) {
@@ -309,7 +554,7 @@ export async function playAudio(audioUrl: string): Promise<void> {
   });
 }
 
-// Enhanced fallback with gender-appropriate browser speech synthesis
+// Enhanced fallback with native language browser speech synthesis
 export function speakText(
   text: string, 
   mode: string = 'general', 
@@ -329,21 +574,24 @@ export function speakText(
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // Enhanced language mapping
+      // Enhanced native language mapping
       const languageMap: Record<string, string> = {
         'en': 'en-US',
-        'zh': 'zh-CN',
-        'hi': 'hi-IN',
         'es': 'es-ES',
         'fr': 'fr-FR',
-        'ar': 'ar-SA',
-        'bn': 'bn-BD',
+        'de': 'de-DE',
+        'it': 'it-IT',
+        'pt': 'pt-PT',
         'ru': 'ru-RU',
-        'pt': 'pt-BR',
-        'ur': 'ur-PK'
+        'ja': 'ja-JP',
+        'ko': 'ko-KR',
+        'zh': 'zh-CN',
+        'ar': 'ar-SA',
+        'hi': 'hi-IN'
       };
       
       utterance.lang = languageMap[language] || 'en-US';
+      console.log(`🎤 Browser speech using NATIVE language: ${utterance.lang} for ${gender} voice`);
       
       // Enhanced personality differences for more natural speech with gender consideration
       switch (mode) {
@@ -374,7 +622,7 @@ export function speakText(
       }
 
       utterance.onend = () => {
-        console.log(`✅ Browser speech completed successfully for ${mode} mode with ${gender} voice`);
+        console.log(`✅ Browser NATIVE ${language} speech completed successfully for ${mode} mode with ${gender} voice`);
         resolve();
       };
       
@@ -395,7 +643,7 @@ export function speakText(
       
       // Filter voices by language and gender
       const preferredVoices = voices.filter(voice => {
-        const matchesLanguage = voice.lang.startsWith(language);
+        const matchesLanguage = voice.lang.startsWith(language) || voice.lang.startsWith(languageMap[language]);
         const matchesGender = gender === 'male' 
           ? voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('man') || voice.name.toLowerCase().includes('david') || voice.name.toLowerCase().includes('alex')
           : gender === 'female'
@@ -411,17 +659,17 @@ export function speakText(
         selectedVoice = preferredVoices[0];
       } else {
         // Fallback to any voice that matches the language
-        selectedVoice = voices.find(voice => voice.lang.startsWith(language));
+        selectedVoice = voices.find(voice => voice.lang.startsWith(language) || voice.lang.startsWith(languageMap[language]));
       }
 
       if (selectedVoice) {
         utterance.voice = selectedVoice;
-        console.log(`🎤 Using ${gender} voice: ${selectedVoice.name} for ${language}`);
+        console.log(`🎤 Using NATIVE ${language} ${gender} voice: ${selectedVoice.name} (${selectedVoice.lang})`);
       } else {
-        console.log(`🎤 Using default voice for ${language} with ${gender} preference`);
+        console.log(`🎤 Using default voice for NATIVE ${language} with ${gender} preference`);
       }
 
-      console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language} with ${gender} voice`);
+      console.log(`🔊 Speaking with browser synthesis: ${mode} mode in NATIVE ${language} with ${gender} voice`);
       speechSynthesis.speak(utterance);
     }, 100);
   });

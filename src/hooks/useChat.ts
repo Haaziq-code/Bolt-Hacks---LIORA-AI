@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { ChatMessage, ChatSession, AIMode } from '../types';
-import { generateAIResponse, getPersonalityGreeting, detectUserLanguage } from '../services/gemini';
+import { generateAIResponse, getPersonalityGreeting, detectUserLanguage, detectInputLanguage } from '../services/gemini';
 import { saveSession, saveMessage, getMessages } from '../services/supabase';
 import { useVoice } from './useVoice';
 import toast from 'react-hot-toast';
@@ -109,13 +109,24 @@ export function useChat(mode: AIMode): UseChatReturn {
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) return;
 
+    // Auto-detect language from user input
+    const detectedLanguage = detectInputLanguage(content);
+    console.log(`🌍 User message language detected as: ${detectedLanguage}`);
+    
+    // Update language if different from current
+    if (detectedLanguage !== currentLanguage) {
+      console.log(`🌍 Switching language from ${currentLanguage} to ${detectedLanguage}`);
+      setCurrentLanguage(detectedLanguage);
+      setVoiceLanguage(detectedLanguage);
+    }
+
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
       content: content.trim(),
       timestamp: new Date().toISOString(),
       mode,
-      language: currentLanguage
+      language: detectedLanguage
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -139,12 +150,12 @@ export function useChat(mode: AIMode): UseChatReturn {
 
     try {
       // Generate AI response with conversation context and language support using Gemini
-      console.log('🤖 Generating natural, human-like AI response...');
+      console.log(`🤖 Generating natural, human-like AI response in ${detectedLanguage}...`);
       const aiResponse = await generateAIResponse(
         content.trim(), 
         mode, 
         conversationHistory.current,
-        currentLanguage
+        detectedLanguage
       );
 
       const assistantMessage: ChatMessage = {
@@ -153,7 +164,7 @@ export function useChat(mode: AIMode): UseChatReturn {
         content: aiResponse,
         timestamp: new Date().toISOString(),
         mode,
-        language: currentLanguage
+        language: detectedLanguage
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -175,7 +186,7 @@ export function useChat(mode: AIMode): UseChatReturn {
 
       // Speak the response with language and gender support
       try {
-        await speak(aiResponse, mode, currentLanguage, userGender);
+        await speak(aiResponse, mode, detectedLanguage, userGender);
       } catch (speechError) {
         console.error('Speech error:', speechError);
       }
@@ -189,7 +200,7 @@ export function useChat(mode: AIMode): UseChatReturn {
           messages: [...messages, userMessage, assistantMessage],
           createdAt: currentSession?.createdAt || new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          language: currentLanguage
+          language: detectedLanguage
         };
 
         setCurrentSession(session);
@@ -213,7 +224,7 @@ export function useChat(mode: AIMode): UseChatReturn {
       setIsLoading(false);
       dispatchAIActivity(false); // Notify brain background that AI thinking ended
     }
-  }, [mode, messages, currentSession, isLoading, speak, currentLanguage]);
+  }, [mode, messages, currentSession, isLoading, speak, currentLanguage, setVoiceLanguage]);
 
   const clearChat = useCallback(async () => {
     setMessages([]);
