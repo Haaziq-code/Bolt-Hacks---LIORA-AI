@@ -685,7 +685,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               © 2024 LIORA AI. The world's most advanced AI companion.
-            </p>
+            </motion.p>
           </motion.div>
         </div>
       </section>
