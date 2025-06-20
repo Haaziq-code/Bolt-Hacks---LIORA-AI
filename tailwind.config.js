@@ -5,12 +5,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
-        heading: ['Urbanist', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        display: ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        heading: ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
       },
       colors: {
-        // Futuristic midnight blue base
+        // Enhanced elegant color palette
         midnight: {
           50: '#f0f4ff',
           100: '#e0e9ff',
@@ -23,6 +23,48 @@ export default {
           800: '#3230c7',
           900: '#1a1b4b',
           950: '#0a0b1e',
+        },
+        // Electric teal
+        'electric-blue': {
+          50: '#f0fdff',
+          100: '#ccf7fe',
+          200: '#99effd',
+          300: '#60e2fa',
+          400: '#22ccf0',
+          500: '#06b6d4',
+          600: '#0891b2',
+          700: '#0e7490',
+          800: '#155e75',
+          900: '#164e63',
+          950: '#083344',
+        },
+        // Sapphire blue
+        sapphire: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+        },
+        // Lavender
+        lavender: {
+          50: '#faf5ff',
+          100: '#f3e8ff',
+          200: '#e9d5ff',
+          300: '#d8b4fe',
+          400: '#c084fc',
+          500: '#a855f7',
+          600: '#9333ea',
+          700: '#7c3aed',
+          800: '#6b21a8',
+          900: '#581c87',
+          950: '#3b0764',
         },
         // Neon cyan accents
         neon: {
@@ -51,20 +93,6 @@ export default {
           800: '#6b21a8',
           900: '#581c87',
           950: '#3b0764',
-        },
-        // Glowing lavender
-        lavender: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-          950: '#4a044e',
         },
         primary: {
           50: '#f0f4ff',
@@ -183,6 +211,7 @@ export default {
         'data-stream': 'dataStream 2s linear infinite',
         'breathe': 'breathe 4s ease-in-out infinite',
         'scramble': 'scramble 0.1s ease-in-out',
+        'sparkle-spin': 'sparkleSpin 4s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -304,6 +333,11 @@ export default {
           '50%': { opacity: '0.4' },
           '100%': { opacity: '0.8' },
         },
+        sparkleSpin: {
+          '0%': { transform: 'rotate(0deg) scale(1)' },
+          '50%': { transform: 'rotate(180deg) scale(1.1)' },
+          '100%': { transform: 'rotate(360deg) scale(1)' },
+        },
       },
       backdropBlur: {
         xs: '2px',
@@ -324,6 +358,9 @@ export default {
         'glass-light': '0 8px 32px 0 rgba(255, 255, 255, 0.37)',
         'neumorphism-light': '20px 20px 60px #d1d9e6, -20px -20px 60px #ffffff',
         'neumorphism-dark': '20px 20px 60px #0f172a, -20px -20px 60px #1e293b',
+        'emerald-glow': '0 0 30px rgba(16, 185, 129, 0.4)',
+        'violet-glow': '0 0 30px rgba(139, 92, 246, 0.4)',
+        'rose-glow': '0 0 30px rgba(244, 114, 182, 0.4)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -332,6 +369,10 @@ export default {
         'midnight-gradient': 'linear-gradient(135deg, #0a0b1e 0%, #1a1b4b 50%, #3230c7 100%)',
         'neon-gradient': 'linear-gradient(135deg, #06b6d4 0%, #22ccf0 50%, #60e2fa 100%)',
         'violet-gradient': 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)',
+        'elegant-gradient': 'linear-gradient(135deg, #1e293b 0%, #334155 25%, #475569 50%, #64748b 75%, #94a3b8 100%)',
+        'sapphire-gradient': 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%)',
+        'emerald-gradient': 'linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%)',
+        'rose-gradient': 'linear-gradient(135deg, #be185d 0%, #e11d48 50%, #f43f5e 100%)',
       },
       blur: {
         xs: '2px',
