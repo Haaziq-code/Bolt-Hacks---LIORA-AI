@@ -4,14 +4,45 @@
 
 @layer utilities {
   .glass-morphism {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
   }
   
   .glass-morphism-dark {
-    background: rgba(31, 41, 55, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(55, 65, 81, 0.2);
+    background: rgba(26, 27, 75, 0.12);
+    backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(93, 106, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(93, 106, 255, 0.15);
+  }
+
+  .neural-glow {
+    box-shadow: 0 0 20px rgba(93, 106, 255, 0.3), 0 0 40px rgba(168, 85, 247, 0.2);
+  }
+
+  .neural-glow-lg {
+    box-shadow: 0 0 30px rgba(93, 106, 255, 0.4), 0 0 60px rgba(168, 85, 247, 0.3);
+  }
+
+  .text-neural {
+    background: linear-gradient(135deg, #5d6aff 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-typing {
+    animation: typing 0.5s steps(20, end), blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: currentColor }
   }
 }

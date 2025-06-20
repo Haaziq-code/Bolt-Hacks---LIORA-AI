@@ -12,8 +12,6 @@ import About from './components/pages/About';
 import LandingPage from './components/pages/LandingPage';
 import ProModal from './components/modals/ProModal';
 import TavusWidget from './components/ui/TavusWidget';
-import ParticleSystem from './components/ui/ParticleSystem';
-import BrainBackground from './components/ui/BrainBackground';
 import Enhanced3DBackground from './components/ui/Enhanced3DBackground';
 import { checkSubscriptionStatus } from './services/revenuecat';
 
@@ -25,9 +23,12 @@ function App() {
   const [isAIActive, setIsAIActive] = useState(false);
 
   useEffect(() => {
-    // Check for saved theme preference or default to light mode
+    // Check for saved theme preference or default to dark mode for futuristic feel
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (savedTheme === 'light') {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    } else {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
@@ -96,9 +97,9 @@ function App() {
         );
       case 'memory':
         return <Memory />;
-      case 'coach':
       case 'therapist':
       case 'tutor':
+      case 'friend':
         return (
           <div className="p-8">
             <ChatInterface onBack={handleBackToHome} />
@@ -122,20 +123,18 @@ function App() {
     return (
       <AppProvider>
         <div className="min-h-screen relative overflow-hidden">
-          {/* Enhanced 3D Background */}
+          {/* Enhanced 3D Neural Background */}
           <Enhanced3DBackground isActive={isAIActive} intensity={0.8} />
           
-          {/* Original Background Elements (reduced opacity to complement 3D background) */}
-          <div className="fixed inset-0 bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 opacity-20">
-            <ParticleSystem />
-          </div>
+          {/* Neural gradient overlay */}
+          <div className="fixed inset-0 bg-gradient-to-br from-midnight-950/90 via-midnight-900/80 to-violet-950/90 dark:from-midnight-950/95 dark:via-midnight-900/90 dark:to-violet-950/95 opacity-60" />
           
           <LandingPage onEnterApp={() => setCurrentPage('home')} />
           
-          {/* Luxurious Theme Toggle */}
+          {/* Futuristic Theme Toggle */}
           <motion.button
             onClick={toggleTheme}
-            className="fixed top-8 right-8 z-50 p-4 glass-morphism dark:glass-morphism-dark rounded-2xl shadow-luxury hover:shadow-luxury-lg transition-all duration-500 group"
+            className="fixed top-8 right-8 z-50 p-4 glass-morphism dark:glass-morphism-dark rounded-2xl neural-glow hover:neural-glow-lg transition-all duration-500 group"
             whileHover={{ scale: 1.1, rotate: 180 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -147,7 +146,7 @@ function App() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-yellow-400 animate-glow-pulse"
+                  className="text-neon-400 animate-neon-glow"
                 >
                   ☀️
                 </motion.div>
@@ -155,7 +154,7 @@ function App() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-indigo-600 animate-glow-pulse"
+                  className="text-violet-600 animate-neon-glow"
                 >
                   🌙
                 </motion.div>
@@ -163,15 +162,15 @@ function App() {
             </motion.div>
           </motion.button>
 
-          {/* Luxurious Built on Bolt Badge */}
+          {/* Enhanced Built on Bolt Badge */}
           <div className="fixed bottom-8 right-8 z-40">
             <motion.div 
-              className="glass-morphism dark:glass-morphism-dark rounded-2xl px-8 py-4 shadow-luxury-lg"
+              className="glass-morphism dark:glass-morphism-dark rounded-2xl px-8 py-4 neural-glow"
               whileHover={{ scale: 1.05, y: -2 }}
               animate={{ 
                 boxShadow: [
-                  '0 0 0 0 rgba(14, 165, 233, 0.2)',
-                  '0 0 0 10px rgba(14, 165, 233, 0)',
+                  '0 0 0 0 rgba(93, 106, 255, 0.2)',
+                  '0 0 0 10px rgba(93, 106, 255, 0)',
                 ]
               }}
               transition={{ 
@@ -188,7 +187,7 @@ function App() {
                   ⚡
                 </motion.span>
                 <span className="font-medium">Built on</span>
-                <span className="font-black bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent text-xl">
+                <span className="font-black text-neural text-xl">
                   Bolt
                 </span>
                 <motion.span 
@@ -207,9 +206,9 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: isDarkMode ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                background: isDarkMode ? 'rgba(26, 27, 75, 0.9)' : 'rgba(255, 255, 255, 0.9)',
                 color: isDarkMode ? '#ffffff' : '#000000',
-                border: `1px solid ${isDarkMode ? 'rgba(55, 65, 81, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
+                border: `1px solid ${isDarkMode ? 'rgba(93, 106, 255, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
                 borderRadius: '16px',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -224,35 +223,35 @@ function App() {
   return (
     <AppProvider>
       <div className="min-h-screen relative overflow-hidden">
-        {/* Enhanced 3D Background */}
+        {/* Enhanced 3D Neural Background */}
         <Enhanced3DBackground isActive={isAIActive} intensity={1.0} />
         
-        {/* Original Background Elements (reduced opacity to complement 3D background) */}
-        <div className="fixed inset-0 bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 opacity-15">
-          <ParticleSystem />
-          
-          {/* Luxurious gradient orbs (reduced opacity) */}
-          <motion.div 
-            className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-primary-400/5 to-accent-400/5 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
-            transition={{ duration: 20, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-accent-400/5 to-primary-400/5 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              rotate: [360, 180, 0],
-            }}
-            transition={{ duration: 25, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-400/3 to-purple-400/3 rounded-full blur-3xl"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          />
+        {/* Neural gradient overlay */}
+        <div className="fixed inset-0 bg-gradient-to-br from-midnight-950/85 via-midnight-900/75 to-violet-950/85 dark:from-midnight-950/90 dark:via-midnight-900/85 dark:to-violet-950/90 opacity-40">
+          {/* Neural network pattern overlay */}
+          <div className="absolute inset-0 opacity-20">
+            {/* Floating neural nodes */}
+            {[...Array(12)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-neon-400/60 rounded-full"
+                style={{
+                  left: `${15 + i * 8}%`,
+                  top: `${15 + (i % 3) * 30}%`,
+                }}
+                animate={{
+                  y: [0, -30, 0],
+                  opacity: [0.3, 0.8, 0.3],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  delay: i * 0.3,
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Floating Action Bar */}
@@ -261,7 +260,7 @@ function App() {
           onPageChange={setCurrentPage}
         />
 
-        {/* Luxurious Header */}
+        {/* Enhanced Header */}
         <Header 
           onToggleTheme={toggleTheme}
           isDarkMode={isDarkMode}
@@ -271,7 +270,7 @@ function App() {
           showBackButton={currentPage !== 'home' && currentPage !== 'landing'}
         />
 
-        {/* Main Content with Cinematic Transitions */}
+        {/* Main Content with Neural Transitions */}
         <main className="relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
@@ -292,21 +291,21 @@ function App() {
         {/* Enhanced Tavus Video Widget */}
         <TavusWidget />
 
-        {/* Luxurious Pro Modal */}
+        {/* Enhanced Pro Modal */}
         <ProModal 
           isOpen={isProModalOpen}
           onClose={() => setIsProModalOpen(false)}
         />
 
-        {/* Luxurious Built on Bolt Badge */}
+        {/* Enhanced Built on Bolt Badge */}
         <div className="fixed bottom-6 right-6 z-30">
           <motion.div 
-            className="glass-morphism dark:glass-morphism-dark rounded-xl px-6 py-3 shadow-luxury"
+            className="glass-morphism dark:glass-morphism-dark rounded-xl px-6 py-3 neural-glow"
             whileHover={{ scale: 1.05, y: -2 }}
             animate={{ 
               boxShadow: [
-                '0 0 0 0 rgba(14, 165, 233, 0.2)',
-                '0 0 0 8px rgba(14, 165, 233, 0)',
+                '0 0 0 0 rgba(93, 106, 255, 0.2)',
+                '0 0 0 8px rgba(93, 106, 255, 0)',
               ]
             }}
             transition={{ 
@@ -323,7 +322,7 @@ function App() {
                 ⚡
               </motion.span>
               <span className="font-medium">Built on</span>
-              <span className="font-black bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+              <span className="font-black text-neural">
                 Bolt
               </span>
               <motion.span 
@@ -342,9 +341,9 @@ function App() {
           toastOptions={{
             duration: 4000,
             style: {
-              background: isDarkMode ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              background: isDarkMode ? 'rgba(26, 27, 75, 0.9)' : 'rgba(255, 255, 255, 0.9)',
               color: isDarkMode ? '#ffffff' : '#000000',
-              border: `1px solid ${isDarkMode ? 'rgba(55, 65, 81, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
+              border: `1px solid ${isDarkMode ? 'rgba(93, 106, 255, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
               borderRadius: '16px',
               backdropFilter: 'blur(20px) saturate(180%)',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, 
@@ -32,15 +32,69 @@ import {
   Lightbulb,
   Smile
 } from 'lucide-react';
+import { TextScramble } from '../../utils/TextScramble';
 
 interface LandingPageProps {
   onEnterApp: () => void;
 }
 
+// Scrambled text component
+const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
+  const elementRef = useRef<HTMLHeadingElement>(null);
+  const scramblerRef = useRef<TextScramble | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (elementRef.current && !scramblerRef.current) {
+      scramblerRef.current = new TextScramble(elementRef.current);
+      setMounted(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mounted && scramblerRef.current) {
+      let counter = 0;
+      const next = () => {
+        if (scramblerRef.current) {
+          scramblerRef.current.setText(phrases[counter]).then(() => {
+            setTimeout(next, 3000);
+          });
+          counter = (counter + 1) % phrases.length;
+        }
+      };
+
+      next();
+    }
+  }, [mounted, phrases]);
+
+  return (
+    <motion.h1 
+      ref={elementRef}
+      className="text-6xl md:text-8xl font-bold text-white mb-8 tracking-wider"
+      style={{ 
+        fontFamily: 'monospace',
+        textShadow: '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
+      }}
+      initial={{ scale: 0.9 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 2, ease: "easeOut" }}
+    >
+      LIORA AI
+    </motion.h1>
+  );
+};
+
 const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [currentDemo, setCurrentDemo] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [typedText, setTypedText] = useState('');
+
+  const scramblePhases = [
+    'LIORA AI',
+    'NEURAL AI',
+    'FUTURE AI',
+    'LIORA AI'
+  ];
 
   const demoMessages = [
     { 
@@ -108,11 +162,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
       case 'therapist':
         return 'from-green-500 to-emerald-500';
       case 'tutor':
-        return 'from-indigo-500 to-purple-500';
+        return 'from-violet-500 to-purple-500';
       case 'friend':
         return 'from-pink-500 to-rose-500';
       default:
-        return 'from-blue-500 to-cyan-500';
+        return 'from-neon-500 to-cyan-500';
     }
   };
 
@@ -140,30 +194,23 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="mb-12"
           >
-            {/* Logo */}
+            {/* Neural Logo */}
             <motion.div 
-              className="inline-flex items-center justify-center w-36 h-36 bg-gradient-to-br from-primary-500 via-accent-500 to-primary-600 rounded-[2.5rem] mb-12 shadow-2xl"
+              className="inline-flex items-center justify-center w-36 h-36 bg-gradient-to-br from-violet-500 via-neon-500 to-violet-600 rounded-[2.5rem] mb-12 neural-glow-lg"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
               animate={{ 
                 boxShadow: [
-                  '0 0 0 0 rgba(14, 165, 233, 0.4)',
-                  '0 0 0 20px rgba(14, 165, 233, 0)',
+                  '0 0 0 0 rgba(93, 106, 255, 0.4)',
+                  '0 0 0 20px rgba(93, 106, 255, 0)',
                 ]
               }}
             >
               <Brain className="w-20 h-20 text-white" />
             </motion.div>
 
-            {/* Main Title */}
-            <motion.h1 
-              className="text-8xl md:text-[10rem] font-black mb-8 bg-gradient-to-r from-gray-900 via-primary-600 to-accent-600 dark:from-white dark:via-primary-400 dark:to-accent-400 bg-clip-text text-transparent leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 2, delay: 0.5 }}
-            >
-              LIORA
-            </motion.h1>
+            {/* Scrambled Main Title */}
+            <ScrambledText phrases={scramblePhases} />
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -171,40 +218,40 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               transition={{ duration: 2, delay: 0.8 }}
               className="mb-12"
             >
-              <h2 className="text-4xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+              <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
                 The World's Most Advanced AI
               </h2>
-              <p className="text-2xl md:text-4xl text-gray-600 dark:text-gray-400 max-w-6xl mx-auto leading-relaxed mb-8">
-                Three intelligent personalities in one: <span className="text-green-500 font-bold">Therapist</span>, <span className="text-indigo-500 font-bold">Tutor</span>, and <span className="text-pink-500 font-bold">Friend</span>
+              <p className="text-2xl md:text-4xl text-gray-300 max-w-6xl mx-auto leading-relaxed mb-8">
+                Three intelligent personalities in one: <span className="text-green-400 font-bold animate-glow-pulse">Therapist</span>, <span className="text-violet-400 font-bold animate-glow-pulse">Tutor</span>, and <span className="text-pink-400 font-bold animate-glow-pulse">Friend</span>
               </p>
               
               {/* Key Features */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
                 <motion.div 
-                  className="flex items-center space-x-3 text-xl text-gray-700 dark:text-gray-300"
+                  className="flex items-center space-x-3 text-xl text-gray-300"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.2 }}
                 >
-                  <Heart className="w-8 h-8 text-green-500" />
+                  <Heart className="w-8 h-8 text-green-400 animate-ai-pulse" />
                   <span className="font-semibold">Emotionally Aware</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center space-x-3 text-xl text-gray-700 dark:text-gray-300"
+                  className="flex items-center space-x-3 text-xl text-gray-300"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.4 }}
                 >
-                  <Target className="w-8 h-8 text-indigo-500" />
+                  <Target className="w-8 h-8 text-violet-400 animate-ai-pulse" />
                   <span className="font-semibold">100% Accurate</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center space-x-3 text-xl text-gray-700 dark:text-gray-300"
+                  className="flex items-center space-x-3 text-xl text-gray-300"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.6 }}
                 >
-                  <Lightbulb className="w-8 h-8 text-pink-500" />
+                  <Lightbulb className="w-8 h-8 text-pink-400 animate-ai-pulse" />
                   <span className="font-semibold">Learns & Grows</span>
                 </motion.div>
               </div>
@@ -219,7 +266,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             >
               <motion.button
                 onClick={onEnterApp}
-                className="group relative px-16 py-8 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-3xl font-bold text-2xl shadow-2xl hover:shadow-primary-500/25 transition-all duration-300 flex items-center space-x-5"
+                className="group relative px-16 py-8 bg-gradient-to-r from-violet-500 to-neon-500 text-white rounded-3xl font-bold text-2xl neural-glow-lg hover:neural-glow transition-all duration-300 flex items-center space-x-5"
                 whileHover={{ scale: 1.05, y: -8 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -235,7 +282,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
 
               <motion.button
                 onClick={() => scrollToSection('demo')}
-                className="px-16 py-8 bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 text-gray-800 dark:text-white rounded-3xl font-bold text-2xl hover:bg-white/30 dark:hover:bg-gray-900/30 transition-all duration-300 flex items-center space-x-5 shadow-2xl"
+                className="px-16 py-8 glass-morphism-dark rounded-3xl font-bold text-2xl text-white hover:bg-white/10 transition-all duration-300 flex items-center space-x-5 neural-glow"
                 whileHover={{ scale: 1.05, y: -8 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -267,10 +314,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             viewport={{ once: true }}
             className="text-center mb-24"
           >
-            <h2 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white mb-10">
+            <h2 className="text-6xl md:text-7xl font-black text-white mb-10">
               Three AI Personalities
             </h2>
-            <p className="text-2xl text-gray-600 dark:text-gray-400 max-w-5xl mx-auto">
+            <p className="text-2xl text-gray-300 max-w-5xl mx-auto">
               LIORA adapts to what you need most - emotional support, learning assistance, or genuine friendship.
             </p>
           </motion.div>
@@ -295,8 +342,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 subtitle: '100% Accurate Learning',
                 description: 'Powered by verified sources, WolframAlpha, and peer-reviewed research. Interactive quizzes, flashcards, and personalized study plans.',
                 features: ['100% Accuracy', 'Interactive Quizzes', 'Study Plans', 'Progress Tracking'],
-                color: 'from-indigo-500 to-purple-500',
-                bgColor: 'from-indigo-500/10 to-purple-500/10',
+                color: 'from-violet-500 to-purple-500',
+                bgColor: 'from-violet-500/10 to-purple-500/10',
                 delay: 0.6
               },
               {
@@ -320,7 +367,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 whileHover={{ y: -20, scale: 1.03 }}
                 className="group"
               >
-                <div className={`relative p-12 bg-gradient-to-br ${mode.bgColor} backdrop-blur-xl border border-white/40 dark:border-gray-700/40 rounded-[2.5rem] shadow-2xl hover:shadow-3xl transition-all duration-500`}>
+                <div className={`relative p-12 glass-morphism-dark rounded-[2.5rem] neural-glow hover:neural-glow-lg transition-all duration-500`}>
                   <motion.div 
                     className={`w-24 h-24 bg-gradient-to-br ${mode.color} rounded-2xl flex items-center justify-center mb-10 shadow-xl group-hover:scale-110 transition-transform duration-300`}
                     whileHover={{ rotate: 10 }}
@@ -328,13 +375,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                     <mode.icon className="w-12 h-12 text-white" />
                   </motion.div>
                   
-                  <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                  <h3 className="text-4xl font-bold text-white mb-4">
                     {mode.title}
                   </h3>
-                  <p className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+                  <p className="text-xl font-semibold text-gray-300 mb-6">
                     {mode.subtitle}
                   </p>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg mb-8">
+                  <p className="text-gray-400 leading-relaxed text-lg mb-8">
                     {mode.description}
                   </p>
                   
@@ -342,7 +389,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                     {mode.features.map((feature, i) => (
                       <div key={i} className="flex items-center space-x-3">
                         <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${mode.color}`} />
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">{feature}</span>
+                        <span className="text-gray-300 font-medium">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -363,10 +410,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             viewport={{ once: true }}
             className="text-center mb-24"
           >
-            <h2 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white mb-10">
+            <h2 className="text-6xl md:text-7xl font-black text-white mb-10">
               See LIORA in Action
             </h2>
-            <p className="text-2xl text-gray-600 dark:text-gray-400">
+            <p className="text-2xl text-gray-300">
               Watch how LIORA adapts her personality and expertise to each conversation
             </p>
           </motion.div>
@@ -376,7 +423,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5 }}
             viewport={{ once: true }}
-            className="bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 rounded-[2.5rem] p-16 shadow-2xl"
+            className="glass-morphism-dark rounded-[2.5rem] p-16 neural-glow"
           >
             <div className="space-y-12">
               <AnimatePresence mode="wait">
@@ -390,7 +437,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 >
                   {/* User Message */}
                   <div className="flex justify-end">
-                    <div className="max-w-2xl bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-3xl px-10 py-8 shadow-xl">
+                    <div className="max-w-2xl bg-gradient-to-r from-violet-500 to-neon-500 text-white rounded-3xl px-10 py-8 neural-glow">
                       <p className="text-xl leading-relaxed">
                         {demoMessages[currentDemo * 2].text}
                       </p>
@@ -399,13 +446,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
 
                   {/* AI Response */}
                   <div className="flex justify-start">
-                    <div className="max-w-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl px-10 py-8 shadow-xl">
+                    <div className="max-w-2xl glass-morphism-dark rounded-3xl px-10 py-8 neural-glow">
                       <div className="flex items-center space-x-4 mb-4">
                         <div className={`w-12 h-12 bg-gradient-to-r ${getModeColor(demoMessages[currentDemo * 2 + 1].mode)} rounded-full flex items-center justify-center`}>
                           {React.createElement(getModeIcon(demoMessages[currentDemo * 2 + 1].mode), { className: "w-6 h-6 text-white" })}
                         </div>
                         <div>
-                          <span className="text-sm font-bold text-gray-500 dark:text-gray-400 capitalize">
+                          <span className="text-sm font-bold text-gray-400 capitalize">
                             LIORA {demoMessages[currentDemo * 2 + 1].mode}
                           </span>
                           <div className="flex items-center space-x-2 mt-1">
@@ -414,7 +461,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                           </div>
                         </div>
                       </div>
-                      <p className="text-xl leading-relaxed text-gray-900 dark:text-white">
+                      <p className="text-xl leading-relaxed text-white">
                         {typedText}
                         {isTyping && (
                           <motion.span
@@ -437,8 +484,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                     onClick={() => setCurrentDemo(index)}
                     className={`w-6 h-6 rounded-full transition-all duration-500 ${
                       currentDemo === index 
-                        ? 'bg-primary-500 scale-125' 
-                        : 'bg-gray-300 dark:bg-gray-600 hover:bg-primary-300'
+                        ? 'bg-violet-500 scale-125 shadow-neon' 
+                        : 'bg-gray-600 hover:bg-violet-300'
                     }`}
                   />
                 ))}
@@ -455,7 +502,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
           >
             <motion.button
               onClick={onEnterApp}
-              className="px-16 py-8 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-3xl font-bold text-2xl shadow-2xl hover:shadow-primary-500/25 transition-all duration-300 flex items-center space-x-5 mx-auto"
+              className="px-16 py-8 bg-gradient-to-r from-violet-500 to-neon-500 text-white rounded-3xl font-bold text-2xl neural-glow-lg hover:neural-glow transition-all duration-300 flex items-center space-x-5 mx-auto"
               whileHover={{ scale: 1.05, y: -8 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -467,7 +514,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
       </section>
 
       {/* Features Section */}
-      <section className="relative py-40 px-8 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+      <section className="relative py-40 px-8 bg-gradient-to-br from-midnight-950/50 to-violet-950/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -476,24 +523,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             viewport={{ once: true }}
             className="text-center mb-24"
           >
-            <h2 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white mb-10">
+            <h2 className="text-6xl md:text-7xl font-black text-white mb-10">
               Advanced AI Features
             </h2>
-            <p className="text-2xl text-gray-600 dark:text-gray-400">
+            <p className="text-2xl text-gray-300">
               Powered by cutting-edge technology and emotional intelligence
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Brain, title: 'Emotional Intelligence', desc: 'Detects emotions from voice, text, and context' },
-              { icon: Shield, title: 'Crisis Detection', desc: 'Automatic alerts and emergency support' },
-              { icon: BookOpen, title: 'Learning Mode', desc: 'Builds long-term relationships and memories' },
-              { icon: Target, title: '100% Accuracy', desc: 'Verified sources and peer-reviewed research' },
-              { icon: Volume2, title: 'Natural Voice', desc: 'Ultra-realistic AI voice with ElevenLabs' },
-              { icon: Video, title: 'Video Chat', desc: 'Expressive AI face with Tavus integration' },
-              { icon: Globe, title: 'Multilingual', desc: 'Supports 12+ languages natively' },
-              { icon: Zap, title: 'Real-time Learning', desc: 'Adapts and improves with every interaction' }
+              { icon: Brain, title: 'Emotional Intelligence', desc: 'Detects emotions from voice, text, and context', color: 'text-violet-400' },
+              { icon: Shield, title: 'Crisis Detection', desc: 'Automatic alerts and emergency support', color: 'text-green-400' },
+              { icon: BookOpen, title: 'Learning Mode', desc: 'Builds long-term relationships and memories', color: 'text-neon-400' },
+              { icon: Target, title: '100% Accuracy', desc: 'Verified sources and peer-reviewed research', color: 'text-pink-400' },
+              { icon: Volume2, title: 'Natural Voice', desc: 'Ultra-realistic AI voice with ElevenLabs', color: 'text-lavender-400' },
+              { icon: Video, title: 'Video Chat', desc: 'Expressive AI face with Tavus integration', color: 'text-violet-400' },
+              { icon: Globe, title: 'Multilingual', desc: 'Supports 12+ languages natively', color: 'text-neon-400' },
+              { icon: Zap, title: 'Real-time Learning', desc: 'Adapts and improves with every interaction', color: 'text-green-400' }
             ].map((feature, index) => (
               <motion.div
                 key={index}
@@ -502,15 +549,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -10, scale: 1.05 }}
-                className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 rounded-2xl p-8 text-center shadow-xl"
+                className="glass-morphism-dark rounded-2xl p-8 text-center neural-glow hover:neural-glow-lg transition-all duration-300"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <feature.icon className="w-8 h-8 text-white" />
+                <div className={`w-16 h-16 ${feature.color} bg-current/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-xl font-bold text-white mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-400">
                   {feature.desc}
                 </p>
               </motion.div>
@@ -520,7 +567,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
       </section>
 
       {/* CTA Footer */}
-      <section className="relative py-40 px-8 bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-950 dark:to-gray-900">
+      <section className="relative py-40 px-8 bg-gradient-to-br from-midnight-950 to-violet-950">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -538,7 +585,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-20">
               <motion.button
                 onClick={onEnterApp}
-                className="px-16 py-8 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-3xl font-bold text-2xl shadow-2xl hover:shadow-primary-500/25 transition-all duration-300 flex items-center space-x-5"
+                className="px-16 py-8 bg-gradient-to-r from-violet-500 to-neon-500 text-white rounded-3xl font-bold text-2xl neural-glow-lg hover:neural-glow transition-all duration-300 flex items-center space-x-5"
                 whileHover={{ scale: 1.05, y: -8 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -548,7 +595,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
 
               <motion.a
                 href="https://github.com/lioraaai"
-                className="px-16 py-8 bg-white/10 backdrop-blur-xl border border-white/40 text-white rounded-3xl font-bold text-2xl hover:bg-white/20 transition-all duration-300 flex items-center space-x-5 shadow-2xl"
+                className="px-16 py-8 glass-morphism-dark rounded-3xl font-bold text-2xl text-white hover:bg-white/10 transition-all duration-300 flex items-center space-x-5 neural-glow"
                 whileHover={{ scale: 1.05, y: -8 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -567,7 +614,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 <motion.a
                   key={index}
                   href={social.href}
-                  className="w-20 h-20 bg-white/10 backdrop-blur-xl border border-white/40 rounded-2xl flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 shadow-xl"
+                  className="w-20 h-20 glass-morphism-dark rounded-2xl flex items-center justify-center text-white hover:bg-white/10 transition-all duration-300 neural-glow"
                   whileHover={{ scale: 1.1, y: -8 }}
                   whileTap={{ scale: 0.9 }}
                   aria-label={social.label}

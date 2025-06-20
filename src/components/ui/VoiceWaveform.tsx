@@ -12,7 +12,7 @@ const VoiceWaveform: React.FC<VoiceWaveformProps> = ({ isActive, bars = 5 }) => 
       {Array.from({ length: bars }).map((_, index) => (
         <motion.div
           key={index}
-          className="w-1 bg-current rounded-full"
+          className="w-1 bg-neon-400 rounded-full"
           animate={isActive ? {
             height: [4, 16, 8, 20, 6, 14, 10],
             opacity: [0.4, 1, 0.6, 1, 0.5, 0.9, 0.7]
@@ -25,6 +25,9 @@ const VoiceWaveform: React.FC<VoiceWaveformProps> = ({ isActive, bars = 5 }) => 
             repeat: isActive ? Infinity : 0,
             delay: index * 0.1,
             ease: 'easeInOut'
+          }}
+          style={{
+            filter: 'drop-shadow(0 0 4px currentColor)'
           }}
         />
       ))}

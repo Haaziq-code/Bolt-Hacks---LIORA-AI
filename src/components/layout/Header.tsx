@@ -31,13 +31,6 @@ const Header: React.FC<HeaderProps> = ({
 
   const getModeInfo = () => {
     switch (currentMode) {
-      case 'coach':
-        return { 
-          name: 'AI Coach', 
-          color: 'from-orange-500 to-red-500',
-          bg: 'from-orange-500/20 to-red-500/20',
-          icon: '💪'
-        };
       case 'therapist':
         return { 
           name: 'AI Therapist', 
@@ -48,15 +41,22 @@ const Header: React.FC<HeaderProps> = ({
       case 'tutor':
         return { 
           name: 'AI Tutor', 
-          color: 'from-indigo-500 to-purple-500',
-          bg: 'from-indigo-500/20 to-purple-500/20',
+          color: 'from-violet-500 to-purple-500',
+          bg: 'from-violet-500/20 to-purple-500/20',
           icon: '📚'
+        };
+      case 'friend':
+        return { 
+          name: 'AI Friend', 
+          color: 'from-pink-500 to-rose-500',
+          bg: 'from-pink-500/20 to-rose-500/20',
+          icon: '👥'
         };
       default:
         return { 
           name: 'LioraAI', 
-          color: 'from-accent-500 to-accent-600',
-          bg: 'from-accent-500/20 to-accent-600/20',
+          color: 'from-violet-500 to-neon-500',
+          bg: 'from-violet-500/20 to-neon-500/20',
           icon: '🤖'
         };
     }
@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <motion.header 
-      className="relative z-30 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-white/10 dark:border-gray-700/10 px-8 py-6 shadow-lg"
+      className="relative z-30 glass-morphism dark:glass-morphism-dark border-b border-white/10 dark:border-gray-700/10 px-8 py-6 neural-glow"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({
           {showBackButton && onBack && (
             <motion.button
               onClick={onBack}
-              className="p-3 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all shadow-lg"
+              className="p-3 rounded-xl glass-morphism dark:glass-morphism-dark hover:neural-glow transition-all shadow-lg"
               whileHover={{ scale: 1.05, x: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -91,19 +91,32 @@ const Header: React.FC<HeaderProps> = ({
             whileHover={{ scale: 1.02 }}
           >
             <motion.div 
-              className="w-14 h-14 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl flex items-center justify-center shadow-xl"
+              className="w-14 h-14 bg-gradient-to-br from-violet-500 to-neon-500 rounded-2xl flex items-center justify-center neural-glow-lg relative"
               animate={{ 
                 boxShadow: [
-                  '0 0 0 0 rgba(14, 165, 233, 0.4)',
-                  '0 0 0 10px rgba(14, 165, 233, 0)',
+                  '0 0 0 0 rgba(93, 106, 255, 0.4)',
+                  '0 0 0 10px rgba(93, 106, 255, 0)',
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <Brain className="w-8 h-8 text-white" />
+              {/* AI Pulse Animation */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl border-2 border-neon-400"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0, 0.5],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent font-heading">
+              <h1 className="text-2xl font-bold text-neural font-heading">
                 LioraAI
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Your AI Life Co-pilot</p>
@@ -111,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({
           </motion.div>
           
           <motion.div 
-            className={`px-6 py-3 rounded-2xl bg-gradient-to-r ${modeInfo.bg} backdrop-blur-sm border border-white/30 dark:border-gray-700/30 shadow-lg`}
+            className={`px-6 py-3 rounded-2xl bg-gradient-to-r ${modeInfo.bg} glass-morphism dark:glass-morphism-dark neural-glow`}
             whileHover={{ scale: 1.02 }}
             layout
           >
@@ -141,7 +154,7 @@ const Header: React.FC<HeaderProps> = ({
           {/* API Usage Indicator */}
           {apiUsage && (
             <motion.div 
-              className="px-4 py-2 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 shadow-lg"
+              className="px-4 py-2 rounded-xl glass-morphism dark:glass-morphism-dark neural-glow"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5 }}
@@ -161,14 +174,14 @@ const Header: React.FC<HeaderProps> = ({
           {/* Voice/Video Controls */}
           <div className="hidden md:flex items-center space-x-3">
             <motion.button 
-              className="p-3 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all shadow-lg"
+              className="p-3 rounded-xl glass-morphism dark:glass-morphism-dark hover:neural-glow transition-all"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <Mic className={`w-5 h-5 ${isRecording ? 'text-red-500' : 'text-gray-600 dark:text-gray-400'}`} />
             </motion.button>
             <motion.button 
-              className="p-3 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all shadow-lg"
+              className="p-3 rounded-xl glass-morphism dark:glass-morphism-dark hover:neural-glow transition-all"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -180,7 +193,7 @@ const Header: React.FC<HeaderProps> = ({
           {!user?.isPro && (
             <motion.button
               onClick={onOpenPro}
-              className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-xl"
+              className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 neural-glow"
               whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 40px -10px rgba(249, 115, 22, 0.4)' }}
               whileTap={{ scale: 0.95 }}
             >
@@ -192,7 +205,7 @@ const Header: React.FC<HeaderProps> = ({
 
           {user?.isPro && (
             <motion.div 
-              className="flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-sm border border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl shadow-lg"
+              className="flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 glass-morphism dark:glass-morphism-dark text-orange-600 dark:text-orange-400 rounded-xl neural-glow"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', delay: 0.2 }}
@@ -205,7 +218,7 @@ const Header: React.FC<HeaderProps> = ({
           {/* Enhanced Theme Toggle */}
           <motion.button
             onClick={onToggleTheme}
-            className="p-3 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all shadow-lg"
+            className="p-3 rounded-xl glass-morphism dark:glass-morphism-dark hover:neural-glow transition-all"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -215,14 +228,14 @@ const Header: React.FC<HeaderProps> = ({
               transition={{ duration: 0.5, type: "spring" }}
             >
               {isDarkMode ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
+                <Sun className="w-5 h-5 text-neon-400" />
               ) : (
-                <Moon className="w-5 h-5 text-indigo-600" />
+                <Moon className="w-5 h-5 text-violet-600" />
               )}
             </motion.div>
           </motion.button>
 
-          {/* Fixed Settings Button */}
+          {/* Settings Button */}
           <motion.button 
             onClick={() => {
               console.log('Settings button clicked');
@@ -230,7 +243,7 @@ const Header: React.FC<HeaderProps> = ({
                 onOpenSettings();
               }
             }}
-            className="p-3 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all shadow-lg"
+            className="p-3 rounded-xl glass-morphism dark:glass-morphism-dark hover:neural-glow transition-all"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >

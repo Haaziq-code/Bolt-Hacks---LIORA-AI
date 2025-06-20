@@ -33,14 +33,14 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       id: 'home', 
       label: 'Home', 
       icon: Home, 
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-neon-500 to-cyan-500',
       description: 'Main dashboard'
     },
     { 
       id: 'memory', 
       label: 'Memory', 
       icon: MessageSquare, 
-      color: 'from-purple-500 to-pink-500',
+      color: 'from-violet-500 to-pink-500',
       description: 'Chat history & learning'
     },
     { 
@@ -56,7 +56,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       label: 'AI Tutor', 
       icon: GraduationCap, 
       mode: 'tutor' as AIMode, 
-      color: 'from-indigo-500 to-purple-500',
+      color: 'from-violet-500 to-purple-500',
       description: '100% accurate learning'
     },
     { 
@@ -78,7 +78,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       id: 'about', 
       label: 'About', 
       icon: Info, 
-      color: 'from-teal-500 to-cyan-500',
+      color: 'from-neon-500 to-cyan-500',
       description: 'Learn about LIORA'
     },
   ];
@@ -91,19 +91,6 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
     setIsExpanded(false);
   };
 
-  const getModeIcon = (mode: string) => {
-    switch (mode) {
-      case 'therapist':
-        return Heart;
-      case 'tutor':
-        return GraduationCap;
-      case 'friend':
-        return Users;
-      default:
-        return Brain;
-    }
-  };
-
   return (
     <>
       {/* Desktop Floating Action Bar */}
@@ -113,7 +100,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="glass-morphism dark:glass-morphism-dark rounded-3xl p-4 shadow-luxury-lg">
+        <div className="glass-morphism dark:glass-morphism-dark rounded-3xl p-4 neural-glow-lg">
           <div className="flex flex-col space-y-4">
             {menuItems.map((item, index) => {
               const Icon = item.icon;
@@ -131,8 +118,8 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                     onClick={() => handleItemClick(item)}
                     className={`relative p-4 rounded-2xl transition-all duration-500 ${
                       isActive
-                        ? `bg-gradient-to-r ${item.color} text-white shadow-neon-lg`
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/20 dark:hover:bg-slate-800/20'
+                        ? `bg-gradient-to-r ${item.color} text-white neural-glow-lg`
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:neural-glow'
                     }`}
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
@@ -141,7 +128,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                     
                     {/* Enhanced Tooltip */}
                     <motion.div
-                      className="absolute left-full ml-6 top-1/2 transform -translate-y-1/2 glass-morphism dark:glass-morphism-dark text-slate-900 dark:text-white px-4 py-3 rounded-2xl text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-luxury z-50"
+                      className="absolute left-full ml-6 top-1/2 transform -translate-y-1/2 glass-morphism dark:glass-morphism-dark text-slate-900 dark:text-white px-4 py-3 rounded-2xl text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 neural-glow z-50"
                       initial={{ opacity: 0, x: -10 }}
                       whileHover={{ opacity: 1, x: 0 }}
                     >
@@ -153,7 +140,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                     {/* Active Mode Indicator */}
                     {item.mode && currentMode === item.mode && (
                       <motion.div
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-neon"
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-neon-400 to-cyan-400 rounded-full shadow-neon"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
@@ -193,7 +180,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       {/* Mobile Menu Button */}
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="fixed bottom-8 left-8 z-50 lg:hidden p-4 glass-morphism dark:glass-morphism-dark rounded-2xl shadow-luxury-lg"
+        className="fixed bottom-8 left-8 z-50 lg:hidden p-4 glass-morphism dark:glass-morphism-dark rounded-2xl neural-glow-lg"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         animate={isExpanded ? { rotate: 180 } : { rotate: 0 }}
@@ -226,7 +213,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
             
             {/* Menu */}
             <motion.div
-              className="absolute bottom-24 left-8 right-8 glass-morphism dark:glass-morphism-dark rounded-3xl p-6 shadow-luxury-xl"
+              className="absolute bottom-24 left-8 right-8 glass-morphism dark:glass-morphism-dark rounded-3xl p-6 neural-glow-xl"
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -243,8 +230,8 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                       onClick={() => handleItemClick(item)}
                       className={`relative p-6 rounded-2xl transition-all duration-500 ${
                         isActive
-                          ? `bg-gradient-to-r ${item.color} text-white shadow-neon-lg`
-                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/20 dark:hover:bg-slate-800/20'
+                          ? `bg-gradient-to-r ${item.color} text-white neural-glow-lg`
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:neural-glow'
                       }`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -258,7 +245,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                       
                       {item.mode && currentMode === item.mode && (
                         <motion.div
-                          className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-neon"
+                          className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-neon-400 to-cyan-400 rounded-full shadow-neon"
                           animate={{ scale: [1, 1.2, 1] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
