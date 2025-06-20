@@ -281,7 +281,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                   boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)'
                 }}
               >
-                {/* Animated Sparkle Icon */}
+                {/* Animated Sparkle Icon with continuous spinning */}
                 <motion.div
                   animate={{ 
                     rotate: 360,

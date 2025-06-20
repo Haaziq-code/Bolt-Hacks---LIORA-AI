@@ -17,7 +17,7 @@ interface SecureConfig {
 // Locked configuration - these values are secured and cannot be changed
 const LOCKED_CONFIG: SecureConfig = {
   elevenlabs: 'sk_cee3cf951e9407d2caaf77ad5d3eee4a20d500f8e0d82e52',
-  gemini: 'AIzaSyBqJ8F2x3vK9mL4nP7qR8sT1uV6wX0yZ2A', // Updated with a valid API key format
+  gemini: 'your_gemini_api_key_here',
   supabase: {
     url: 'https://ttgklapeldrbkzptgley.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0Z2tsYXBlbGRyYmt6cHRnbGV5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NTI5NDgsImV4cCI6MjA2NTUyODk0OH0.07Fjk8NwtD6Mh_eO9W1ZAiJj6xCManYFUItvs9G8G1E'
