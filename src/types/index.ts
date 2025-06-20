@@ -89,7 +89,7 @@ export interface ChatSession {
   learningOutcomes?: string[];
 }
 
-export type AIMode = 'therapist' | 'tutor' | 'friend' | 'general';
+export type AIMode = 'coach' | 'therapist' | 'tutor' | 'friend' | 'general';
 
 export interface DashboardStats {
   sessionsThisWeek: number;

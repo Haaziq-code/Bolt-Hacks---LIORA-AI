@@ -634,6 +634,13 @@ export function speakText(
           return;
         }
         
+        // Handle 'synthesis-failed' as non-fatal error
+        if (event.error === 'synthesis-failed') {
+          console.warn(`⚠️ Speech synthesis failed (non-fatal) for ${mode} mode - continuing`);
+          resolve(); // Resolve instead of reject for synthesis failures
+          return;
+        }
+        
         console.error(`Speech synthesis error: ${event.error}`);
         reject(new Error(`Speech synthesis error: ${event.error}`));
       };
