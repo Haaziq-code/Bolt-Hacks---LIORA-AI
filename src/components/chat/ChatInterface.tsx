@@ -443,7 +443,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
-            {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+            {isPlaying ? <Square className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </motion.button>
         </div>
       </motion.div>

@@ -20,6 +20,8 @@ export interface UserPreferences {
   learningMode: boolean;
   friendAge: 'child' | 'teen' | 'young-adult' | 'adult';
   crisisDetection: boolean;
+  gender?: 'male' | 'female' | 'non-binary';
+  currentAIFriend?: string;
 }
 
 export interface EmergencyContact {
@@ -172,4 +174,47 @@ export interface Flashcard {
   difficulty: number;
   lastReviewed?: string;
   masteryLevel: number;
+}
+
+export interface AIFriend {
+  id: string;
+  name: string;
+  gender: 'male' | 'female' | 'non-binary';
+  age: 'teen' | 'young-adult' | 'adult' | 'elder';
+  personality: {
+    traits: string[];
+    energy: number;
+    empathy: number;
+    humor: number;
+    wisdom: number;
+  };
+  voice: {
+    tone: string;
+    pitch: number;
+    speed: number;
+  };
+  appearance: {
+    avatarUrl?: string;
+    skinTone: string;
+    hairColor: string;
+    hairStyle: string;
+    eyeColor: string;
+    faceShape: string;
+    style: string;
+  };
+  relationship: {
+    level: number;
+    memories: string[];
+    milestones: string[];
+    lastInteraction: string;
+    checkInFrequency: 'daily' | 'weekly' | 'monthly';
+  };
+  preferences: {
+    topics: string[];
+    communicationStyle: string;
+    moodSync: boolean;
+    proactiveCheckIns: boolean;
+  };
+  createdAt: string;
+  updatedAt: string;
 }

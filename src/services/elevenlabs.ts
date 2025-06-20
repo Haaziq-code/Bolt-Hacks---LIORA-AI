@@ -12,19 +12,19 @@ export const multilingualVoices = {
   en: {
     // Female voices - using the most natural sounding ones
     female: {
-      coach: 'EXAVITQu4vr4xnSDxMaL', // Bella - very natural female
+      coach: 'aEO01A4wXwd1O8GPgGlF', // Your custom voice ID
       therapist: 'ThT5KcBeYPX3keUQqHPh', // Dorothy - warm, empathetic female
-      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear, intelligent female
+      tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
       general: 'jsCqWAovK2LkecY7zXl4', // Elli - most natural conversational female
-      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - perfect for friendly conversations
+      friend: 'UgBBYS2sOqTuMpoF3BR0' // Your custom voice ID
     },
     // Male voices - using the most natural sounding ones
     male: {
-      coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic but natural male
+      coach: '2BJW5coyhAzSr8STdHbE', // Your custom voice ID
       therapist: 'VR6AewLTigWG4xSOukaG', // Josh - calm, supportive male
       tutor: 'TxGEqnHWrfWFTfGW9XjX', // Daniel - clear, natural male
       general: 'AZnzlk1XvdvUeBnXmlld', // Domi - most natural conversational male
-      friend: 'VR6AewLTigWG4xSOukaG' // Josh - warm, friendly male
+      friend: 'ulZgFXalzbrnPUGQGs0S' // Your custom voice ID
     },
     // Non-binary voices (using most neutral-sounding natural voices)
     'non-binary': {
@@ -61,42 +61,36 @@ export const multilingualVoices = {
   }
 };
 
-// Add the new voice IDs
-multilingualVoices.en.female.coach = 'aEO01A4wXwd1O8GPgGlF';
-multilingualVoices.en.male.coach = '2BJW5coyhAzSr8STdHbE';
-multilingualVoices.en.female.friend = 'UgBBYS2sOqTuMpoF3BR0';
-multilingualVoices.en.male.friend = 'ulZgFXalzbrnPUGQGs0S';
-
 // COMPLETELY REDESIGNED voice settings for maximum naturalness
 export const naturalVoiceSettings = {
   coach: {
-    stability: 0.3, // Lower for more natural variation
-    similarity_boost: 0.8, // Slightly lower for more natural sound
+    stability: 0.25, // Lower for more natural variation
+    similarity_boost: 0.75, // Slightly lower for more natural sound
     style: 0.9, // High expressiveness for energy
     use_speaker_boost: true
   },
   therapist: {
-    stability: 0.4, // Balanced for calm but natural
-    similarity_boost: 0.85, // Natural warmth
-    style: 0.6, // Moderate expressiveness for empathy
+    stability: 0.35, // Balanced for calm but natural
+    similarity_boost: 0.8, // Natural warmth
+    style: 0.65, // Moderate expressiveness for empathy
     use_speaker_boost: true
   },
   tutor: {
-    stability: 0.35, // Natural variation for engagement
-    similarity_boost: 0.8, // Clear but natural
+    stability: 0.3, // Natural variation for engagement
+    similarity_boost: 0.75, // Clear but natural
     style: 0.7, // Good expressiveness for teaching
     use_speaker_boost: true
   },
   friend: {
-    stability: 0.25, // Lowest for most natural conversation
-    similarity_boost: 0.75, // Most natural and conversational
-    style: 0.8, // High expressiveness for friendship
+    stability: 0.2, // Lowest for most natural conversation
+    similarity_boost: 0.7, // Most natural and conversational
+    style: 0.85, // High expressiveness for friendship
     use_speaker_boost: true
   },
   general: {
-    stability: 0.3, // Natural conversation
-    similarity_boost: 0.8, // Balanced naturalness
-    style: 0.7, // Good expressiveness
+    stability: 0.25, // Natural conversation
+    similarity_boost: 0.75, // Balanced naturalness
+    style: 0.75, // Good expressiveness
     use_speaker_boost: true
   }
 };
@@ -205,7 +199,6 @@ function preprocessTextForNaturalSpeech(text: string, mode: string): string {
       processedText = processedText.replace(/\bdo not\b/g, "don't");
       processedText = processedText.replace(/\bcannot\b/g, "can't");
       processedText = processedText.replace(/\bwill not\b/g, "won't");
-      processedText = processedText.replace(/\bw\b/g, "with");
       break;
     case 'therapist':
       // More thoughtful pauses
