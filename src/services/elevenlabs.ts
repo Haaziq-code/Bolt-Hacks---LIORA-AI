@@ -7,18 +7,18 @@ export interface VoiceSettings {
   use_speaker_boost: boolean;
 }
 
-// Enhanced multilingual voice mapping with the most natural, human-like voices
+// Enhanced multilingual voice mapping with your custom voice IDs
 export const multilingualVoices = {
   en: {
-    // Female voices - using the most natural sounding ones with your custom voice ID
+    // Female voices - using your specified voice ID as default
     female: {
-      coach: 'aEO01A4wXwd1O8GPgGlF', // Your custom voice ID
+      coach: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
       therapist: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
-      tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
+      tutor: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
       general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
       friend: 'zFLlkq72ysbq1TWC0Mlx' // Your specified female voice ID
     },
-    // Male voices - using the most natural sounding ones
+    // Male voices - using your specified voice ID
     male: {
       coach: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
       therapist: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
@@ -26,16 +26,16 @@ export const multilingualVoices = {
       general: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
       friend: '2BJW5coyhAzSr8STdHbE' // Your specified male voice ID
     },
-    // Non-binary voices (using most neutral-sounding natural voices)
+    // Non-binary voices (using your other custom voice IDs)
     'non-binary': {
       coach: 'ulZgFXalzbrnPUGQGs0S', // Your custom voice ID
-      therapist: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
+      therapist: 'aEO01A4wXwd1O8GPgGlF', // Your custom voice ID
       tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
-      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
+      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID as fallback
       friend: 'ulZgFXalzbrnPUGQGs0S' // Your custom voice ID
     }
   },
-  // Add other languages with natural voices
+  // Add other languages with your custom voices
   es: {
     female: {
       coach: 'zFLlkq72ysbq1TWC0Mlx',
@@ -53,7 +53,30 @@ export const multilingualVoices = {
     },
     'non-binary': {
       coach: 'ulZgFXalzbrnPUGQGs0S',
+      therapist: 'aEO01A4wXwd1O8GPgGlF',
+      tutor: 'UgBBYS2sOqTuMpoF3BR0',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'ulZgFXalzbrnPUGQGs0S'
+    }
+  },
+  fr: {
+    female: {
+      coach: 'zFLlkq72ysbq1TWC0Mlx',
       therapist: 'zFLlkq72ysbq1TWC0Mlx',
+      tutor: 'zFLlkq72ysbq1TWC0Mlx',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'zFLlkq72ysbq1TWC0Mlx'
+    },
+    male: {
+      coach: '2BJW5coyhAzSr8STdHbE',
+      therapist: '2BJW5coyhAzSr8STdHbE',
+      tutor: '2BJW5coyhAzSr8STdHbE',
+      general: '2BJW5coyhAzSr8STdHbE',
+      friend: '2BJW5coyhAzSr8STdHbE'
+    },
+    'non-binary': {
+      coach: 'ulZgFXalzbrnPUGQGs0S',
+      therapist: 'aEO01A4wXwd1O8GPgGlF',
       tutor: 'UgBBYS2sOqTuMpoF3BR0',
       general: 'zFLlkq72ysbq1TWC0Mlx',
       friend: 'ulZgFXalzbrnPUGQGs0S'
@@ -61,36 +84,36 @@ export const multilingualVoices = {
   }
 };
 
-// COMPLETELY REDESIGNED voice settings for maximum naturalness
+// ULTRA-NATURAL voice settings for maximum human-like speech
 export const naturalVoiceSettings = {
   coach: {
-    stability: 0.15, // Very low for maximum natural variation
-    similarity_boost: 0.65, // Lower for more natural sound
-    style: 0.95, // Very high expressiveness for energy
+    stability: 0.05, // Extremely low for maximum natural variation
+    similarity_boost: 0.55, // Lower for more natural sound
+    style: 0.98, // Maximum expressiveness for energy
     use_speaker_boost: true
   },
   therapist: {
-    stability: 0.25, // Low for natural warmth
-    similarity_boost: 0.70, // Natural warmth
-    style: 0.75, // Good expressiveness for empathy
+    stability: 0.08, // Very low for natural warmth
+    similarity_boost: 0.60, // Natural warmth
+    style: 0.85, // High expressiveness for empathy
     use_speaker_boost: true
   },
   tutor: {
-    stability: 0.20, // Low for natural variation
-    similarity_boost: 0.65, // Clear but natural
-    style: 0.80, // High expressiveness for teaching
+    stability: 0.10, // Low for natural variation
+    similarity_boost: 0.58, // Clear but natural
+    style: 0.90, // High expressiveness for teaching
     use_speaker_boost: true
   },
   friend: {
-    stability: 0.10, // Lowest for most natural conversation
-    similarity_boost: 0.60, // Most natural and conversational
-    style: 0.90, // Very high expressiveness for friendship
+    stability: 0.03, // Lowest for most natural conversation
+    similarity_boost: 0.50, // Most natural and conversational
+    style: 0.95, // Very high expressiveness for friendship
     use_speaker_boost: true
   },
   general: {
-    stability: 0.15, // Very natural conversation
-    similarity_boost: 0.65, // Balanced naturalness
-    style: 0.85, // High expressiveness
+    stability: 0.05, // Very natural conversation
+    similarity_boost: 0.55, // Balanced naturalness
+    style: 0.88, // High expressiveness
     use_speaker_boost: true
   }
 };
@@ -108,14 +131,20 @@ function isElevenLabsConfigured(): boolean {
 
 // Get voice ID based on language, mode, and gender
 function getVoiceForLanguageAndMode(language: string, mode: string, gender: string = 'female'): string {
+  console.log(`🎤 Selecting voice for: ${language}, ${mode}, ${gender}`);
+  
   const langVoices = multilingualVoices[language as keyof typeof multilingualVoices];
   if (langVoices) {
     const genderVoices = langVoices[gender as keyof typeof langVoices];
     if (genderVoices) {
-      return genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
+      const selectedVoice = genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
+      console.log(`🎤 Selected voice ID: ${selectedVoice} for ${gender} ${mode} in ${language}`);
+      return selectedVoice;
     }
   }
-  // Fallback to English female with your specified voice ID
+  
+  // Fallback to your specified female voice ID
+  console.log(`🎤 Using fallback voice ID: zFLlkq72ysbq1TWC0Mlx`);
   return 'zFLlkq72ysbq1TWC0Mlx';
 }
 
@@ -137,7 +166,8 @@ export async function generateSpeech(
     const voiceId = getVoiceForLanguageAndMode(language, mode, gender);
     const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.friend;
 
-    console.log(`🎤 Generating ultra-natural ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`🎤 Generating ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`🎤 Voice settings:`, voiceSettings);
 
     // Enhanced text preprocessing for more natural speech
     const processedText = preprocessTextForNaturalSpeech(text, mode);
@@ -167,7 +197,7 @@ export async function generateSpeech(
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
     
-    console.log(`✅ Successfully generated ultra-natural ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`✅ Successfully generated ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
     return audioUrl;
   } catch (error) {
     console.error('❌ ElevenLabs speech generation error:', error);
@@ -205,8 +235,8 @@ function preprocessTextForNaturalSpeech(text: string, mode: string): string {
       break;
     case 'tutor':
       // Emphasize key points
-      processedText = processedText.replace(/\bimportant\b/gi, "<emphasis>important</emphasis>");
-      processedText = processedText.replace(/\bkey\b/gi, "<emphasis>key</emphasis>");
+      processedText = processedText.replace(/\bimportant\b/gi, "important");
+      processedText = processedText.replace(/\bkey\b/gi, "key");
       break;
   }
 
@@ -221,9 +251,9 @@ export async function streamSpeech(
   gender: string = 'female'
 ): Promise<void> {
   try {
-    console.log(`🎯 Starting ultra-natural ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting ULTRA-NATURAL ${gender} speech for ${mode} mode in ${language}`);
     
-    // Try ElevenLabs first
+    // Try ElevenLabs first with your custom voice IDs
     const audioUrl = await generateSpeech(text, mode, language, gender);
     
     if (audioUrl) {
