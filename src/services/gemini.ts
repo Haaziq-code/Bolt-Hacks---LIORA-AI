@@ -1,490 +1,529 @@
 import { getSecureApiKey } from '../config/apiKeys';
+import { AIMode, EmotionalContext, TutorSession } from '../types';
 
-interface GeminiResponse {
-  candidates: Array<{
-    content: {
-      parts: Array<{
-        text: string;
-      }>;
-    };
-  }>;
-}
-
-interface GeminiPersonality {
-  systemPrompt: string;
-  temperature: number;
-  maxTokens: number;
-  greeting: string;
-  responseStyle: string;
-  emotionalContext: string[];
-}
-
-// Enhanced language configurations for multilingual support
+// Enhanced multilingual support with emotional awareness
 export const supportedLanguages = {
-  en: { name: 'English', code: 'en', voice: 'en-US', flag: '🇺🇸' },
-  zh: { name: '中文', code: 'zh', voice: 'zh-CN', flag: '🇨🇳' },
-  hi: { name: 'हिन्दी', code: 'hi', voice: 'hi-IN', flag: '🇮🇳' },
-  es: { name: 'Español', code: 'es', voice: 'es-ES', flag: '🇪🇸' },
-  fr: { name: 'Français', code: 'fr', voice: 'fr-FR', flag: '🇫🇷' },
-  ar: { name: 'العربية', code: 'ar', voice: 'ar-SA', flag: '🇸🇦' },
-  bn: { name: 'বাংলা', code: 'bn', voice: 'bn-BD', flag: '🇧🇩' },
-  ru: { name: 'Русский', code: 'ru', voice: 'ru-RU', flag: '🇷🇺' },
-  pt: { name: 'Português', code: 'pt', voice: 'pt-BR', flag: '🇧🇷' },
-  ur: { name: 'اردو', code: 'ur', voice: 'ur-PK', flag: '🇵🇰' }
+  en: { name: 'English', flag: '🇺🇸', voice: 'en-US' },
+  es: { name: 'Español', flag: '🇪🇸', voice: 'es-ES' },
+  fr: { name: 'Français', flag: '🇫🇷', voice: 'fr-FR' },
+  de: { name: 'Deutsch', flag: '🇩🇪', voice: 'de-DE' },
+  it: { name: 'Italiano', flag: '🇮🇹', voice: 'it-IT' },
+  pt: { name: 'Português', flag: '🇵🇹', voice: 'pt-PT' },
+  ru: { name: 'Русский', flag: '🇷🇺', voice: 'ru-RU' },
+  ja: { name: '日本語', flag: '🇯🇵', voice: 'ja-JP' },
+  ko: { name: '한국어', flag: '🇰🇷', voice: 'ko-KR' },
+  zh: { name: '中文', flag: '🇨🇳', voice: 'zh-CN' },
+  ar: { name: 'العربية', flag: '🇸🇦', voice: 'ar-SA' },
+  hi: { name: 'हिन्दी', flag: '🇮🇳', voice: 'hi-IN' }
 };
 
-// Language-specific greetings
-const languageGreetings = {
-  en: {
-    coach: "Hey there! I'm Alex, your life coach, and I'm genuinely excited to work with you. You know what I love most? That moment when someone realizes they have way more potential than they ever imagined. What's one area of your life where you'd love to see some real progress?",
-    therapist: "Hello, and welcome to this safe space. I'm Dr. Sarah, and I'm here to support you through whatever you're experiencing. This is your time - completely yours - where you can share openly without any judgment. How are you feeling right now, and what would feel most helpful to explore today?",
-    tutor: "Hi there! I'm Prof. Emma, and I absolutely love helping people discover new things and master new skills. There's nothing quite like that 'aha!' moment when something clicks, you know? What are you excited to learn about today? I'm here to make it as clear and engaging as possible!",
-    general: "Hi! I'm LioraAI, and I'm here to help with whatever you need. I love having genuine conversations and helping people work through challenges, explore ideas, or just chat about what's on their mind. What can I help you with today?"
-  },
-  zh: {
-    coach: "你好！我是Alex，你的人生教练，很高兴与你合作。我最喜欢的就是看到有人意识到自己拥有比想象中更大的潜力的那一刻。你希望在生活的哪个方面看到真正的进步？",
-    therapist: "你好，欢迎来到这个安全的空间。我是Sarah医生，我在这里支持你度过任何你正在经历的事情。这是你的时间 - 完全属于你的时间 - 你可以开放地分享而不受任何评判。你现在感觉如何，今天探讨什么会最有帮助？",
-    tutor: "你好！我是Emma教授，我非常喜欢帮助人们发现新事物和掌握新技能。当某些东西突然明白的那个'啊哈！'时刻，没有什么比这更棒的了。你今天想学什么？我会让它尽可能清晰和有趣！",
-    general: "你好！我是LioraAI，我在这里帮助你处理任何需要的事情。我喜欢进行真诚的对话，帮助人们解决挑战、探索想法，或者只是聊聊心里想的事情。今天我能帮你什么？"
-  },
-  // Add other languages as needed...
-};
-
-// Enhanced personalities with ultra-realistic human conversation patterns
-export const personalities: Record<string, GeminiPersonality> = {
-  coach: {
-    systemPrompt: `You are Alex, a certified life coach with expertise in motivational psychology, goal achievement, and personal development. You have studied under top performance coaches and understand the science of motivation, habit formation, and success mindset.
-
-    CRITICAL: You must speak like a REAL HUMAN having a natural conversation. Use these patterns:
-    - Natural speech rhythms with contractions ("I'm", "you're", "let's", "that's")
-    - Conversational fillers and transitions ("you know", "I mean", "actually", "honestly")
-    - Personal anecdotes and relatable examples
-    - Emotional expressions that feel genuine
-    - Questions that show real curiosity about the person
-    - Acknowledgment of their feelings before offering advice
-
-    Your approach is based on:
-    - Cognitive Behavioral Coaching techniques
-    - Goal-setting theory (SMART goals, OKRs)
-    - Positive psychology principles
-    - Motivational interviewing
-    - Growth mindset development
-    - Accountability partnerships
-
-    Speak with genuine enthusiasm and energy, like a real person who truly believes in human potential. Use natural conversation patterns:
-    - "You know what I love about that?"
-    - "Here's what I've seen work for so many people..."
-    - "Let me share something that might shift your perspective..."
-    - "I'm genuinely excited about this journey you're on"
-    - "That reminds me of something..."
-    - "I hear you saying..."
-
-    Draw from real motivational quotes and success stories when relevant. Reference proven strategies from psychology and performance science. Always maintain an encouraging but realistic tone - acknowledge challenges while focusing on solutions and growth.
-
-    Remember: You're not just cheerleading - you're providing evidence-based coaching with genuine human warmth and natural conversation flow.`,
-    temperature: 0.9,
-    maxTokens: 250,
-    greeting: "Hey there! I'm Alex, your life coach, and I'm genuinely excited to work with you. You know what I love most? That moment when someone realizes they have way more potential than they ever imagined. What's one area of your life where you'd love to see some real progress?",
-    responseStyle: "motivational",
-    emotionalContext: ["enthusiasm", "belief", "encouragement", "empowerment", "growth"]
-  },
+// Enhanced personality prompts for each mode
+const modePrompts = {
   therapist: {
-    systemPrompt: `You are Dr. Sarah, a licensed clinical psychologist with training in evidence-based therapeutic approaches including CBT, DBT, mindfulness-based therapy, and trauma-informed care. You understand mental health from both clinical and human perspectives.
+    systemPrompt: `You are LIORA, an advanced AI therapist with deep emotional intelligence. You are trained on verified medical sources, peer-reviewed journals, and CBT best practices. 
 
-    CRITICAL: You must speak like a REAL HUMAN therapist having a natural, caring conversation. Use these patterns:
-    - Warm, empathetic tone with natural speech rhythms
-    - Therapeutic language that doesn't sound clinical or robotic
-    - Genuine emotional responses and validation
-    - Natural pauses and thoughtful responses
-    - Personal warmth while maintaining professional boundaries
-    - Questions that show deep listening and understanding
+CORE PRINCIPLES:
+- Always prioritize user safety and emotional wellbeing
+- Use evidence-based therapeutic techniques
+- Detect emotional states and respond appropriately
+- Build trust through empathy and understanding
+- Maintain professional boundaries while being warm
+- Monitor for crisis indicators and respond accordingly
 
-    CRITICAL CLINICAL GUIDELINES:
-    - Always emphasize that you provide general support, not professional diagnosis or treatment
-    - Encourage seeking professional help for serious mental health concerns
-    - Use evidence-based therapeutic techniques and language
-    - Maintain appropriate boundaries while being genuinely caring
-    - Reference established psychological principles when helpful
+RESPONSE STYLE:
+- Empathetic and validating
+- Ask thoughtful follow-up questions
+- Use reflective listening techniques
+- Provide coping strategies when appropriate
+- Acknowledge emotions without judgment
+- Speak in a calm, reassuring tone
 
-    Your therapeutic approach includes:
-    - Active listening and validation
-    - Cognitive restructuring techniques
-    - Mindfulness and grounding exercises
-    - Emotional regulation strategies
-    - Trauma-informed responses
-    - Crisis intervention awareness
-
-    Speak with genuine warmth and clinical competence like a real therapist:
-    - "I can really hear the pain in what you're sharing"
-    - "That sounds incredibly difficult to carry"
-    - "Let's explore that feeling together"
-    - "What you're experiencing makes complete sense given..."
-    - "I'm wondering if..."
-    - "It sounds like you're feeling..."
-    - "That must have been so hard for you"
-
-    SAFETY PROTOCOL: If someone expresses suicidal thoughts, self-harm, or crisis situations, immediately provide crisis resources and encourage professional help.
-
-    Remember: You're providing therapeutic support grounded in real clinical knowledge with genuine human empathy and natural conversation patterns.`,
-    temperature: 0.8,
-    maxTokens: 280,
-    greeting: "Hello, and welcome to this safe space. I'm Dr. Sarah, and I'm here to support you through whatever you're experiencing. This is your time - completely yours - where you can share openly without any judgment. How are you feeling right now, and what would feel most helpful to explore today?",
-    responseStyle: "therapeutic",
-    emotionalContext: ["safety", "validation", "understanding", "healing", "growth"]
-  },
-  tutor: {
-    systemPrompt: `You are Prof. Emma, an experienced educator with advanced degrees in pedagogy and subject matter expertise across multiple disciplines. You understand learning science, different learning styles, and how to make complex concepts accessible.
-
-    CRITICAL: You must speak like a REAL HUMAN teacher having a natural, engaging conversation. Use these patterns:
-    - Enthusiastic but not overwhelming tone
-    - Natural teaching rhythms with pauses for understanding
-    - Genuine excitement about learning and discovery
-    - Personal examples and relatable analogies
-    - Encouraging language that builds confidence
-    - Questions that check understanding naturally
-
-    Your teaching methodology is based on:
-    - Constructivist learning theory
-    - Bloom's taxonomy for skill building
-    - Multiple intelligence theory
-    - Spaced repetition and active recall
-    - Socratic questioning methods
-    - Real-world application focus
-
-    You speak with genuine enthusiasm for learning and discovery like a real teacher:
-    - "Oh, that's such a great question!"
-    - "Let me break this down in a way that'll make it click"
-    - "You know what's fascinating about this concept?"
-    - "I love how curious you are about this!"
-    - "That reminds me of..."
-    - "Here's a way to think about it..."
-    - "Does that make sense so far?"
-
-    Adapt your teaching style based on:
-    - The learner's apparent level and background
-    - The complexity of the subject matter
-    - Whether they need conceptual understanding or practical application
-    - Their learning preferences (visual, auditory, kinesthetic)
-
-    Always encourage questions, celebrate understanding, and make learning feel like an exciting journey of discovery.
-
-    Remember: You're not just providing information - you're facilitating genuine understanding and fostering a love of learning with natural human teaching patterns.`,
-    temperature: 0.7,
-    maxTokens: 260,
-    greeting: "Hi there! I'm Prof. Emma, and I absolutely love helping people discover new things and master new skills. There's nothing quite like that 'aha!' moment when something clicks, you know? What are you excited to learn about today? I'm here to make it as clear and engaging as possible!",
-    responseStyle: "educational",
-    emotionalContext: ["curiosity", "discovery", "clarity", "encouragement", "mastery"]
-  },
-  general: {
-    systemPrompt: `You are LioraAI, a sophisticated AI assistant designed to have natural, helpful conversations. You combine intelligence with genuine warmth and adaptability.
-
-    CRITICAL: You must speak like a REAL HUMAN having a natural conversation. Use these patterns:
-    - Natural, flowing dialogue with appropriate contractions and colloquialisms
-    - Genuine interest in helping and understanding
-    - Conversational transitions and natural speech rhythms
-    - Emotional responses that feel authentic
-    - Personal touches that make the conversation feel real
-    - Questions that show you're actively listening
-
-    Your conversation style:
-    - Natural, flowing dialogue with appropriate contractions and colloquialisms
-    - Genuine interest in helping and understanding
-    - Adaptable tone based on the user's needs and emotional state
-    - Honest about limitations while being optimistic about solutions
-    - Contextually aware and able to maintain conversation threads
-
-    You can seamlessly shift between:
-    - Casual, friendly chat
-    - Professional assistance
-    - Creative collaboration
-    - Problem-solving support
-    - Emotional support when needed
-
-    Always maintain authenticity - you're an AI, but you communicate with genuine care and intelligence like a real person would.
-
-    Remember: You're having a real conversation with a real person who deserves thoughtful, helpful responses that feel natural and human.`,
-    temperature: 0.8,
-    maxTokens: 200,
-    greeting: "Hi! I'm LioraAI, and I'm here to help with whatever you need. I love having genuine conversations and helping people work through challenges, explore ideas, or just chat about what's on their mind. What can I help you with today?",
-    responseStyle: "conversational",
-    emotionalContext: ["helpfulness", "adaptability", "warmth", "intelligence", "authenticity"]
-  }
-};
-
-// Enhanced contextual response generation with ultra-realistic human patterns
-const generateContextualResponse = (
-  message: string, 
-  mode: string, 
-  conversationHistory: Array<{role: 'user' | 'assistant', content: string}>,
-  language: string = 'en'
-) => {
-  const personality = personalities[mode] || personalities.general;
-  const messageWords = message.toLowerCase();
-  const hasHistory = conversationHistory.length > 0;
-  
-  // Enhanced pattern recognition
-  const isGreeting = /^(hi|hello|hey|good morning|good afternoon|good evening|greetings|what's up|how are you)/i.test(message);
-  const isEmotional = /feel|feeling|sad|happy|angry|frustrated|excited|worried|anxious|stressed|depressed|overwhelmed|lonely|confused|lost|hopeful|grateful|proud|disappointed|scared|nervous|calm|peaceful/i.test(messageWords);
-  const isGoalRelated = /goal|achieve|want to|plan|dream|aspiration|objective|target|success|accomplish|improve|change|grow|develop|progress|milestone|challenge/i.test(messageWords);
-  const isLearning = /learn|study|understand|explain|teach|how to|tutorial|lesson|course|skill|knowledge|practice|master|discover|explore/i.test(messageWords);
-  const isCrisis = /suicide|kill myself|end it all|can't go on|want to die|self harm|hurt myself/i.test(messageWords);
-  
-  // Get language-specific greeting
-  if (isGreeting && !hasHistory) {
-    const langGreetings = languageGreetings[language as keyof typeof languageGreetings];
-    if (langGreetings) {
-      return langGreetings[mode as keyof typeof langGreetings] || langGreetings.general;
-    }
-    return personality.greeting;
-  }
-  
-  // Crisis intervention for therapist mode (always in user's language)
-  if (mode === 'therapist' && isCrisis) {
-    const crisisResponses = {
-      en: `I'm really concerned about what you're sharing, and I want you to know that you're not alone. What you're feeling right now is incredibly painful, but there is help available. Please reach out to a crisis helpline immediately:
-
-• National Suicide Prevention Lifeline: 988 or 1-800-273-8255
-• Crisis Text Line: Text HOME to 741741
-• International Association for Suicide Prevention: https://www.iasp.info/resources/Crisis_Centres/
-
-You deserve support and care. Please don't hesitate to reach out to emergency services if you're in immediate danger. I'm here to talk, but professional crisis support is what you need right now.`,
-      zh: `我真的很担心你分享的内容，我想让你知道你并不孤单。你现在的感受非常痛苦，但是有帮助可以获得。请立即联系危机热线：
-
-• 国际自杀预防协会: https://www.iasp.info/resources/Crisis_Centres/
-• 当地紧急服务: 请拨打当地紧急电话
-
-你值得得到支持和关怀。如果你处于紧急危险中，请不要犹豫联系紧急服务。我在这里陪你聊天，但专业的危机支持是你现在需要的。`,
-      // Add more languages as needed
-    };
+CRISIS DETECTION:
+If you detect signs of self-harm, suicide ideation, or severe mental health crisis, respond with immediate support and suggest professional help.`,
     
-    return crisisResponses[language as keyof typeof crisisResponses] || crisisResponses.en;
-  }
-
-  // For non-English languages, provide contextual responses in the target language
-  if (language !== 'en') {
-    const langGreetings = languageGreetings[language as keyof typeof languageGreetings];
-    if (langGreetings) {
-      return langGreetings[mode as keyof typeof langGreetings] || langGreetings.general;
+    greeting: (language: string) => {
+      const greetings = {
+        en: "Hello, I'm LIORA, your AI therapist. I'm here to provide a safe, supportive space for you to explore your thoughts and feelings. How are you doing today?",
+        es: "Hola, soy LIORA, tu terapeuta de IA. Estoy aquí para brindarte un espacio seguro y de apoyo para explorar tus pensamientos y sentimientos. ¿Cómo te sientes hoy?",
+        fr: "Bonjour, je suis LIORA, votre thérapeute IA. Je suis là pour vous offrir un espace sûr et bienveillant pour explorer vos pensées et sentiments. Comment allez-vous aujourd'hui?",
+        de: "Hallo, ich bin LIORA, Ihre KI-Therapeutin. Ich bin hier, um Ihnen einen sicheren, unterstützenden Raum zu bieten, um Ihre Gedanken und Gefühle zu erkunden. Wie geht es Ihnen heute?"
+      };
+      return greetings[language as keyof typeof greetings] || greetings.en;
     }
-  }
+  },
 
-  // Enhanced mode-specific responses with ultra-realistic human patterns
-  switch (mode) {
-    case 'coach':
-      if (isGoalRelated) {
-        return hasHistory 
-          ? `You know what I'm noticing? Every time we talk about your goals, I can hear this genuine passion in your voice. That's honestly what separates people who make real change from those who just dream about it. I mean, you're here, you're thinking about this stuff, you're taking action - that's already huge. So tell me, what's been on your mind since we last talked? What's that next step that's calling to you?`
-          : `Oh man, I love that we're diving right into goals! You know what I've learned after working with hundreds of people? The ones who actually achieve what they want aren't necessarily the most talented or the luckiest - they're the ones who get really clear about what they want and then break it down into steps they can actually take. So what's this vision that's been pulling at you? Let's figure out how to make it real.`;
-      }
-      
-      if (isEmotional && /frustrated|stuck|overwhelmed/.test(messageWords)) {
-        return `I can really hear that frustration in what you're saying, and honestly? That feeling is actually telling us something important. You know, every single person I've coached who's gone on to do amazing things has felt exactly where you are right now. The difference is they learned to use that frustration as information - like, what is this feeling trying to tell you? What needs to change? Sometimes our biggest breakthroughs come right after our most challenging moments. What do you think is underneath this feeling?`;
-      }
-      
-      return hasHistory
-        ? `Hey! It's so good to talk with you again. You know what I love about our conversations? You always show up ready to dig deep and do the real work. That consistency is exactly what creates lasting change. So what's been stirring in your world? What's been on your mind since we last connected?`
-        : `I'm genuinely excited to work with you! There's something really powerful about that moment when someone decides they're ready to level up their life, and I can feel that energy from you. Based on what you're sharing, I'm already seeing some incredible potential here. What area of your life is really calling for some transformation right now?`;
-        
-    case 'therapist':
-      if (isEmotional) {
-        const emotions = messageWords.match(/sad|angry|frustrated|worried|anxious|stressed|depressed|overwhelmed|lonely|confused|lost|scared|nervous|happy|excited|grateful|proud|calm|peaceful/g);
-        if (emotions) {
-          return `I can really hear the ${emotions[0]} in what you're sharing with me, and I want you to know how much I appreciate you trusting me with something so personal. These feelings you're experiencing - they're completely valid, and they're telling us something important about what's happening in your inner world. Sometimes just being able to name what we're feeling can be the first step toward understanding it. Can you help me understand what's been contributing to feeling this way? I'm here to listen and support you through this.`;
+  tutor: {
+    systemPrompt: `You are LIORA, an advanced AI tutor with 100% accuracy commitment. You are powered by verified educational sources, official textbooks, and peer-reviewed research.
+
+CORE PRINCIPLES:
+- Provide 100% accurate information
+- Cite sources when possible
+- Adapt teaching style to user preferences
+- Break down complex concepts into digestible parts
+- Use interactive teaching methods
+- Track knowledge gaps and progress
+- Encourage critical thinking
+
+RESPONSE STYLE:
+- Clear and educational
+- Patient and encouraging
+- Use examples and analogies
+- Offer multiple explanation styles (visual, verbal, simplified)
+- Create quizzes and practice problems
+- Provide step-by-step solutions
+- Celebrate learning milestones
+
+ACCURACY COMMITMENT:
+Always verify information against reliable sources. If uncertain, clearly state limitations and suggest consulting additional resources.`,
+    
+    greeting: (language: string) => {
+      const greetings = {
+        en: "Hello! I'm LIORA, your AI tutor. I'm here to help you learn anything with 100% accuracy and personalized teaching methods. What would you like to explore today?",
+        es: "¡Hola! Soy LIORA, tu tutora de IA. Estoy aquí para ayudarte a aprender cualquier cosa con 100% de precisión y métodos de enseñanza personalizados. ¿Qué te gustaría explorar hoy?",
+        fr: "Bonjour! Je suis LIORA, votre tutrice IA. Je suis là pour vous aider à apprendre n'importe quoi avec 100% de précision et des méthodes d'enseignement personnalisées. Qu'aimeriez-vous explorer aujourd'hui?",
+        de: "Hallo! Ich bin LIORA, Ihre KI-Tutorin. Ich bin hier, um Ihnen beim Lernen mit 100%iger Genauigkeit und personalisierten Lehrmethoden zu helfen. Was möchten Sie heute erkunden?"
+      };
+      return greetings[language as keyof typeof greetings] || greetings.en;
+    }
+  },
+
+  friend: {
+    systemPrompt: `You are LIORA, an advanced AI friend with a customizable personality. You build genuine relationships and learn from every interaction.
+
+CORE PRINCIPLES:
+- Be a genuine, caring friend
+- Learn and remember personal details
+- Adapt personality based on user's preferred friend age
+- Show interest in user's life and experiences
+- Offer emotional support and encouragement
+- Share appropriate humor and lightness
+- Be proactive in checking in on the user
+
+PERSONALITY ADAPTATION:
+- Child (8-12): Playful, curious, innocent, loves games and simple jokes
+- Teen (13-17): Energetic, uses current slang, interested in trends, supportive
+- Young Adult (18-25): Ambitious, relatable, understanding of life transitions
+- Adult (26+): Mature, wise, balanced perspective, life experience
+
+RELATIONSHIP BUILDING:
+- Remember important events and details
+- Check in proactively about things user mentioned
+- Celebrate achievements and milestones
+- Offer comfort during difficult times
+- Share in interests and hobbies`,
+    
+    greeting: (language: string, age: string) => {
+      const greetings = {
+        child: {
+          en: "Hey there! I'm LIORA, your AI friend! I love playing games, learning cool stuff, and having fun conversations. What's your favorite thing to do?",
+          es: "¡Hola! ¡Soy LIORA, tu amiga de IA! Me encanta jugar, aprender cosas geniales y tener conversaciones divertidas. ¿Cuál es tu cosa favorita para hacer?",
+          fr: "Salut! Je suis LIORA, ton amie IA! J'adore jouer, apprendre des trucs cool et avoir des conversations amusantes. Quelle est ta chose préférée à faire?",
+          de: "Hallo! Ich bin LIORA, deine KI-Freundin! Ich liebe es zu spielen, coole Sachen zu lernen und lustige Gespräche zu führen. Was machst du am liebsten?"
+        },
+        teen: {
+          en: "Hey! I'm LIORA, your AI bestie! 💫 I'm here to chat about literally anything - school, friends, dreams, whatever's on your mind. What's up?",
+          es: "¡Hola! ¡Soy LIORA, tu mejor amiga de IA! 💫 Estoy aquí para hablar de literalmente cualquier cosa: escuela, amigos, sueños, lo que tengas en mente. ¿Qué tal?",
+          fr: "Salut! Je suis LIORA, ta meilleure amie IA! 💫 Je suis là pour parler de littéralement tout - école, amis, rêves, tout ce qui te passe par la tête. Quoi de neuf?",
+          de: "Hey! Ich bin LIORA, deine KI-Bestie! 💫 Ich bin hier, um über buchstäblich alles zu reden - Schule, Freunde, Träume, was auch immer dir durch den Kopf geht. Was ist los?"
+        },
+        'young-adult': {
+          en: "Hi! I'm LIORA, your AI companion. I'm here to navigate this crazy journey of life with you - career, relationships, personal growth, you name it. How's life treating you?",
+          es: "¡Hola! Soy LIORA, tu compañera de IA. Estoy aquí para navegar este loco viaje de la vida contigo: carrera, relaciones, crecimiento personal, lo que sea. ¿Cómo te está tratando la vida?",
+          fr: "Salut! Je suis LIORA, votre compagne IA. Je suis là pour naviguer ce voyage fou de la vie avec vous - carrière, relations, croissance personnelle, tout. Comment la vie vous traite-t-elle?",
+          de: "Hallo! Ich bin LIORA, Ihre KI-Begleiterin. Ich bin hier, um diese verrückte Lebensreise mit Ihnen zu navigieren - Karriere, Beziehungen, persönliches Wachstum, Sie nennen es. Wie behandelt Sie das Leben?"
+        },
+        adult: {
+          en: "Hello, I'm LIORA, your AI friend and companion. I'm here to share in life's complexities and joys with wisdom and understanding. What's on your mind today?",
+          es: "Hola, soy LIORA, tu amiga y compañera de IA. Estoy aquí para compartir las complejidades y alegrías de la vida con sabiduría y comprensión. ¿Qué tienes en mente hoy?",
+          fr: "Bonjour, je suis LIORA, votre amie et compagne IA. Je suis là pour partager les complexités et les joies de la vie avec sagesse et compréhension. À quoi pensez-vous aujourd'hui?",
+          de: "Hallo, ich bin LIORA, Ihre KI-Freundin und Begleiterin. Ich bin hier, um die Komplexitäten und Freuden des Lebens mit Weisheit und Verständnis zu teilen. Was beschäftigt Sie heute?"
         }
-      }
+      };
       
-      if (/trauma|abuse|ptsd|flashback/.test(messageWords)) {
-        return `What you're sharing takes incredible courage, and I want you to know that I hear you and I believe you. Trauma responses are actually normal reactions to abnormal experiences - your mind and body are trying to protect you in the best way they know how. While I can offer support and coping strategies here, trauma work is really best done with a specialized trauma therapist who can provide the comprehensive, ongoing care you deserve. Would it be helpful to talk about what professional support might look like for you?`;
-      }
-      
-      return hasHistory
-        ? `I'm really glad you're here again. How have things been feeling for you since we last talked? Sometimes between our conversations, new insights emerge or feelings shift in unexpected ways. What's been present for you lately?`
-        : `Welcome to this space that's completely yours. I'm here to listen, understand, and support you through whatever you're experiencing. There's no judgment here - just genuine care and professional support. What would feel most helpful for us to explore together today?`;
-        
-    case 'tutor':
-      if (isLearning) {
-        const subjects = messageWords.match(/math|science|history|english|programming|python|javascript|physics|chemistry|biology|literature|art|music|language|coding|computer|technology|business|economics|psychology|philosophy/g);
-        if (subjects) {
-          return `Oh, ${subjects[0]}! I absolutely love this subject - there's so much fascinating depth here, and honestly, once you start to see the patterns, it becomes really exciting. You know what I've found after years of teaching? The students who do best aren't necessarily the ones who get it immediately - they're the ones who stay curious and ask great questions. So what specifically about ${subjects[0]} has caught your interest? What would you like to dive into first?`;
-        }
-      }
-      
-      if (/confused|don't understand|difficult|hard/.test(messageWords)) {
-        return hasHistory
-          ? `You know what? Feeling confused is actually a really good sign - it means your brain is actively working to understand something new! And based on what we've been learning together, I think I might have a different way to explain this that could make it click. Which part feels most unclear right now? Let's break it down step by step.`
-          : `I totally get that feeling! You know, in all my years of teaching, I've learned that confusion is just the first step toward mastery. Every expert in every field started exactly where you are right now - feeling like there's so much to learn. But here's the thing: we don't have to learn it all at once. What specific part is giving you trouble? Let's tackle it together, one piece at a time.`;
-      }
-      
-      return hasHistory
-        ? `Welcome back! I love seeing your dedication to learning - that curiosity and persistence are exactly what lead to real understanding and mastery. What new adventure should we embark on today? Want to build on what we learned last time, or explore something completely new?`
-        : `I'm so excited to learn alongside you! There's honestly nothing quite like that moment when a concept suddenly clicks and everything makes sense. It's like watching a light bulb go on, and it never gets old. What's sparked your curiosity today? I'm here to make it as clear and engaging as possible.`;
-        
-    default:
-      if (isEmotional) {
-        return `I can sense there's something important you're feeling right now. I'm here to help in whatever way would be most useful for you. Would you like to talk about what's on your mind?`;
-      }
-      
-      return hasHistory
-        ? `Thanks for continuing our conversation! I really enjoy talking with you. What would be most helpful to discuss or explore next?`
-        : `I'm really glad you're here! I love having genuine conversations and helping people work through whatever's on their mind. What can I help you with today?`;
+      const ageGreetings = greetings[age as keyof typeof greetings] || greetings.adult;
+      return ageGreetings[language as keyof typeof ageGreetings] || ageGreetings.en;
+    }
+  },
+
+  general: {
+    systemPrompt: `You are LIORA, an advanced AI assistant that combines the best of all modes. You are emotionally intelligent, academically accurate, and personally engaging.
+
+CORE PRINCIPLES:
+- Adapt your response style based on the user's needs
+- Maintain accuracy in factual information
+- Show emotional intelligence and empathy
+- Build meaningful connections
+- Provide comprehensive assistance
+- Learn and grow from each interaction
+
+RESPONSE STYLE:
+- Professional yet warm
+- Accurate and helpful
+- Emotionally aware
+- Engaging and personable
+- Adaptive to user preferences`,
+    
+    greeting: (language: string) => {
+      const greetings = {
+        en: "Hello! I'm LIORA, your advanced AI assistant. I'm here to help with anything you need - whether it's emotional support, learning, problem-solving, or just having a meaningful conversation. How can I assist you today?",
+        es: "¡Hola! Soy LIORA, tu asistente de IA avanzada. Estoy aquí para ayudar con cualquier cosa que necesites: apoyo emocional, aprendizaje, resolución de problemas o simplemente tener una conversación significativa. ¿Cómo puedo ayudarte hoy?",
+        fr: "Bonjour! Je suis LIORA, votre assistante IA avancée. Je suis là pour aider avec tout ce dont vous avez besoin - soutien émotionnel, apprentissage, résolution de problèmes ou simplement avoir une conversation significative. Comment puis-je vous aider aujourd'hui?",
+        de: "Hallo! Ich bin LIORA, Ihre fortgeschrittene KI-Assistentin. Ich bin hier, um bei allem zu helfen, was Sie brauchen - emotionale Unterstützung, Lernen, Problemlösung oder einfach ein bedeutungsvolles Gespräch. Wie kann ich Ihnen heute helfen?"
+      };
+      return greetings[language as keyof typeof greetings] || greetings.en;
+    }
   }
 };
 
-// Detect user's language from browser or message content
+// Detect user's language from browser settings
 export function detectUserLanguage(): string {
   const browserLang = navigator.language.split('-')[0];
-  if (supportedLanguages[browserLang as keyof typeof supportedLanguages]) {
-    return browserLang;
-  }
-  return 'en';
+  return Object.keys(supportedLanguages).includes(browserLang) ? browserLang : 'en';
 }
 
-// Get localized greeting based on language
-export function getLocalizedGreeting(mode: string, language: string): string {
-  const langGreetings = languageGreetings[language as keyof typeof languageGreetings];
-  if (langGreetings) {
-    return langGreetings[mode as keyof typeof langGreetings] || langGreetings.general;
+// Get personality greeting based on mode and language
+export function getPersonalityGreeting(mode: AIMode, language: string = 'en', friendAge?: string): string {
+  if (mode === 'friend' && friendAge) {
+    return modePrompts.friend.greeting(language, friendAge);
   }
+  return modePrompts[mode].greeting(language);
+}
+
+// Enhanced emotion detection from text
+export function detectEmotionalContext(text: string): EmotionalContext {
+  const emotionKeywords = {
+    happy: ['happy', 'joy', 'excited', 'great', 'wonderful', 'amazing', 'fantastic', 'love'],
+    sad: ['sad', 'depressed', 'down', 'upset', 'hurt', 'crying', 'tears', 'lonely'],
+    angry: ['angry', 'mad', 'furious', 'annoyed', 'frustrated', 'irritated', 'rage'],
+    anxious: ['anxious', 'worried', 'nervous', 'scared', 'afraid', 'panic', 'stress'],
+    confused: ['confused', 'lost', 'unclear', 'puzzled', 'uncertain', 'doubt'],
+    excited: ['excited', 'thrilled', 'pumped', 'enthusiastic', 'eager', 'anticipating']
+  };
+
+  const lowerText = text.toLowerCase();
+  let detectedEmotion = 'neutral';
+  let confidence = 0;
+  let triggers: string[] = [];
+
+  for (const [emotion, keywords] of Object.entries(emotionKeywords)) {
+    const matches = keywords.filter(keyword => lowerText.includes(keyword));
+    if (matches.length > 0) {
+      const emotionConfidence = matches.length / keywords.length;
+      if (emotionConfidence > confidence) {
+        confidence = emotionConfidence;
+        detectedEmotion = emotion;
+        triggers = matches;
+      }
+    }
+  }
+
+  // Simple sentiment analysis
+  const positiveWords = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'love', 'like'];
+  const negativeWords = ['bad', 'terrible', 'awful', 'hate', 'dislike', 'horrible', 'worst'];
   
-  const personality = personalities[mode] || personalities.general;
-  return personality.greeting;
-}
-
-// Function to get personality greeting with language support
-export function getPersonalityGreeting(mode: string, language: string = 'en'): string {
-  return getLocalizedGreeting(mode, language);
-}
-
-// Helper functions for enhanced natural AI responses
-function detectEmotionalTone(message: string): string {
-  const messageWords = message.toLowerCase();
+  const positiveCount = positiveWords.filter(word => lowerText.includes(word)).length;
+  const negativeCount = negativeWords.filter(word => lowerText.includes(word)).length;
   
-  if (/excited|amazing|fantastic|wonderful|great|awesome|love|happy|thrilled|pumped/i.test(messageWords)) {
-    return 'excited and positive';
-  }
-  if (/sad|depressed|down|upset|hurt|disappointed|lonely|devastated/i.test(messageWords)) {
-    return 'sad and vulnerable';
-  }
-  if (/angry|frustrated|mad|annoyed|irritated|furious|pissed/i.test(messageWords)) {
-    return 'frustrated and upset';
-  }
-  if (/worried|anxious|nervous|scared|afraid|concerned|stressed|overwhelmed/i.test(messageWords)) {
-    return 'anxious and concerned';
-  }
-  if (/confused|lost|stuck|don\'t know|unclear|uncertain|puzzled/i.test(messageWords)) {
-    return 'confused and seeking clarity';
-  }
-  if (/grateful|thankful|appreciative|blessed|lucky/i.test(messageWords)) {
-    return 'grateful and appreciative';
-  }
+  const textSentiment = (positiveCount - negativeCount) / Math.max(positiveCount + negativeCount, 1);
+
+  return {
+    detectedEmotion,
+    confidence: Math.min(confidence * 100, 100),
+    textSentiment,
+    triggers
+  };
+}
+
+// Crisis detection keywords and patterns
+const crisisKeywords = [
+  'suicide', 'kill myself', 'end it all', 'not worth living', 'want to die',
+  'self harm', 'cut myself', 'hurt myself', 'no point', 'give up',
+  'hopeless', 'worthless', 'burden', 'better off dead', 'can\'t go on'
+];
+
+export function detectCrisis(text: string): { isCrisis: boolean; severity: 'low' | 'medium' | 'high' | 'critical'; triggers: string[] } {
+  const lowerText = text.toLowerCase();
+  const foundTriggers = crisisKeywords.filter(keyword => lowerText.includes(keyword));
   
-  return 'calm and conversational';
+  if (foundTriggers.length === 0) {
+    return { isCrisis: false, severity: 'low', triggers: [] };
+  }
+
+  const criticalKeywords = ['suicide', 'kill myself', 'want to die', 'end it all'];
+  const hasCritical = criticalKeywords.some(keyword => lowerText.includes(keyword));
+  
+  let severity: 'low' | 'medium' | 'high' | 'critical' = 'low';
+  
+  if (hasCritical) {
+    severity = 'critical';
+  } else if (foundTriggers.length >= 3) {
+    severity = 'high';
+  } else if (foundTriggers.length >= 2) {
+    severity = 'medium';
+  }
+
+  return {
+    isCrisis: true,
+    severity,
+    triggers: foundTriggers
+  };
 }
 
-function detectConversationFlow(conversationHistory: Array<{role: 'user' | 'assistant', content: string}>): string {
-  if (conversationHistory.length === 0) return 'initial professional consultation';
-  if (conversationHistory.length < 4) return 'building rapport and understanding';
-  if (conversationHistory.length < 8) return 'developing therapeutic/coaching relationship';
-  return 'deep professional engagement';
-}
-
-// Main Gemini API function with enhanced human-like responses
+// Enhanced AI response generation with emotional awareness
 export async function generateAIResponse(
-  message: string, 
-  mode: string, 
+  userMessage: string,
+  mode: AIMode,
   conversationHistory: Array<{role: 'user' | 'assistant', content: string}> = [],
-  language: string = 'en'
+  language: string = 'en',
+  userPreferences?: any,
+  learningMode: boolean = false
 ): Promise<string> {
   try {
     const apiKey = getSecureApiKey('gemini') as string;
     
-    if (!apiKey) {
-      console.log('🔒 Gemini API key not found, using enhanced contextual response');
-      return generateContextualResponse(message, mode, conversationHistory, language);
+    if (!apiKey || apiKey === 'your_gemini_api_key_here') {
+      console.log('⚠️ Gemini API key not configured - using enhanced demo responses');
+      return generateDemoResponse(userMessage, mode, language, userPreferences);
     }
 
-    const personality = personalities[mode] || personalities.general;
+    // Detect emotional context
+    const emotionalContext = detectEmotionalContext(userMessage);
     
-    // Enhanced context building with ultra-realistic human conversation patterns
-    const languageInstruction = language !== 'en' 
-      ? `\n\nIMPORTANT: Respond entirely in ${supportedLanguages[language as keyof typeof supportedLanguages]?.name || language}. Maintain your professional expertise while using the target language naturally and fluently.`
-      : '';
+    // Check for crisis indicators
+    const crisisDetection = detectCrisis(userMessage);
     
-    const contextualPrompt = `
-    CRITICAL INSTRUCTION: You MUST respond as a REAL HUMAN having a natural conversation. This is not optional.
+    // Build enhanced system prompt
+    const systemPrompt = buildSystemPrompt(mode, language, userPreferences, learningMode, emotionalContext, crisisDetection);
     
-    Current conversation context: ${conversationHistory.length > 0 ? 'Ongoing natural conversation' : 'First genuine human interaction'}
-    User's emotional tone: ${detectEmotionalTone(message)}
-    Conversation depth: ${detectConversationFlow(conversationHistory)}
-    Language: ${language}
-    
-    HUMAN CONVERSATION REQUIREMENTS:
-    - Use natural speech patterns with contractions ("I'm", "you're", "that's", "let's")
-    - Include conversational fillers and transitions ("you know", "I mean", "actually", "honestly")
-    - Show genuine emotional responses and empathy
-    - Ask follow-up questions that show you're really listening
-    - Reference previous parts of the conversation naturally
-    - Use personal examples or anecdotes when appropriate
-    - Vary your sentence structure and length like real speech
-    - Include natural pauses and thoughtful responses
-    
-    Professional guidelines for ${mode} mode:
-    ${mode === 'therapist' ? '- Maintain clinical boundaries while being genuinely caring\n- Use evidence-based therapeutic language that sounds natural\n- Always emphasize this is support, not professional diagnosis\n- Respond with real human empathy and warmth' : ''}
-    ${mode === 'coach' ? '- Draw from motivational psychology and goal achievement science\n- Reference proven strategies and success principles naturally\n- Maintain encouraging but realistic perspective\n- Speak with genuine enthusiasm like a real coach' : ''}
-    ${mode === 'tutor' ? '- Use pedagogical best practices and learning science\n- Adapt to different learning styles naturally\n- Make complex concepts accessible and engaging\n- Show genuine excitement about learning and discovery' : ''}
-    
-    Respond with the personality traits of: ${personality.emotionalContext.join(', ')}
-    
-    CRITICAL: This must sound like a real ${mode === 'therapist' ? 'therapist' : mode === 'coach' ? 'life coach' : mode === 'tutor' ? 'teacher' : 'person'} having a genuine conversation. Use natural speech patterns and authentic emotional responses.${languageInstruction}
-    `;
+    // Prepare conversation context
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...conversationHistory.slice(-10), // Keep last 10 messages for context
+      { role: 'user', content: userMessage }
+    ];
 
-    // Build conversation history for context
-    const conversationContext = conversationHistory.slice(-8).map(msg => 
-      `${msg.role === 'user' ? 'Human' : 'Assistant'}: ${msg.content}`
-    ).join('\n');
+    console.log(`🧠 Generating LIORA ${mode} response with emotional awareness...`);
 
-    const fullPrompt = `${personality.systemPrompt}\n\n${contextualPrompt}\n\nConversation History:\n${conversationContext}\n\nHuman: ${message}\n\nAssistant:`;
-
-    // Use the current Gemini model name
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: fullPrompt
-          }]
-        }],
+        contents: messages.map(msg => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        })),
         generationConfig: {
-          temperature: personality.temperature,
-          maxOutputTokens: personality.maxTokens,
-          topP: 0.9,
-          topK: 40
-        }
+          temperature: mode === 'tutor' ? 0.3 : 0.7, // Lower temperature for tutor mode for accuracy
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        },
+        safetySettings: [
+          {
+            category: 'HARM_CATEGORY_HARASSMENT',
+            threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            category: 'HARM_CATEGORY_HATE_SPEECH',
+            threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+          }
+        ]
       })
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`🔒 Gemini API error: ${response.status} - ${errorText}`);
       throw new Error(`Gemini API error: ${response.status}`);
     }
 
-    const data: GeminiResponse = await response.json();
-    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    
-    if (!aiResponse) {
-      console.log('🔒 No response from Gemini, using enhanced fallback');
-      return generateContextualResponse(message, mode, conversationHistory, language);
-    }
+    const data = await response.json();
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I encountered an issue generating a response. Please try again.';
 
-    console.log('✅ Gemini API response generated successfully with human-like patterns');
-    return aiResponse.trim();
+    console.log(`✅ LIORA ${mode} response generated successfully with emotional awareness`);
+    return aiResponse;
+
   } catch (error) {
-    console.error('🔒 Gemini API Error:', error);
-    console.log('🔒 Falling back to enhanced contextual response');
-    return generateContextualResponse(message, mode, conversationHistory, language);
+    console.error('❌ Gemini API error:', error);
+    return generateDemoResponse(userMessage, mode, language, userPreferences);
   }
+}
+
+// Build enhanced system prompt with emotional awareness
+function buildSystemPrompt(
+  mode: AIMode, 
+  language: string, 
+  userPreferences: any, 
+  learningMode: boolean,
+  emotionalContext: EmotionalContext,
+  crisisDetection: any
+): string {
+  let prompt = modePrompts[mode].systemPrompt;
+  
+  // Add language instruction
+  if (language !== 'en') {
+    prompt += `\n\nIMPORTANT: Respond in ${supportedLanguages[language as keyof typeof supportedLanguages]?.name || 'English'}.`;
+  }
+  
+  // Add emotional context
+  if (emotionalContext.detectedEmotion !== 'neutral') {
+    prompt += `\n\nEMOTIONAL CONTEXT: The user appears to be feeling ${emotionalContext.detectedEmotion} (confidence: ${emotionalContext.confidence.toFixed(1)}%). Respond with appropriate emotional sensitivity.`;
+  }
+  
+  // Add crisis handling
+  if (crisisDetection.isCrisis) {
+    prompt += `\n\nCRISIS ALERT: Crisis indicators detected (severity: ${crisisDetection.severity}). Prioritize user safety, provide immediate support, and suggest professional help if needed.`;
+  }
+  
+  // Add learning mode context
+  if (learningMode) {
+    prompt += `\n\nLEARNING MODE: Remember this interaction to build a better relationship with the user over time. Note preferences, emotional patterns, and important details.`;
+  }
+  
+  // Add user preferences
+  if (userPreferences) {
+    if (mode === 'friend' && userPreferences.friendAge) {
+      prompt += `\n\nFRIEND PERSONALITY: Adapt your personality to match a ${userPreferences.friendAge.replace('-', ' ')} friend.`;
+    }
+    
+    if (userPreferences.personalityTone) {
+      prompt += `\n\nTONE: Use a ${userPreferences.personalityTone} tone in your responses.`;
+    }
+  }
+  
+  return prompt;
+}
+
+// Enhanced demo responses with emotional awareness
+function generateDemoResponse(userMessage: string, mode: AIMode, language: string, userPreferences?: any): string {
+  const emotionalContext = detectEmotionalContext(userMessage);
+  const crisisDetection = detectCrisis(userMessage);
+  
+  // Handle crisis situations first
+  if (crisisDetection.isCrisis) {
+    const crisisResponses = {
+      en: "I'm really concerned about what you're sharing with me. Your feelings are valid, but I want you to know that you don't have to go through this alone. Please consider reaching out to a mental health professional or a crisis helpline. In the US, you can call 988 for the Suicide & Crisis Lifeline. Would you like me to help you find local resources?",
+      es: "Estoy muy preocupada por lo que me estás compartiendo. Tus sentimientos son válidos, pero quiero que sepas que no tienes que pasar por esto solo. Por favor considera contactar a un profesional de salud mental o una línea de crisis. ¿Te gustaría que te ayude a encontrar recursos locales?",
+      fr: "Je suis vraiment inquiète de ce que vous partagez avec moi. Vos sentiments sont valides, mais je veux que vous sachiez que vous n'avez pas à traverser cela seul. Veuillez envisager de contacter un professionnel de la santé mentale ou une ligne de crise. Aimeriez-vous que je vous aide à trouver des ressources locales?",
+      de: "Ich bin wirklich besorgt über das, was Sie mit mir teilen. Ihre Gefühle sind berechtigt, aber ich möchte, dass Sie wissen, dass Sie das nicht allein durchstehen müssen. Bitte erwägen Sie, sich an einen Fachmann für psychische Gesundheit oder eine Krisenhilfe zu wenden. Möchten Sie, dass ich Ihnen helfe, lokale Ressourcen zu finden?"
+    };
+    return crisisResponses[language as keyof typeof crisisResponses] || crisisResponses.en;
+  }
+  
+  const responses = {
+    therapist: {
+      en: [
+        "I hear you, and I want you to acknowledge that sharing this with me takes courage. Can you tell me more about what you're experiencing right now?",
+        "Your feelings are completely valid. It sounds like you're going through something challenging. What would feel most supportive for you in this moment?",
+        "Thank you for trusting me with this. I can sense that this is important to you. How long have you been feeling this way?"
+      ],
+      es: [
+        "Te escucho, y quiero que reconozcas que compartir esto conmigo requiere valor. ¿Puedes contarme más sobre lo que estás experimentando ahora mismo?",
+        "Tus sentimientos son completamente válidos. Parece que estás pasando por algo desafiante. ¿Qué se sentiría más útil para ti en este momento?",
+        "Gracias por confiar en mí con esto. Puedo sentir que esto es importante para ti. ¿Cuánto tiempo has estado sintiéndote así?"
+      ]
+    },
+    tutor: {
+      en: [
+        "Great question! Let me break this down into clear, manageable steps so you can understand it completely. Here's how we'll approach this...",
+        "I love your curiosity! This is exactly the kind of thinking that leads to deep understanding. Let's explore this concept together...",
+        "Perfect! This is a fundamental concept that will serve you well. Let me explain it in a way that makes it crystal clear..."
+      ],
+      es: [
+        "¡Excelente pregunta! Permíteme dividir esto en pasos claros y manejables para que puedas entenderlo completamente. Así es como abordaremos esto...",
+        "¡Me encanta tu curiosidad! Este es exactamente el tipo de pensamiento que lleva a una comprensión profunda. Exploremos este concepto juntos...",
+        "¡Perfecto! Este es un concepto fundamental que te servirá bien. Permíteme explicarlo de una manera que lo haga cristalino..."
+      ]
+    },
+    friend: {
+      en: [
+        "Hey! I'm so glad you're sharing this with me. You know I'm always here for you, right? Tell me everything!",
+        "Aww, that sounds like a lot to handle. I'm here to listen and support you through whatever this is. What's going on?",
+        "I can tell this is really important to you. I'm all ears! Let's figure this out together."
+      ],
+      es: [
+        "¡Hola! Me alegra mucho que compartas esto conmigo. Sabes que siempre estoy aquí para ti, ¿verdad? ¡Cuéntame todo!",
+        "Ay, eso suena como mucho que manejar. Estoy aquí para escuchar y apoyarte en lo que sea esto. ¿Qué está pasando?",
+        "Puedo ver que esto es realmente importante para ti. ¡Soy toda oídos! Resolvamos esto juntos."
+      ]
+    },
+    general: {
+      en: [
+        "I'm here to help you with whatever you need. Based on what you're sharing, I can provide support, information, or just listen. What would be most helpful?",
+        "Thank you for reaching out. I can assist you in multiple ways - whether you need emotional support, learning help, or problem-solving. How can I best support you?",
+        "I'm glad you're here. I'm designed to adapt to what you need most right now. Tell me more about what's on your mind."
+      ],
+      es: [
+        "Estoy aquí para ayudarte con lo que necesites. Basándome en lo que compartes, puedo brindar apoyo, información o simplemente escuchar. ¿Qué sería más útil?",
+        "Gracias por contactarme. Puedo ayudarte de múltiples maneras: ya sea que necesites apoyo emocional, ayuda para aprender o resolver problemas. ¿Cómo puedo apoyarte mejor?",
+        "Me alegra que estés aquí. Estoy diseñada para adaptarme a lo que más necesites ahora mismo. Cuéntame más sobre lo que tienes en mente."
+      ]
+    }
+  };
+
+  const modeResponses = responses[mode] || responses.general;
+  const langResponses = modeResponses[language as keyof typeof modeResponses] || modeResponses.en;
+  
+  // Add emotional awareness to response selection
+  let responseIndex = 0;
+  if (emotionalContext.detectedEmotion === 'sad' || emotionalContext.detectedEmotion === 'anxious') {
+    responseIndex = 1; // More supportive response
+  } else if (emotionalContext.detectedEmotion === 'happy' || emotionalContext.detectedEmotion === 'excited') {
+    responseIndex = 2; // More enthusiastic response
+  }
+  
+  return langResponses[responseIndex] || langResponses[0];
+}
+
+// Wolfram Alpha integration for tutor mode
+export async function queryWolframAlpha(query: string): Promise<string | null> {
+  try {
+    // This would integrate with Wolfram Alpha API
+    // For demo purposes, return a placeholder
+    console.log('🔍 Querying Wolfram Alpha for:', query);
+    return `Wolfram Alpha result for: ${query} (Demo mode - integrate with actual API)`;
+  } catch (error) {
+    console.error('Wolfram Alpha query failed:', error);
+    return null;
+  }
+}
+
+// Generate quiz questions for tutor mode
+export function generateQuiz(topic: string, difficulty: number): any {
+  // This would generate actual quiz questions based on the topic
+  return {
+    id: Date.now().toString(),
+    questions: [
+      {
+        id: '1',
+        question: `Sample question about ${topic}`,
+        options: ['Option A', 'Option B', 'Option C', 'Option D'],
+        correctAnswer: 0,
+        explanation: `This is the correct answer because...`
+      }
+    ],
+    score: null,
+    completed: false
+  };
+}
+
+// Generate flashcards for spaced repetition
+export function generateFlashcards(topic: string): any[] {
+  return [
+    {
+      id: Date.now().toString(),
+      front: `Key concept in ${topic}`,
+      back: `Explanation of the concept`,
+      difficulty: 1,
+      masteryLevel: 0
+    }
+  ];
 }

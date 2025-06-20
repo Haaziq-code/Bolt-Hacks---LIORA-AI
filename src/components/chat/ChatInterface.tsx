@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Send, Mic, Square, Volume2, VolumeX, Trash2, Sparkles, ArrowLeft, Globe } from 'lucide-react';
+import { Send, Mic, Square, Volume2, VolumeX, Trash2, Sparkles, ArrowLeft, Globe, Brain, Shield, BookOpen, Users, Heart, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { useChat } from '../../hooks/useChat';
@@ -22,6 +22,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
   const [inputValue, setInputValue] = React.useState('');
   const [displayedMessages, setDisplayedMessages] = React.useState(messages);
   const [showLanguageSelector, setShowLanguageSelector] = React.useState(false);
+  const [showModeInfo, setShowModeInfo] = React.useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -84,7 +85,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
     if (isPlaying) {
       stopSpeaking();
     } else {
-      toast('Send a message to hear Liora respond');
+      toast('Send a message to hear LIORA respond');
     }
   };
 
@@ -103,22 +104,48 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
     toast.success(`Language changed to ${supportedLanguages[langCode as keyof typeof supportedLanguages].name}`);
   };
 
-  const getModeDescription = () => {
+  const getModeInfo = () => {
     switch (currentMode) {
-      case 'coach':
-        return 'Your professional life coach ready to help you achieve your goals';
       case 'therapist':
-        return 'Your licensed therapist here to support your emotional wellbeing';
+        return {
+          title: 'AI Therapist',
+          description: 'Emotionally aware support with crisis detection and CBT techniques',
+          icon: Heart,
+          color: 'from-green-500 to-emerald-500',
+          features: ['Emotion Detection', 'Crisis Alerts', 'CBT Techniques', 'Learning Mode']
+        };
       case 'tutor':
-        return 'Your expert tutor excited to help you learn anything';
+        return {
+          title: 'AI Tutor',
+          description: '100% accurate learning with verified sources and interactive teaching',
+          icon: GraduationCap,
+          color: 'from-indigo-500 to-purple-500',
+          features: ['100% Accuracy', 'Interactive Quizzes', 'Study Plans', 'Progress Tracking']
+        };
+      case 'friend':
+        return {
+          title: 'AI Friend',
+          description: 'Customizable companion that builds real relationships over time',
+          icon: Users,
+          color: 'from-pink-500 to-rose-500',
+          features: ['Customizable Age', 'Relationship Building', 'Proactive Check-ins', 'Mood Boosters']
+        };
       default:
-        return 'Your intelligent AI assistant ready to assist with anything';
+        return {
+          title: 'LIORA AI',
+          description: 'Advanced AI assistant combining all three personalities',
+          icon: Brain,
+          color: 'from-primary-500 to-accent-500',
+          features: ['Multi-Modal', 'Adaptive', 'Intelligent', 'Comprehensive']
+        };
     }
   };
 
+  const modeInfo = getModeInfo();
+
   return (
     <div className="h-full flex flex-col bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-2xl overflow-hidden">
-      {/* Header */}
+      {/* Enhanced Header */}
       <motion.div 
         className="flex items-center justify-between p-6 border-b border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm relative z-50"
         initial={{ opacity: 0, y: -20 }}
@@ -138,14 +165,35 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
         </motion.button>
 
         <div className="flex items-center space-x-4">
-          {/* Current Mode Indicator */}
-          <div className="px-4 py-2 bg-gradient-to-r from-primary-500/20 to-accent-500/20 backdrop-blur-sm border border-primary-500/30 rounded-xl">
-            <span className="font-semibold text-primary-700 dark:text-primary-300 capitalize">
-              {currentMode} Mode
-            </span>
-          </div>
+          {/* Enhanced Mode Indicator */}
+          <motion.div 
+            className={`px-6 py-3 bg-gradient-to-r ${modeInfo.color} backdrop-blur-sm border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-lg cursor-pointer`}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => setShowModeInfo(!showModeInfo)}
+          >
+            <div className="flex items-center space-x-3">
+              <modeInfo.icon className="w-6 h-6 text-white" />
+              <div>
+                <span className="font-bold text-white text-lg">{modeInfo.title}</span>
+                <div className="flex items-center space-x-2 mt-1">
+                  <motion.div 
+                    className="w-2 h-2 rounded-full bg-white"
+                    animate={{ opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <span className="text-white/80 text-sm">Active</span>
+                  {user?.preferences?.learningMode && (
+                    <>
+                      <Brain className="w-4 h-4 text-white/80" />
+                      <span className="text-white/80 text-sm">Learning</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
-          {/* Language Selector with Fixed Z-Index */}
+          {/* Language Selector */}
           <div className="relative z-[100]">
             <motion.button
               onClick={() => setShowLanguageSelector(!showLanguageSelector)}
@@ -191,6 +239,43 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
         </div>
       </motion.div>
 
+      {/* Mode Info Popup */}
+      <AnimatePresence>
+        {showModeInfo && (
+          <motion.div
+            className="absolute top-20 left-1/2 transform -translate-x-1/2 z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-2xl p-6 max-w-md"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center space-x-4 mb-4">
+              <div className={`w-12 h-12 bg-gradient-to-r ${modeInfo.color} rounded-xl flex items-center justify-center`}>
+                <modeInfo.icon className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">{modeInfo.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{modeInfo.description}</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {modeInfo.features.map((feature, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${modeInfo.color}`} />
+                  <span className="text-gray-700 dark:text-gray-300 text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowModeInfo(false)}
+              className="absolute top-2 right-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <X className="w-4 h-4 text-gray-500" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Video Agent */}
       <motion.div 
         className="flex-shrink-0 relative z-10"
@@ -212,7 +297,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
               transition={{ duration: 1.2 }}
             >
               <motion.div 
-                className="w-24 h-24 bg-gradient-to-br from-primary-500 to-accent-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl"
+                className={`w-24 h-24 bg-gradient-to-br ${modeInfo.color} rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl`}
                 animate={{ 
                   boxShadow: [
                     '0 0 0 0 rgba(14, 165, 233, 0.4)',
@@ -221,14 +306,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <Sparkles className="w-12 h-12 text-white" />
+                <modeInfo.icon className="w-12 h-12 text-white" />
               </motion.div>
               <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                Initializing LioraAI...
+                Initializing {modeInfo.title}...
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto text-lg leading-relaxed">
-                {getModeDescription()}
+              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto text-lg leading-relaxed mb-6">
+                {modeInfo.description}
               </p>
+              {user?.preferences?.learningMode && (
+                <div className="flex items-center justify-center space-x-2 text-green-600 dark:text-green-400">
+                  <Brain className="w-5 h-5" />
+                  <span className="font-semibold">Learning Mode Active</span>
+                </div>
+              )}
             </motion.div>
           ) : (
             <AnimatePresence>
@@ -255,14 +346,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
             transition={{ duration: 0.6 }}
           >
             <LoadingSpinner size="sm" />
-            <span className="text-sm font-medium">Liora is thinking...</span>
+            <span className="text-sm font-medium">LIORA is thinking...</span>
             <VoiceWaveform isActive={true} bars={4} />
           </motion.div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Enhanced Input Area */}
       <motion.div 
         className="flex-shrink-0 p-8 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-white/30 dark:border-gray-700/30 relative z-20"
         initial={{ opacity: 0, y: 20 }}
@@ -315,7 +406,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={`Ask LioraAI ${currentMode === 'general' ? '' : currentMode} anything...`}
+              placeholder={`Ask LIORA ${currentMode === 'general' ? '' : currentMode} anything...`}
               className="w-full px-8 py-5 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 placeholder-gray-500 dark:placeholder-gray-400 text-lg transition-all shadow-lg"
               disabled={isLoading}
             />

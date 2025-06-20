@@ -1,5 +1,5 @@
 import React from 'react';
-import { Camera, CameraOff, Maximize2, Minimize2, Sparkles } from 'lucide-react';
+import { Camera, CameraOff, Maximize2, Minimize2, Sparkles, Heart, GraduationCap, Users, Brain } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AIMode } from '../../types';
 
@@ -14,37 +14,45 @@ const VideoAgent: React.FC<VideoAgentProps> = ({ mode, isActive }) => {
 
   const getAgentPersonality = () => {
     switch (mode) {
-      case 'coach':
-        return {
-          name: 'Coach Alex',
-          personality: 'Energetic & Motivational',
-          color: 'from-orange-500 to-red-500',
-          avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
-          bgGradient: 'from-orange-500/20 to-red-500/20'
-        };
       case 'therapist':
         return {
-          name: 'Dr. Sarah',
-          personality: 'Calm & Empathetic',
+          name: 'Dr. LIORA',
+          personality: 'Empathetic & Caring',
           color: 'from-green-500 to-emerald-500',
           avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
-          bgGradient: 'from-green-500/20 to-emerald-500/20'
+          bgGradient: 'from-green-500/20 to-emerald-500/20',
+          icon: Heart,
+          description: 'Emotionally aware support with crisis detection'
         };
       case 'tutor':
         return {
-          name: 'Prof. Emma',
-          personality: 'Patient & Knowledgeable',
+          name: 'Prof. LIORA',
+          personality: 'Knowledgeable & Patient',
           color: 'from-indigo-500 to-purple-500',
           avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
-          bgGradient: 'from-indigo-500/20 to-purple-500/20'
+          bgGradient: 'from-indigo-500/20 to-purple-500/20',
+          icon: GraduationCap,
+          description: '100% accurate learning with verified sources'
+        };
+      case 'friend':
+        return {
+          name: 'LIORA',
+          personality: 'Friendly & Supportive',
+          color: 'from-pink-500 to-rose-500',
+          avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          bgGradient: 'from-pink-500/20 to-rose-500/20',
+          icon: Users,
+          description: 'Customizable companion that builds relationships'
         };
       default:
         return {
-          name: 'LioraAI',
-          personality: 'Helpful & Friendly',
+          name: 'LIORA AI',
+          personality: 'Intelligent & Adaptive',
           color: 'from-primary-500 to-accent-500',
           avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
-          bgGradient: 'from-primary-500/20 to-accent-500/20'
+          bgGradient: 'from-primary-500/20 to-accent-500/20',
+          icon: Brain,
+          description: 'Advanced AI combining all three personalities'
         };
     }
   };
@@ -78,15 +86,12 @@ const VideoAgent: React.FC<VideoAgentProps> = ({ mode, isActive }) => {
                 } : {}}
                 transition={{ duration: 2, repeat: isActive ? Infinity : 0 }}
               >
-                <img
-                  src={agent.avatar}
-                  alt={agent.name}
-                  className="w-12 h-12 rounded-xl object-cover"
-                />
+                <agent.icon className="w-8 h-8 text-white" />
               </motion.div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white font-heading">{agent.name}</h3>
                 <p className="text-gray-600 dark:text-gray-400">{agent.personality}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">{agent.description}</p>
               </div>
             </motion.div>
             
@@ -127,7 +132,7 @@ const VideoAgent: React.FC<VideoAgentProps> = ({ mode, isActive }) => {
                 >
                   <div className="text-center">
                     <motion.div 
-                      className={`w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-2xl`}
+                      className={`w-32 h-32 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-2xl`}
                       animate={isActive ? { 
                         scale: [1, 1.05, 1],
                         rotate: [0, 2, -2, 0]
@@ -137,17 +142,20 @@ const VideoAgent: React.FC<VideoAgentProps> = ({ mode, isActive }) => {
                       <img
                         src={agent.avatar}
                         alt={agent.name}
-                        className="w-20 h-20 rounded-xl object-cover"
+                        className="w-28 h-28 rounded-xl object-cover"
                       />
                     </motion.div>
                     <motion.p 
-                      className="text-white text-xl font-bold mb-2"
+                      className="text-white text-2xl font-bold mb-2"
                       animate={isActive ? { opacity: [0.7, 1, 0.7] } : {}}
                       transition={{ duration: 2, repeat: isActive ? Infinity : 0 }}
                     >
                       {agent.name}
                     </motion.p>
-                    <p className="text-gray-300 text-sm mb-4">
+                    <p className="text-gray-300 text-lg mb-2">
+                      {agent.personality}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-6">
                       {isActive ? 'Listening & responding...' : 'Ready to chat'}
                     </p>
                     
@@ -155,34 +163,57 @@ const VideoAgent: React.FC<VideoAgentProps> = ({ mode, isActive }) => {
                     <div className="mt-6 text-xs text-gray-400 bg-black/30 rounded-xl px-4 py-2 backdrop-blur-sm border border-white/10">
                       <div className="flex items-center space-x-2">
                         <Sparkles className="w-3 h-3" />
-                        <span>[TAVUS VIDEO INTEGRATION - Talk to Liora]</span>
+                        <span>[TAVUS VIDEO INTEGRATION - Talk to {agent.name}]</span>
                       </div>
+                    </div>
+
+                    {/* Mode-specific indicators */}
+                    <div className="mt-4 flex justify-center space-x-4">
+                      {mode === 'therapist' && (
+                        <div className="flex items-center space-x-2 text-green-400 text-sm">
+                          <Heart className="w-4 h-4" />
+                          <span>Emotion Detection Active</span>
+                        </div>
+                      )}
+                      {mode === 'tutor' && (
+                        <div className="flex items-center space-x-2 text-indigo-400 text-sm">
+                          <GraduationCap className="w-4 h-4" />
+                          <span>100% Accuracy Mode</span>
+                        </div>
+                      )}
+                      {mode === 'friend' && (
+                        <div className="flex items-center space-x-2 text-pink-400 text-sm">
+                          <Users className="w-4 h-4" />
+                          <span>Relationship Building</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Enhanced Animated Background */}
                   <div className="absolute inset-0 opacity-20">
                     <motion.div 
-                      className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary-400/30 to-accent-400/30"
+                      className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${agent.bgGradient}`}
                       animate={{ opacity: [0.2, 0.4, 0.2] }}
                       transition={{ duration: 4, repeat: Infinity }}
                     />
-                    {[...Array(8)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                       <motion.div
                         key={i}
                         className="absolute w-2 h-2 bg-white/30 rounded-full"
                         style={{
-                          left: `${15 + i * 12}%`,
-                          top: `${15 + (i % 2) * 70}%`,
+                          left: `${15 + i * 8}%`,
+                          top: `${15 + (i % 3) * 30}%`,
                         }}
                         animate={{
                           y: [0, -30, 0],
                           opacity: [0.3, 0.8, 0.3],
+                          scale: [1, 1.2, 1],
                         }}
                         transition={{
                           duration: 4,
                           repeat: Infinity,
-                          delay: i * 0.5,
+                          delay: i * 0.3,
                         }}
                       />
                     ))}

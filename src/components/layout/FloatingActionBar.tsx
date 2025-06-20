@@ -8,11 +8,13 @@ import {
   MessageSquare, 
   Settings, 
   Info,
-  Zap,
+  Users,
   Menu,
   X,
   Sparkles,
-  Crown
+  Crown,
+  Shield,
+  BookOpen
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AIMode } from '../../types';
@@ -39,15 +41,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       label: 'Memory', 
       icon: MessageSquare, 
       color: 'from-purple-500 to-pink-500',
-      description: 'Chat history'
-    },
-    { 
-      id: 'coach', 
-      label: 'AI Coach', 
-      icon: Zap, 
-      mode: 'coach' as AIMode, 
-      color: 'from-orange-500 to-red-500',
-      description: 'Life coaching'
+      description: 'Chat history & learning'
     },
     { 
       id: 'therapist', 
@@ -55,7 +49,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       icon: Heart, 
       mode: 'therapist' as AIMode, 
       color: 'from-green-500 to-emerald-500',
-      description: 'Mental wellness'
+      description: 'Emotional support & wellness'
     },
     { 
       id: 'tutor', 
@@ -63,21 +57,29 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       icon: GraduationCap, 
       mode: 'tutor' as AIMode, 
       color: 'from-indigo-500 to-purple-500',
-      description: 'Learning support'
+      description: '100% accurate learning'
+    },
+    { 
+      id: 'friend', 
+      label: 'AI Friend', 
+      icon: Users, 
+      mode: 'friend' as AIMode, 
+      color: 'from-pink-500 to-rose-500',
+      description: 'Customizable companion'
     },
     { 
       id: 'settings', 
       label: 'Settings', 
       icon: Settings, 
       color: 'from-gray-500 to-slate-500',
-      description: 'Preferences'
+      description: 'Preferences & learning mode'
     },
     { 
       id: 'about', 
       label: 'About', 
       icon: Info, 
       color: 'from-teal-500 to-cyan-500',
-      description: 'Learn more'
+      description: 'Learn about LIORA'
     },
   ];
 
@@ -87,6 +89,19 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       setCurrentMode(item.mode);
     }
     setIsExpanded(false);
+  };
+
+  const getModeIcon = (mode: string) => {
+    switch (mode) {
+      case 'therapist':
+        return Heart;
+      case 'tutor':
+        return GraduationCap;
+      case 'friend':
+        return Users;
+      default:
+        return Brain;
+    }
   };
 
   return (
@@ -124,9 +139,9 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                   >
                     <Icon className="w-6 h-6" />
                     
-                    {/* Luxurious Tooltip */}
+                    {/* Enhanced Tooltip */}
                     <motion.div
-                      className="absolute left-full ml-6 top-1/2 transform -translate-y-1/2 glass-morphism dark:glass-morphism-dark text-slate-900 dark:text-white px-4 py-3 rounded-2xl text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-luxury"
+                      className="absolute left-full ml-6 top-1/2 transform -translate-y-1/2 glass-morphism dark:glass-morphism-dark text-slate-900 dark:text-white px-4 py-3 rounded-2xl text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 shadow-luxury z-50"
                       initial={{ opacity: 0, x: -10 }}
                       whileHover={{ opacity: 1, x: 0 }}
                     >
@@ -143,6 +158,17 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                         transition={{ duration: 2, repeat: Infinity }}
                       >
                         <Sparkles className="w-3 h-3 text-white m-0.5" />
+                      </motion.div>
+                    )}
+
+                    {/* Learning Mode Indicator */}
+                    {user?.preferences?.learningMode && isActive && (
+                      <motion.div
+                        className="absolute -bottom-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-neon"
+                        animate={{ opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <Brain className="w-3 h-3 text-white m-0.5" />
                       </motion.div>
                     )}
 
@@ -237,6 +263,16 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
                           transition={{ duration: 2, repeat: Infinity }}
                         >
                           <Sparkles className="w-3 h-3 text-white m-0.5" />
+                        </motion.div>
+                      )}
+
+                      {user?.preferences?.learningMode && isActive && (
+                        <motion.div
+                          className="absolute -bottom-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-neon"
+                          animate={{ opacity: [1, 0.5, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          <Brain className="w-3 h-3 text-white m-0.5" />
                         </motion.div>
                       )}
                     </motion.button>

@@ -6,6 +6,8 @@ export interface User {
   isPro: boolean;
   createdAt: string;
   preferences: UserPreferences;
+  emergencyContact?: EmergencyContact;
+  learningProfile?: LearningProfile;
 }
 
 export interface UserPreferences {
@@ -15,6 +17,40 @@ export interface UserPreferences {
   autoSpeak: boolean;
   autoVideo: boolean;
   language: string;
+  learningMode: boolean;
+  friendAge: 'child' | 'teen' | 'young-adult' | 'adult';
+  crisisDetection: boolean;
+}
+
+export interface EmergencyContact {
+  name: string;
+  phone: string;
+  email: string;
+  relationship: string;
+}
+
+export interface LearningProfile {
+  emotionalTriggers: string[];
+  preferredResponseStyle: string;
+  knowledgeGaps: string[];
+  studyPatterns: StudyPattern[];
+  personalityInsights: string[];
+  relationshipHistory: RelationshipEvent[];
+}
+
+export interface StudyPattern {
+  subject: string;
+  difficulty: number;
+  preferredStyle: 'visual' | 'verbal' | 'simplified';
+  masteryLevel: number;
+  lastStudied: string;
+}
+
+export interface RelationshipEvent {
+  type: 'mood_change' | 'conversation' | 'milestone';
+  description: string;
+  timestamp: string;
+  emotionalState: string;
 }
 
 export interface ChatMessage {
@@ -26,6 +62,17 @@ export interface ChatMessage {
   audioUrl?: string;
   videoUrl?: string;
   language?: string;
+  emotionalContext?: EmotionalContext;
+  accuracy?: number;
+  sources?: string[];
+}
+
+export interface EmotionalContext {
+  detectedEmotion: string;
+  confidence: number;
+  voiceTone?: string;
+  textSentiment: number;
+  triggers?: string[];
 }
 
 export interface ChatSession {
@@ -36,9 +83,11 @@ export interface ChatSession {
   createdAt: string;
   updatedAt: string;
   language?: string;
+  emotionalSummary?: string;
+  learningOutcomes?: string[];
 }
 
-export type AIMode = 'coach' | 'therapist' | 'tutor' | 'general';
+export type AIMode = 'therapist' | 'tutor' | 'friend' | 'general';
 
 export interface DashboardStats {
   sessionsThisWeek: number;
@@ -47,6 +96,8 @@ export interface DashboardStats {
   moodScore: number;
   averageSessionLength: number;
   streakDays: number;
+  learningProgress: number;
+  emotionalWellbeing: number;
 }
 
 export interface PricingPlan {
@@ -74,4 +125,51 @@ export interface LanguageConfig {
   name: string;
   code: string;
   voice: string;
+}
+
+export interface CrisisAlert {
+  id: string;
+  userId: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  triggers: string[];
+  timestamp: string;
+  location?: string;
+  snapshot: string;
+  resolved: boolean;
+}
+
+export interface TutorSession {
+  id: string;
+  subject: string;
+  topic: string;
+  difficulty: number;
+  accuracy: number;
+  sources: string[];
+  quiz?: Quiz;
+  flashcards?: Flashcard[];
+}
+
+export interface Quiz {
+  id: string;
+  questions: QuizQuestion[];
+  score?: number;
+  completed: boolean;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+  userAnswer?: number;
+}
+
+export interface Flashcard {
+  id: string;
+  front: string;
+  back: string;
+  difficulty: number;
+  lastReviewed?: string;
+  masteryLevel: number;
 }

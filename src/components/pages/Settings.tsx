@@ -14,7 +14,16 @@ import {
   Sparkles,
   Lock,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
+  Brain,
+  Heart,
+  Users,
+  GraduationCap,
+  Phone,
+  Mail,
+  UserCheck,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
@@ -30,21 +39,31 @@ const Settings: React.FC = () => {
     autoSpeak: true,
     autoVideo: true,
     language: 'en',
+    learningMode: false,
+    friendAge: 'young-adult',
+    crisisDetection: true,
+  });
+  const [emergencyContact, setEmergencyContact] = useState(user?.emergencyContact || {
+    name: '',
+    phone: '',
+    email: '',
+    relationship: ''
   });
   const [securityAudit, setSecurityAudit] = useState(performSecurityAudit());
 
   React.useEffect(() => {
-    // Refresh security audit when component mounts
     setSecurityAudit(performSecurityAudit());
   }, []);
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User, color: 'from-blue-500 to-cyan-500' },
-    { id: 'preferences', label: 'Preferences', icon: Palette, color: 'from-purple-500 to-pink-500' },
-    { id: 'voice', label: 'Voice & Video', icon: Volume2, color: 'from-green-500 to-emerald-500' },
-    { id: 'security', label: 'Security', icon: Shield, color: 'from-red-500 to-pink-500' },
+    { id: 'ai-modes', label: 'AI Modes', icon: Brain, color: 'from-purple-500 to-pink-500' },
+    { id: 'learning', label: 'Learning', icon: Brain, color: 'from-green-500 to-emerald-500' },
+    { id: 'voice', label: 'Voice & Video', icon: Volume2, color: 'from-indigo-500 to-purple-500' },
+    { id: 'emergency', label: 'Emergency', icon: Phone, color: 'from-red-500 to-pink-500' },
+    { id: 'security', label: 'Security', icon: Shield, color: 'from-orange-500 to-red-500' },
     { id: 'notifications', label: 'Notifications', icon: Bell, color: 'from-yellow-500 to-orange-500' },
-    { id: 'data', label: 'Data', icon: Download, color: 'from-indigo-500 to-purple-500' },
+    { id: 'data', label: 'Data', icon: Download, color: 'from-teal-500 to-cyan-500' },
   ];
 
   const voiceOptions = [
@@ -60,12 +79,30 @@ const Settings: React.FC = () => {
     { id: 'humorous', label: 'Humorous', description: 'Light-hearted and fun' },
   ];
 
+  const friendAgeOptions = [
+    { id: 'child', label: 'Child (8-12)', description: 'Playful, curious, innocent' },
+    { id: 'teen', label: 'Teen (13-17)', description: 'Energetic, trendy, supportive' },
+    { id: 'young-adult', label: 'Young Adult (18-25)', description: 'Ambitious, relatable, understanding' },
+    { id: 'adult', label: 'Adult (26+)', description: 'Mature, wise, experienced' },
+  ];
+
   const handleSavePreferences = () => {
     if (user) {
-      setUser({ ...user, preferences });
+      setUser({ 
+        ...user, 
+        preferences,
+        emergencyContact: emergencyContact.name ? emergencyContact : undefined
+      });
     }
-    // Here you would save to Supabase or your backend
-    alert('Preferences saved successfully!');
+    alert('Settings saved successfully!');
+  };
+
+  const toggleLearningMode = () => {
+    setPreferences(prev => ({ ...prev, learningMode: !prev.learningMode }));
+  };
+
+  const toggleCrisisDetection = () => {
+    setPreferences(prev => ({ ...prev, crisisDetection: !prev.crisisDetection }));
   };
 
   const renderTabContent = () => {
@@ -135,7 +172,7 @@ const Settings: React.FC = () => {
           </motion.div>
         );
 
-      case 'preferences':
+      case 'ai-modes':
         return (
           <motion.div 
             className="space-y-8"
@@ -145,60 +182,264 @@ const Settings: React.FC = () => {
           >
             <div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
-                Theme Preferences
+                AI Personality Settings
               </h3>
-              <div className="space-y-6">
-                <div className="flex items-center justify-between p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg">
-                  <div>
-                    <label className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                      Theme
-                    </label>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Choose your preferred theme
-                    </p>
-                  </div>
-                  <select
-                    value={preferences.theme}
-                    onChange={(e) => setPreferences({ ...preferences, theme: e.target.value as 'light' | 'dark' })}
-                    className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
-                  >
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                  </select>
+              
+              {/* Friend Age Setting */}
+              <div className="mb-8">
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+                  <Users className="w-5 h-5 text-pink-500" />
+                  <span>AI Friend Age</span>
+                </h4>
+                <div className="space-y-4">
+                  {friendAgeOptions.map((option) => (
+                    <motion.div 
+                      key={option.id} 
+                      className="flex items-center space-x-4 p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <input
+                        type="radio"
+                        id={option.id}
+                        name="friendAge"
+                        value={option.id}
+                        checked={preferences.friendAge === option.id}
+                        onChange={(e) => setPreferences({ ...preferences, friendAge: e.target.value as any })}
+                        className="w-5 h-5 text-primary-500 focus:ring-primary-500"
+                      />
+                      <div>
+                        <label htmlFor={option.id} className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                          {option.label}
+                        </label>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {option.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Personality Tone */}
+              <div>
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                  Personality Tone
+                </h4>
+                <div className="space-y-4">
+                  {personalityOptions.map((option) => (
+                    <motion.div 
+                      key={option.id} 
+                      className="flex items-center space-x-4 p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <input
+                        type="radio"
+                        id={option.id}
+                        name="personality"
+                        value={option.id}
+                        checked={preferences.personalityTone === option.id}
+                        onChange={(e) => setPreferences({ ...preferences, personalityTone: e.target.value as any })}
+                        className="w-5 h-5 text-primary-500 focus:ring-primary-500"
+                      />
+                      <div>
+                        <label htmlFor={option.id} className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                          {option.label}
+                        </label>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {option.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </div>
+          </motion.div>
+        );
 
+      case 'learning':
+        return (
+          <motion.div 
+            className="space-y-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
-                AI Personality
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading flex items-center space-x-3">
+                <Brain className="w-8 h-8 text-green-500" />
+                <span>LIORA Learning Settings</span>
               </h3>
-              <div className="space-y-4">
-                {personalityOptions.map((option) => (
-                  <motion.div 
-                    key={option.id} 
-                    className="flex items-center space-x-4 p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="personality"
-                      value={option.id}
-                      checked={preferences.personalityTone === option.id}
-                      onChange={(e) => setPreferences({ ...preferences, personalityTone: e.target.value as any })}
-                      className="w-5 h-5 text-primary-500 focus:ring-primary-500"
-                    />
+              
+              {/* Learning Mode Toggle */}
+              <div className="p-8 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-3xl border-2 border-green-200 dark:border-green-700 mb-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-xl">
+                      <Brain className="w-8 h-8 text-white" />
+                    </div>
                     <div>
-                      <label htmlFor={option.id} className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                        {option.label}
-                      </label>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        {option.description}
+                      <h4 className="text-2xl font-bold text-gray-900 dark:text-white">Learning Mode</h4>
+                      <p className="text-gray-600 dark:text-gray-400 text-lg">
+                        When enabled, LIORA builds long-term relationships and learns from every interaction
                       </p>
                     </div>
+                  </div>
+                  <motion.button
+                    onClick={toggleLearningMode}
+                    className={`relative w-20 h-10 rounded-full transition-all duration-300 ${
+                      preferences.learningMode 
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                        : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div
+                      className="absolute top-1 w-8 h-8 bg-white rounded-full shadow-lg"
+                      animate={{ x: preferences.learningMode ? 44 : 4 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  </motion.button>
+                </div>
+                
+                {preferences.learningMode && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="mt-6 p-6 bg-white/60 dark:bg-gray-800/60 rounded-2xl"
+                  >
+                    <h5 className="font-bold text-green-700 dark:text-green-300 mb-3">Learning Mode Features:</h5>
+                    <ul className="space-y-2 text-green-600 dark:text-green-400">
+                      <li className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Remembers your preferences and emotional patterns</span>
+                      </li>
+                      <li className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Builds long-term relationship history</span>
+                      </li>
+                      <li className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Adapts responses based on past interactions</span>
+                      </li>
+                      <li className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Tracks learning progress and knowledge gaps</span>
+                      </li>
+                    </ul>
                   </motion.div>
-                ))}
+                )}
+              </div>
+
+              {/* Crisis Detection */}
+              <div className="p-8 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-3xl border-2 border-red-200 dark:border-red-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl">
+                      <Shield className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-900 dark:text-white">Crisis Detection</h4>
+                      <p className="text-gray-600 dark:text-gray-400 text-lg">
+                        Automatically detect crisis situations and provide emergency support
+                      </p>
+                    </div>
+                  </div>
+                  <motion.button
+                    onClick={toggleCrisisDetection}
+                    className={`relative w-20 h-10 rounded-full transition-all duration-300 ${
+                      preferences.crisisDetection 
+                        ? 'bg-gradient-to-r from-red-500 to-pink-500' 
+                        : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div
+                      className="absolute top-1 w-8 h-8 bg-white rounded-full shadow-lg"
+                      animate={{ x: preferences.crisisDetection ? 44 : 4 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        );
+
+      case 'emergency':
+        return (
+          <motion.div 
+            className="space-y-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading flex items-center space-x-3">
+                <Phone className="w-8 h-8 text-red-500" />
+                <span>Emergency Contact</span>
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-8">
+                Set up an emergency contact for crisis situations. LIORA will alert this person if crisis indicators are detected.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Contact Name
+                  </label>
+                  <input
+                    type="text"
+                    value={emergencyContact.name}
+                    onChange={(e) => setEmergencyContact({ ...emergencyContact, name: e.target.value })}
+                    className="w-full px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
+                    placeholder="Enter contact name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={emergencyContact.phone}
+                    onChange={(e) => setEmergencyContact({ ...emergencyContact, phone: e.target.value })}
+                    className="w-full px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
+                    placeholder="Enter phone number"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={emergencyContact.email}
+                    onChange={(e) => setEmergencyContact({ ...emergencyContact, email: e.target.value })}
+                    className="w-full px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
+                    placeholder="Enter email address"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    Relationship
+                  </label>
+                  <select
+                    value={emergencyContact.relationship}
+                    onChange={(e) => setEmergencyContact({ ...emergencyContact, relationship: e.target.value })}
+                    className="w-full px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
+                  >
+                    <option value="">Select relationship</option>
+                    <option value="family">Family Member</option>
+                    <option value="friend">Friend</option>
+                    <option value="partner">Partner/Spouse</option>
+                    <option value="therapist">Therapist</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -450,7 +691,7 @@ const Settings: React.FC = () => {
                   <div className="text-left">
                     <p className="font-semibold text-gray-900 dark:text-white text-lg">Export Data</p>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Download all your conversations and data
+                      Download all your conversations and learning data
                     </p>
                   </div>
                 </motion.button>
@@ -497,9 +738,9 @@ const Settings: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 font-heading">Settings</h1>
+          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 font-heading">LIORA Settings</h1>
           <p className="text-gray-600 dark:text-gray-400 text-xl">
-            Customize your LioraAI experience
+            Customize your AI companion and learning experience
           </p>
         </motion.div>
 
@@ -529,6 +770,9 @@ const Settings: React.FC = () => {
                     {tab.id === 'security' && !securityAudit.isSecure && (
                       <AlertTriangle className="w-4 h-4 text-red-400 ml-auto" />
                     )}
+                    {tab.id === 'learning' && preferences.learningMode && (
+                      <Brain className="w-4 h-4 text-green-400 ml-auto" />
+                    )}
                   </motion.button>
                 );
               })}
@@ -544,7 +788,7 @@ const Settings: React.FC = () => {
               {renderTabContent()}
               
               {/* Enhanced Save Button */}
-              {(activeTab === 'preferences' || activeTab === 'voice') && (
+              {(activeTab === 'ai-modes' || activeTab === 'voice' || activeTab === 'learning' || activeTab === 'emergency') && (
                 <motion.div 
                   className="mt-12 pt-8 border-t border-white/30 dark:border-gray-700/30"
                   initial={{ opacity: 0, y: 20 }}
