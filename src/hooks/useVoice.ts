@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { generateSpeech, streamSpeech, speakText, checkApiUsage } from '../services/elevenlabs';
-import { detectUserLanguage } from '../services/gemini';
+import { detectUserLanguage, detectInputLanguage } from '../services/gemini';
 import toast from 'react-hot-toast';
 
 export interface UseVoiceReturn {
@@ -59,7 +59,7 @@ export function useVoice(): UseVoiceReturn {
       } catch (fallbackError) {
         console.error('❌ Enhanced browser speech error:', fallbackError);
         // Only show error for non-interruption errors
-        if (!fallbackError.message.includes('interrupted')) {
+        if (!fallbackError.message.includes('interrupted') && !fallbackError.message.includes('synthesis-failed')) {
           toast.error('Voice temporarily unavailable');
         }
       }
@@ -105,7 +105,11 @@ export function useVoice(): UseVoiceReturn {
         // Placeholder for speech-to-text integration with language detection
         // This would integrate with OpenAI Whisper or similar with language detection
         setTimeout(() => {
-          toast.success(`Speech recognized in ${currentLanguage}! (Demo mode)`);
+          // Auto-detect language from speech
+          const detectedLanguage = detectInputLanguage("Sample text for language detection");
+          setCurrentLanguage(detectedLanguage);
+          
+          toast.success(`Speech recognized in ${detectedLanguage}! (Demo mode)`);
         }, 1500);
       };
 
@@ -148,26 +152,31 @@ export function useVoice(): UseVoiceReturn {
   }, [isRecording]);
 
   const stopSpeaking = useCallback(() => {
+    console.log('🔇 Stopping all speech playback');
+    
     // Stop HTML5 audio
     if (audioRef.current) {
+      console.log('🔇 Stopping HTML5 audio element');
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
     
     // Clean up audio URL
     if (currentAudioUrl.current) {
+      console.log('🔇 Revoking audio URL');
       URL.revokeObjectURL(currentAudioUrl.current);
       currentAudioUrl.current = null;
     }
     
     // Stop Web Speech API
     if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
+      console.log('🔇 Cancelling Web Speech API synthesis');
+      window.speechSynthesis.cancel();
     }
     
     setIsPlaying(false);
     dispatchAIActivity(false); // Notify brain background that speaking ended
-    toast.success('Voice playback stopped');
+    console.log('🔇 All speech playback stopped successfully');
   }, []);
 
   const setLanguage = useCallback((language: string) => {

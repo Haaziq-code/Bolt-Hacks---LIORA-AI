@@ -84,6 +84,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
   const toggleSpeech = () => {
     if (isPlaying) {
       stopSpeaking();
+      toast.success('Speech stopped');
     } else {
       toast('Send a message to hear LIORA respond');
     }
@@ -129,6 +130,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
           icon: Users,
           color: 'from-pink-500 to-rose-500',
           features: ['Customizable Age', 'Relationship Building', 'Proactive Check-ins', 'Mood Boosters']
+        };
+      case 'coach':
+        return {
+          title: 'AI Coach',
+          description: 'Motivational support for achieving your goals and personal growth',
+          icon: Sparkles,
+          color: 'from-orange-500 to-red-500',
+          features: ['Goal Setting', 'Motivation', 'Accountability', 'Action Plans']
         };
       default:
         return {

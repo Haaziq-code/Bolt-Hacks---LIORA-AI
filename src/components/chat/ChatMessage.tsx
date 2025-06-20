@@ -122,7 +122,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               
               {message.role === 'assistant' && (
                 <>
-                  {isPlayingThis ? (
+                  {isPlayingThis || isPlaying ? (
                     <motion.button 
                       onClick={handleStopSpeaking}
                       className="p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30 text-primary-500 animate-pulse"
