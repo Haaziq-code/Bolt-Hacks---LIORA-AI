@@ -44,6 +44,7 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (elementRef.current && !scramblerRef.current) {
@@ -53,17 +54,19 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   }, []);
 
   useEffect(() => {
-    if (mounted && scramblerRef.current) {
+    if (mounted && scramblerRef.current && phrases.length > 0) {
       let counter = 0;
       const next = () => {
         if (scramblerRef.current) {
           scramblerRef.current.setText(phrases[counter]).then(() => {
-            setTimeout(next, 3000);
+            setCurrentIndex(counter);
+            counter = (counter + 1) % phrases.length;
+            setTimeout(next, 2500); // Slightly faster transitions
           });
-          counter = (counter + 1) % phrases.length;
         }
       };
 
+      // Start immediately
       next();
     }
   }, [mounted, phrases]);
@@ -96,8 +99,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const scramblePhases = [
     'LIORA AI',
     'YOUR THERAPIST',
-    'TUTOR',
-    'FRIEND'
+    'YOUR TUTOR', 
+    'YOUR FRIEND',
+    'AI COMPANION'
   ];
 
   const demoMessages = [
