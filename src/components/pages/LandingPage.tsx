@@ -188,12 +188,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-      {/* Enhanced Rich Gradient Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 dark:from-midnight-950 dark:via-slate-900 dark:to-indigo-950">
-        {/* Elegant overlay gradients */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/10 via-transparent to-lavender-500/10" />
-        <div className="absolute inset-0 bg-gradient-to-bl from-sapphire-500/5 via-transparent to-electric-blue-500/5" />
-      </div>
+      {/* Simple Purple Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-violet-900 to-indigo-900" />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-8">
