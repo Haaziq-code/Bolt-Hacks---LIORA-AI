@@ -296,6 +296,30 @@ export const multilingualVoices = {
       general: 'knrPHWnBmmDHMoiMeP3l',
       friend: 'knrPHWnBmmDHMoiMeP3l'
     }
+  },
+  // Urdu - Native Urdu speakers
+  ur: {
+    female: {
+      coach: 'knrPHWnBmmDHMoiMeP3l', // Using Hindi voice as fallback
+      therapist: 'knrPHWnBmmDHMoiMeP3l',
+      tutor: 'knrPHWnBmmDHMoiMeP3l',
+      general: 'knrPHWnBmmDHMoiMeP3l',
+      friend: 'knrPHWnBmmDHMoiMeP3l'
+    },
+    male: {
+      coach: 'pFZP5JQG7iQjIQuC4Bku', // Using Hindi voice as fallback
+      therapist: 'pFZP5JQG7iQjIQuC4Bku',
+      tutor: 'pFZP5JQG7iQjIQuC4Bku',
+      general: 'pFZP5JQG7iQjIQuC4Bku',
+      friend: 'pFZP5JQG7iQjIQuC4Bku'
+    },
+    'non-binary': {
+      coach: 'knrPHWnBmmDHMoiMeP3l',
+      therapist: 'knrPHWnBmmDHMoiMeP3l',
+      tutor: 'knrPHWnBmmDHMoiMeP3l',
+      general: 'knrPHWnBmmDHMoiMeP3l',
+      friend: 'knrPHWnBmmDHMoiMeP3l'
+    }
   }
 };
 
@@ -420,7 +444,7 @@ export async function generateSpeech(
   }
 }
 
-// NEW: Preprocess text to make speech more natural with language-specific adjustments
+// Language-specific text preprocessing for more natural speech
 function preprocessTextForNaturalSpeech(text: string, mode: string, language: string = 'en'): string {
   let processedText = text;
 
@@ -568,7 +592,7 @@ export function speakText(
     }
 
     // Cancel any ongoing speech
-    speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
     // Wait a moment for the cancel to take effect
     setTimeout(() => {
@@ -587,7 +611,8 @@ export function speakText(
         'ko': 'ko-KR',
         'zh': 'zh-CN',
         'ar': 'ar-SA',
-        'hi': 'hi-IN'
+        'hi': 'hi-IN',
+        'ur': 'ur-PK'
       };
       
       utterance.lang = languageMap[language] || 'en-US';
@@ -646,7 +671,7 @@ export function speakText(
       };
 
       // Try to find a voice that matches the language and gender preference
-      const voices = speechSynthesis.getVoices();
+      const voices = window.speechSynthesis.getVoices();
       
       // Filter voices by language and gender
       const preferredVoices = voices.filter(voice => {
@@ -677,7 +702,7 @@ export function speakText(
       }
 
       console.log(`🔊 Speaking with browser synthesis: ${mode} mode in NATIVE ${language} with ${gender} voice`);
-      speechSynthesis.speak(utterance);
+      window.speechSynthesis.speak(utterance);
     }, 100);
   });
 }

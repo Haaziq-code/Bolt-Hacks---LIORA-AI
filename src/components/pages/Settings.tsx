@@ -29,6 +29,7 @@ import {
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { performSecurityAudit, isConfigurationLocked } from '../../config/apiKeys';
+import { supportedLanguages } from '../../services/gemini';
 
 const Settings: React.FC = () => {
   const { user, setUser } = useApp();
@@ -61,6 +62,7 @@ const Settings: React.FC = () => {
     { id: 'ai-modes', label: 'AI Modes', icon: Brain, color: 'from-purple-500 to-pink-500' },
     { id: 'learning', label: 'Learning & Data', icon: Database, color: 'from-green-500 to-emerald-500' },
     { id: 'voice', label: 'Voice & Video', icon: Volume2, color: 'from-indigo-500 to-purple-500' },
+    { id: 'language', label: 'Language', icon: Globe, color: 'from-blue-500 to-cyan-500' },
     { id: 'emergency', label: 'Emergency', icon: Phone, color: 'from-red-500 to-pink-500' },
     { id: 'security', label: 'Security', icon: Shield, color: 'from-orange-500 to-red-500' },
     { id: 'notifications', label: 'Notifications', icon: Bell, color: 'from-yellow-500 to-orange-500' },
@@ -168,6 +170,79 @@ const Settings: React.FC = () => {
                   defaultValue={user?.email}
                   className="w-full px-6 py-4 border border-gray-300 dark:border-gray-600 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg"
                 />
+              </div>
+            </div>
+          </motion.div>
+        );
+
+      case 'language':
+        return (
+          <motion.div 
+            className="space-y-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading flex items-center space-x-3">
+                <Globe className="w-8 h-8 text-blue-500" />
+                <span>Language Settings</span>
+              </h3>
+              
+              <p className="text-gray-600 dark:text-gray-400 mb-8">
+                Choose your preferred language for LIORA's interface and responses. LIORA will automatically detect and respond in the language you use, but you can set a default language here.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.entries(supportedLanguages).map(([code, lang]) => (
+                  <motion.div 
+                    key={code}
+                    className={`p-6 rounded-2xl border-2 transition-all ${
+                      preferences.language === code
+                        ? 'border-primary-500 bg-primary-500/20 text-primary-700 dark:text-primary-300'
+                        : 'border-white/30 dark:border-gray-700/30 bg-white/60 dark:bg-gray-800/60 hover:border-primary-300'
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => setPreferences({ ...preferences, language: code })}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="text-4xl">{lang.flag}</div>
+                      <div>
+                        <div className="font-bold text-lg">{lang.name}</div>
+                        <div className="text-sm opacity-75">{code.toUpperCase()}</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+                  <Sparkles className="w-5 h-5 text-blue-500" />
+                  <span>Language Features</span>
+                </h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300">Automatic language detection from your messages</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300">Native-level responses in 12+ languages</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300">Natural voice synthesis in each language</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300">Culturally appropriate responses and references</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300">Right-to-left support for Arabic and Urdu</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </motion.div>
@@ -545,6 +620,43 @@ const Settings: React.FC = () => {
 
             <div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+                Voice Gender
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { id: 'female', label: 'Female Voice', description: 'Default female voice for all AI personalities' },
+                  { id: 'male', label: 'Male Voice', description: 'Male voice for all AI personalities' },
+                  { id: 'non-binary', label: 'Non-Binary Voice', description: 'Gender-neutral voice option' }
+                ].map((option) => (
+                  <motion.div 
+                    key={option.id} 
+                    className="flex items-center space-x-4 p-6 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-gray-700/30 shadow-lg"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <input
+                      type="radio"
+                      id={`gender-${option.id}`}
+                      name="gender"
+                      value={option.id}
+                      checked={preferences.gender === option.id}
+                      onChange={(e) => setPreferences({ ...preferences, gender: e.target.value as any })}
+                      className="w-5 h-5 text-primary-500 focus:ring-primary-500"
+                    />
+                    <div>
+                      <label htmlFor={`gender-${option.id}`} className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                        {option.label}
+                      </label>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        {option.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
                 Auto Features
               </h3>
               <div className="space-y-4">
@@ -845,7 +957,7 @@ const Settings: React.FC = () => {
               {renderTabContent()}
               
               {/* Enhanced Save Button */}
-              {(activeTab === 'ai-modes' || activeTab === 'voice' || activeTab === 'learning' || activeTab === 'emergency') && (
+              {(activeTab === 'ai-modes' || activeTab === 'voice' || activeTab === 'learning' || activeTab === 'emergency' || activeTab === 'language') && (
                 <motion.div 
                   className="mt-12 pt-8 border-t border-white/30 dark:border-gray-700/30"
                   initial={{ opacity: 0, y: 20 }}

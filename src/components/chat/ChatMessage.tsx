@@ -3,6 +3,7 @@ import { User, Bot, Clock, Volume2, Copy, Check, Pause, Play, Square } from 'luc
 import { motion } from 'framer-motion';
 import { ChatMessage as ChatMessageType } from '../../types';
 import { useVoice } from '../../hooks/useVoice';
+import { supportedLanguages } from '../../services/gemini';
 import toast from 'react-hot-toast';
 
 interface ChatMessageProps {
@@ -71,6 +72,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
     }
   };
 
+  // Get language flag for message
+  const getLanguageFlag = () => {
+    if (!message.language) return null;
+    const langInfo = supportedLanguages[message.language as keyof typeof supportedLanguages];
+    return langInfo ? langInfo.flag : null;
+  };
+
   return (
     <motion.div 
       className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-8`}
@@ -118,6 +126,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               <div className="flex items-center space-x-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full px-3 py-1 border border-white/30 dark:border-gray-700/30">
                 <Clock className="w-3 h-3" />
                 <span>{formatTime(message.timestamp)}</span>
+                {/* Language indicator */}
+                {getLanguageFlag() && (
+                  <span className="ml-1">{getLanguageFlag()}</span>
+                )}
               </div>
               
               {message.role === 'assistant' && (
