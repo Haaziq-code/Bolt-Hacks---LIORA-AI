@@ -178,7 +178,6 @@ export function useChat(mode: AIMode): UseChatReturn {
         await speak(aiResponse, mode, currentLanguage, userGender);
       } catch (speechError) {
         console.error('Speech error:', speechError);
-        // Don't show error to user for speech issues
       }
 
       // Save session only if user wants data saved

@@ -7,48 +7,48 @@ export interface VoiceSettings {
   use_speaker_boost: boolean;
 }
 
-// Enhanced multilingual voice mapping with gender-appropriate native speakers
+// Enhanced multilingual voice mapping with the most natural, human-like voices
 export const multilingualVoices = {
   en: {
-    // Female voices
+    // Female voices - using the most natural sounding ones
     female: {
-      coach: 'EXAVITQu4vr4xnSDxMaL', // Bella - energetic female
-      therapist: 'ThT5KcBeYPX3keUQqHPh', // Dorothy - calm female
-      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear female
-      general: 'EXAVITQu4vr4xnSDxMaL', // Bella - friendly female
-      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - warm female
+      coach: 'EXAVITQu4vr4xnSDxMaL', // Bella - very natural female
+      therapist: 'ThT5KcBeYPX3keUQqHPh', // Dorothy - warm, empathetic female
+      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear, intelligent female
+      general: 'jsCqWAovK2LkecY7zXl4', // Elli - most natural conversational female
+      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - perfect for friendly conversations
     },
-    // Male voices
+    // Male voices - using the most natural sounding ones
     male: {
-      coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic male
-      therapist: 'VR6AewLTigWG4xSOukaG', // Josh - calm male
-      tutor: 'TxGEqnHWrfWFTfGW9XjX', // Daniel - clear male
-      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - friendly male
-      friend: 'VR6AewLTigWG4xSOukaG' // Josh - warm male
+      coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic but natural male
+      therapist: 'VR6AewLTigWG4xSOukaG', // Josh - calm, supportive male
+      tutor: 'TxGEqnHWrfWFTfGW9XjX', // Daniel - clear, natural male
+      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - most natural conversational male
+      friend: 'VR6AewLTigWG4xSOukaG' // Josh - warm, friendly male
     },
-    // Non-binary voices (using more neutral-sounding voices)
+    // Non-binary voices (using most neutral-sounding natural voices)
     'non-binary': {
       coach: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral energetic
-      therapist: 'EXAVITQu4vr4xnSDxMaL', // Bella - neutral calm
+      therapist: 'jsCqWAovK2LkecY7zXl4', // Elli - neutral calm
       tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - neutral clear
       general: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral friendly
-      friend: 'EXAVITQu4vr4xnSDxMaL' // Bella - neutral warm
+      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - neutral warm
     }
   },
-  // Add other languages with gender-appropriate voices
+  // Add other languages with natural voices
   es: {
     female: {
-      coach: 'jsCqWAovK2LkecY7zXl4', // Spanish female energetic
-      therapist: 'jsCqWAovK2LkecY7zXl4', // Spanish female calm
-      tutor: 'jsCqWAovK2LkecY7zXl4', // Spanish female clear
-      general: 'jsCqWAovK2LkecY7zXl4', // Spanish female friendly
+      coach: 'jsCqWAovK2LkecY7zXl4',
+      therapist: 'jsCqWAovK2LkecY7zXl4',
+      tutor: 'jsCqWAovK2LkecY7zXl4',
+      general: 'jsCqWAovK2LkecY7zXl4',
       friend: 'jsCqWAovK2LkecY7zXl4'
     },
     male: {
-      coach: 'VR6AewLTigWG4xSOukaG', // Spanish male energetic
-      therapist: 'VR6AewLTigWG4xSOukaG', // Spanish male calm
-      tutor: 'VR6AewLTigWG4xSOukaG', // Spanish male clear
-      general: 'VR6AewLTigWG4xSOukaG', // Spanish male friendly
+      coach: 'VR6AewLTigWG4xSOukaG',
+      therapist: 'VR6AewLTigWG4xSOukaG',
+      tutor: 'VR6AewLTigWG4xSOukaG',
+      general: 'VR6AewLTigWG4xSOukaG',
       friend: 'VR6AewLTigWG4xSOukaG'
     },
     'non-binary': {
@@ -61,36 +61,36 @@ export const multilingualVoices = {
   }
 };
 
-// Enhanced voice settings for more natural, human-like speech
+// COMPLETELY REDESIGNED voice settings for maximum naturalness
 export const naturalVoiceSettings = {
   coach: {
-    stability: 0.4, // More variation for energy
-    similarity_boost: 0.9,
-    style: 0.8, // High expressiveness
+    stability: 0.3, // Lower for more natural variation
+    similarity_boost: 0.8, // Slightly lower for more natural sound
+    style: 0.9, // High expressiveness for energy
     use_speaker_boost: true
   },
   therapist: {
-    stability: 0.8, // Stable and calming
-    similarity_boost: 0.95,
-    style: 0.2, // Gentle and soothing
+    stability: 0.4, // Balanced for calm but natural
+    similarity_boost: 0.85, // Natural warmth
+    style: 0.6, // Moderate expressiveness for empathy
     use_speaker_boost: true
   },
   tutor: {
-    stability: 0.6, // Clear but engaging
-    similarity_boost: 0.85,
-    style: 0.5, // Balanced engagement
+    stability: 0.35, // Natural variation for engagement
+    similarity_boost: 0.8, // Clear but natural
+    style: 0.7, // Good expressiveness for teaching
     use_speaker_boost: true
   },
   friend: {
-    stability: 0.5, // Natural conversation
-    similarity_boost: 0.8,
-    style: 0.6, // Friendly and warm
+    stability: 0.25, // Lowest for most natural conversation
+    similarity_boost: 0.75, // Most natural and conversational
+    style: 0.8, // High expressiveness for friendship
     use_speaker_boost: true
   },
   general: {
-    stability: 0.5, // Natural conversation
-    similarity_boost: 0.8,
-    style: 0.4, // Friendly and approachable
+    stability: 0.3, // Natural conversation
+    similarity_boost: 0.8, // Balanced naturalness
+    style: 0.7, // Good expressiveness
     use_speaker_boost: true
   }
 };
@@ -115,12 +115,12 @@ function getVoiceForLanguageAndMode(language: string, mode: string, gender: stri
       return genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
     }
   }
-  // Fallback to English female
+  // Fallback to English female with most natural voice
   const englishVoices = multilingualVoices.en.female;
-  return englishVoices[mode as keyof typeof englishVoices] || englishVoices.general;
+  return englishVoices[mode as keyof typeof englishVoices] || englishVoices.friend;
 }
 
-// Enhanced AI-powered voice generation with gender-appropriate voices
+// Enhanced AI-powered voice generation with maximum naturalness
 export async function generateSpeech(
   text: string, 
   mode: string = 'general',
@@ -130,15 +130,18 @@ export async function generateSpeech(
 ): Promise<string | null> {
   try {
     if (!isElevenLabsConfigured()) {
-      console.log('🔒 ElevenLabs API key not configured - using browser speech synthesis');
+      console.log('🔒 ElevenLabs API key not configured - using enhanced browser speech synthesis');
       return null; // Return null to trigger fallback
     }
 
     const apiKey = getSecureApiKey('elevenlabs') as string;
     const voiceId = getVoiceForLanguageAndMode(language, mode, gender);
-    const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.general;
+    const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.friend;
 
-    console.log(`🎤 Generating natural ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`🎤 Generating ultra-natural ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+
+    // Enhanced text preprocessing for more natural speech
+    const processedText = preprocessTextForNaturalSpeech(text, mode);
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
       method: 'POST',
@@ -148,10 +151,10 @@ export async function generateSpeech(
         'xi-api-key': apiKey
       },
       body: JSON.stringify({
-        text: text.trim(),
-        model_id: 'eleven_multilingual_v2',
+        text: processedText,
+        model_id: 'eleven_multilingual_v2', // Use the most advanced model
         voice_settings: voiceSettings,
-        optimize_streaming_latency: 2,
+        optimize_streaming_latency: 1, // Faster response
         output_format: 'mp3_44100_128'
       })
     });
@@ -165,7 +168,7 @@ export async function generateSpeech(
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
     
-    console.log(`✅ Successfully generated natural ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`✅ Successfully generated ultra-natural ${gender} speech for ${mode} mode in ${language}`);
     return audioUrl;
   } catch (error) {
     console.error('❌ ElevenLabs speech generation error:', error);
@@ -173,7 +176,46 @@ export async function generateSpeech(
   }
 }
 
-// Enhanced streaming speech with gender-appropriate voices
+// NEW: Preprocess text to make speech more natural
+function preprocessTextForNaturalSpeech(text: string, mode: string): string {
+  let processedText = text;
+
+  // Add natural pauses for better flow
+  processedText = processedText.replace(/\. /g, '... ');
+  processedText = processedText.replace(/! /g, '! ');
+  processedText = processedText.replace(/\? /g, '? ');
+
+  // Add breathing pauses for longer sentences
+  if (processedText.length > 100) {
+    processedText = processedText.replace(/,/g, ', ');
+  }
+
+  // Mode-specific adjustments for naturalness
+  switch (mode) {
+    case 'friend':
+      // Make it more conversational and casual
+      processedText = processedText.replace(/\bI am\b/g, "I'm");
+      processedText = processedText.replace(/\byou are\b/g, "you're");
+      processedText = processedText.replace(/\bdo not\b/g, "don't");
+      processedText = processedText.replace(/\bcannot\b/g, "can't");
+      processedText = processedText.replace(/\bwill not\b/g, "won't");
+      processedText = processedText.replace(/\bw\b/g, "with");
+      break;
+    case 'therapist':
+      // More thoughtful pauses
+      processedText = processedText.replace(/\. /g, '... ');
+      break;
+    case 'tutor':
+      // Emphasize key points
+      processedText = processedText.replace(/\bimportant\b/gi, "<emphasis>important</emphasis>");
+      processedText = processedText.replace(/\bkey\b/gi, "<emphasis>key</emphasis>");
+      break;
+  }
+
+  return processedText;
+}
+
+// Enhanced streaming speech with natural playback
 export async function streamSpeech(
   text: string, 
   mode: string = 'general', 
@@ -181,7 +223,7 @@ export async function streamSpeech(
   gender: string = 'female'
 ): Promise<void> {
   try {
-    console.log(`🎯 Starting natural ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting ultra-natural ${gender} speech for ${mode} mode in ${language}`);
     
     // Try ElevenLabs first
     const audioUrl = await generateSpeech(text, mode, language, gender);
@@ -278,29 +320,29 @@ export function speakText(
       // Enhanced personality differences for more natural speech with gender consideration
       switch (mode) {
         case 'coach':
-          utterance.rate = 1.1;
-          utterance.pitch = gender === 'male' ? 0.8 : 1.2;
+          utterance.rate = gender === 'male' ? 1.1 : 1.15;
+          utterance.pitch = gender === 'male' ? 0.9 : 1.2;
           utterance.volume = 0.95;
           break;
         case 'therapist':
-          utterance.rate = 0.8;
-          utterance.pitch = gender === 'male' ? 0.7 : 0.9;
-          utterance.volume = 0.8;
+          utterance.rate = gender === 'male' ? 0.85 : 0.9;
+          utterance.pitch = gender === 'male' ? 0.8 : 1.0;
+          utterance.volume = 0.85;
           break;
         case 'tutor':
-          utterance.rate = 0.9;
-          utterance.pitch = gender === 'male' ? 0.8 : 1.0;
+          utterance.rate = gender === 'male' ? 0.95 : 1.0;
+          utterance.pitch = gender === 'male' ? 0.85 : 1.05;
           utterance.volume = 0.9;
           break;
         case 'friend':
-          utterance.rate = 1.0;
-          utterance.pitch = gender === 'male' ? 0.7 : 1.1;
-          utterance.volume = 0.9;
+          utterance.rate = gender === 'male' ? 1.05 : 1.1;
+          utterance.pitch = gender === 'male' ? 0.8 : 1.15;
+          utterance.volume = 0.95;
           break;
         default:
-          utterance.rate = 1.0;
-          utterance.pitch = gender === 'male' ? 0.8 : 1.0;
-          utterance.volume = 0.85;
+          utterance.rate = gender === 'male' ? 1.0 : 1.05;
+          utterance.pitch = gender === 'male' ? 0.85 : 1.1;
+          utterance.volume = 0.9;
       }
 
       utterance.onend = () => {
