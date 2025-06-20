@@ -99,7 +99,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
       rotationY: 0,
       rotationZ: 0,
       scale: 1,
-      opacity: isDarkMode ? 0.9 : 0.7,
+      opacity: isDarkMode ? 0.9 : 0.3,
       speed: 0.002,
       pulsePhase: 0,
       color: getModeColor().primary,
@@ -120,7 +120,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
         rotationY: Math.random() * Math.PI,
         rotationZ: Math.random() * Math.PI,
         scale: 0.7 + Math.random() * 0.3,
-        opacity: isDarkMode ? 0.8 : 0.6,
+        opacity: isDarkMode ? 0.8 : 0.25,
         speed: 0.003 + Math.random() * 0.002,
         pulsePhase: Math.random() * Math.PI * 2,
         color: getModeColor().secondary,
@@ -140,7 +140,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
         rotationY: Math.random() * Math.PI,
         rotationZ: Math.random() * Math.PI,
         scale: 0.5 + Math.random() * 0.5,
-        opacity: isDarkMode ? 0.7 : 0.5,
+        opacity: isDarkMode ? 0.7 : 0.2,
         speed: 0.001 + Math.random() * 0.002,
         pulsePhase: Math.random() * Math.PI * 2,
         color: getModeColor().accent,
@@ -160,7 +160,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
         rotationY: 0,
         rotationZ: 0,
         scale: 0.4 + Math.random() * 0.6,
-        opacity: isDarkMode ? 0.6 : 0.4,
+        opacity: isDarkMode ? 0.6 : 0.15,
         speed: 0.004 + Math.random() * 0.003,
         pulsePhase: Math.random() * Math.PI * 2,
         color: getModeColor().trail,
@@ -171,7 +171,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
 
   }, [isDarkMode]);
 
-  // Enhanced AI-themed colors with softer light mode palette
+  // Enhanced AI-themed colors with much softer light mode palette
   const getModeColor = () => {
     if (isDarkMode) {
       switch (currentMode) {
@@ -213,34 +213,34 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
       switch (currentMode) {
         case 'therapist':
           return {
-            primary: 'rgba(34, 197, 94, 0.4)',
-            secondary: 'rgba(16, 185, 129, 0.3)',
-            accent: 'rgba(52, 211, 153, 0.25)',
-            trail: 'rgba(34, 197, 94, 0.2)',
+            primary: 'rgba(34, 197, 94, 0.15)',
+            secondary: 'rgba(16, 185, 129, 0.12)',
+            accent: 'rgba(52, 211, 153, 0.1)',
+            trail: 'rgba(34, 197, 94, 0.08)',
             glow: '#22c55e'
           };
         case 'tutor':
           return {
-            primary: 'rgba(168, 85, 247, 0.4)',
-            secondary: 'rgba(147, 51, 234, 0.3)',
-            accent: 'rgba(196, 181, 253, 0.25)',
-            trail: 'rgba(168, 85, 247, 0.2)',
+            primary: 'rgba(168, 85, 247, 0.15)',
+            secondary: 'rgba(147, 51, 234, 0.12)',
+            accent: 'rgba(196, 181, 253, 0.1)',
+            trail: 'rgba(168, 85, 247, 0.08)',
             glow: '#a855f7'
           };
         case 'friend':
           return {
-            primary: 'rgba(236, 72, 153, 0.4)',
-            secondary: 'rgba(219, 39, 119, 0.3)',
-            accent: 'rgba(251, 113, 133, 0.25)',
-            trail: 'rgba(236, 72, 153, 0.2)',
+            primary: 'rgba(236, 72, 153, 0.15)',
+            secondary: 'rgba(219, 39, 119, 0.12)',
+            accent: 'rgba(251, 113, 133, 0.1)',
+            trail: 'rgba(236, 72, 153, 0.08)',
             glow: '#ec4899'
           };
         default:
           return {
-            primary: 'rgba(93, 106, 255, 0.4)',
-            secondary: 'rgba(34, 211, 238, 0.3)',
-            accent: 'rgba(168, 85, 247, 0.25)',
-            trail: 'rgba(93, 106, 255, 0.2)',
+            primary: 'rgba(93, 106, 255, 0.15)',
+            secondary: 'rgba(34, 211, 238, 0.12)',
+            accent: 'rgba(168, 85, 247, 0.1)',
+            trail: 'rgba(93, 106, 255, 0.08)',
             glow: '#5d6aff'
           };
       }
@@ -354,7 +354,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
             life: 0,
             maxLife: 100 + Math.random() * 100,
             size: 2 + Math.random() * 4,
-            opacity: isDarkMode ? 1.0 : 0.6,
+            opacity: isDarkMode ? 1.0 : 0.3,
             color: colors.primary,
             type: particleTypes[Math.floor(Math.random() * particleTypes.length)] as any,
             content: contents[Math.floor(Math.random() * contents.length)]
@@ -374,7 +374,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
               { x: endObj.x, y: endObj.y, z: endObj.z, opacity: 1, data: '◉◦◉' }
             ],
             color: colors.trail,
-            width: isDarkMode ? 3 : 1.5,
+            width: isDarkMode ? 3 : 1,
             speed: 0.02,
             life: 0,
             maxLife: 120,
@@ -390,10 +390,10 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
         
         if (lifeRatio < 1) {
           ctx.save();
-          ctx.globalAlpha = (1 - lifeRatio) * intensityFactor * (isDarkMode ? 1.2 : 0.6);
+          ctx.globalAlpha = (1 - lifeRatio) * intensityFactor * (isDarkMode ? 1.2 : 0.3);
           ctx.strokeStyle = stream.color;
           ctx.lineWidth = stream.width;
-          ctx.shadowBlur = isDarkMode ? 12 : 4;
+          ctx.shadowBlur = isDarkMode ? 12 : 2;
           ctx.shadowColor = stream.color;
           ctx.beginPath();
           
@@ -427,7 +427,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
 
         if (particle.opacity > 0) {
           ctx.save();
-          ctx.globalAlpha = particle.opacity * intensityFactor;
+          ctx.globalAlpha = particle.opacity * intensityFactor * (isDarkMode ? 1 : 0.4);
           ctx.fillStyle = particle.color;
           ctx.font = `${particle.size}px monospace`;
           ctx.textAlign = 'center';
@@ -436,7 +436,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
             ctx.shadowBlur = 6;
             ctx.shadowColor = particle.color;
           } else {
-            ctx.shadowBlur = 2;
+            ctx.shadowBlur = 1;
             ctx.shadowColor = particle.color;
           }
           
@@ -490,10 +490,10 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
     ctx.rotate(rotation);
     
     // Central neural core with intense glow
-    ctx.shadowBlur = isDarkMode ? 25 : 8;
+    ctx.shadowBlur = isDarkMode ? 25 : 4;
     ctx.shadowColor = glow;
     ctx.strokeStyle = color;
-    ctx.lineWidth = isDarkMode ? 5 : 2;
+    ctx.lineWidth = isDarkMode ? 5 : 1;
     
     // Hexagonal neural core
     ctx.beginPath();
@@ -508,7 +508,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
     ctx.stroke();
     
     // Inner neural patterns
-    ctx.lineWidth = isDarkMode ? 2 : 1;
+    ctx.lineWidth = isDarkMode ? 2 : 0.5;
     for (let i = 0; i < 6; i++) {
       const angle = (i / 6) * Math.PI * 2;
       const x1 = Math.cos(angle) * size * 0.3;
@@ -530,11 +530,11 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
     ctx.rotate(rotation);
     
     // Quantum processor with neural connections
-    ctx.shadowBlur = isDarkMode ? 15 : 6;
+    ctx.shadowBlur = isDarkMode ? 15 : 3;
     ctx.shadowColor = glow;
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
-    ctx.lineWidth = isDarkMode ? 2 : 1;
+    ctx.lineWidth = isDarkMode ? 2 : 0.5;
     
     // Central quantum node
     ctx.beginPath();
@@ -566,10 +566,10 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
     ctx.rotate(rotation);
     
     // Memory crystal with data visualization
-    ctx.shadowBlur = isDarkMode ? 10 : 4;
+    ctx.shadowBlur = isDarkMode ? 10 : 2;
     ctx.shadowColor = glow;
     ctx.strokeStyle = color;
-    ctx.lineWidth = isDarkMode ? 2 : 1;
+    ctx.lineWidth = isDarkMode ? 2 : 0.5;
     
     // 3D crystal effect
     const offset = size * 0.2;
@@ -606,10 +606,10 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
 
   const drawAISynapse = (ctx: CanvasRenderingContext2D, size: number, color: string, glow: string) => {
     // AI synapse with neural firing
-    ctx.shadowBlur = isDarkMode ? 8 : 3;
+    ctx.shadowBlur = isDarkMode ? 8 : 1.5;
     ctx.shadowColor = glow;
     ctx.strokeStyle = color;
-    ctx.lineWidth = isDarkMode ? 2 : 1;
+    ctx.lineWidth = isDarkMode ? 2 : 0.5;
     
     // Synapse body
     ctx.beginPath();
@@ -631,12 +631,12 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      {/* Softer neural gradient background for light mode */}
-      <div className={`absolute inset-0 ${isDarkMode ? 'bg-midnight-950' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'} transition-colors duration-500`} />
+      {/* Much softer neural gradient background for light mode */}
+      <div className={`absolute inset-0 ${isDarkMode ? 'bg-midnight-950' : 'bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20'} transition-colors duration-500`} />
       
       <canvas
         ref={canvasRef}
-        className={`absolute inset-0 ${isDarkMode ? 'opacity-70' : 'opacity-30'}`}
+        className={`absolute inset-0 ${isDarkMode ? 'opacity-70' : 'opacity-15'}`}
         style={{ 
           mixBlendMode: isDarkMode ? 'screen' : 'multiply',
           filter: 'blur(0.2px)'
@@ -644,7 +644,7 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
       />
       
       {/* Enhanced AI-themed atmospheric effects */}
-      <div className={`absolute inset-0 ${isDarkMode ? 'opacity-50' : 'opacity-15'}`}>
+      <div className={`absolute inset-0 ${isDarkMode ? 'opacity-50' : 'opacity-08'}`}>
         {/* Floating neural signals */}
         {[...Array(8)].map((_, i) => {
           const signals = ['◦', '◉', '▲', '●', '■', '◆', '⬢', '⬡'];
@@ -656,11 +656,11 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 color: getAIElementColor(),
-                textShadow: isDarkMode ? `0 0 8px ${getAIElementColor()}` : `0 0 2px ${getAIElementColor()}`,
+                textShadow: isDarkMode ? `0 0 8px ${getAIElementColor()}` : `0 0 1px ${getAIElementColor()}`,
               }}
               animate={{
                 y: [0, -80, 0],
-                opacity: isDarkMode ? [0.4, 1, 0.4] : [0.2, 0.5, 0.2],
+                opacity: isDarkMode ? [0.4, 1, 0.4] : [0.1, 0.25, 0.1],
                 scale: [1, 1.2, 1],
               }}
               transition={{
@@ -679,18 +679,18 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={`neural-${i}`}
-            className={`absolute ${isDarkMode ? 'opacity-30' : 'opacity-10'}`}
+            className={`absolute ${isDarkMode ? 'opacity-30' : 'opacity-05'}`}
             style={{
               width: '1px',
               height: '120px',
               background: `linear-gradient(to bottom, ${getAIElementColor()}, transparent)`,
               left: `${15 + i * 15}%`,
               top: `${Math.random() * 100}%`,
-              boxShadow: isDarkMode ? `0 0 10px ${getAIElementColor()}` : `0 0 2px ${getAIElementColor()}`,
+              boxShadow: isDarkMode ? `0 0 10px ${getAIElementColor()}` : `0 0 1px ${getAIElementColor()}`,
             }}
             animate={{
               scaleY: [0, 1, 0],
-              opacity: isDarkMode ? [0, 0.6, 0] : [0, 0.2, 0],
+              opacity: isDarkMode ? [0, 0.6, 0] : [0, 0.1, 0],
             }}
             transition={{
               duration: 2 + Math.random() * 1,
@@ -712,12 +712,12 @@ const Enhanced3DBackground: React.FC<Enhanced3DBackgroundProps> = ({
               background: getAIElementColor(),
               left: `${25 + i * 20}%`,
               top: `${25 + (i % 2) * 50}%`,
-              boxShadow: `0 0 ${isDarkMode ? '15px' : '5px'} currentColor`,
+              boxShadow: `0 0 ${isDarkMode ? '15px' : '3px'} currentColor`,
               borderRadius: i % 2 === 0 ? '50%' : '0%',
             }}
             animate={{
               scale: [1, 1.5, 1],
-              opacity: isDarkMode ? [0.6, 1, 0.6] : [0.3, 0.6, 0.3],
+              opacity: isDarkMode ? [0.6, 1, 0.6] : [0.15, 0.3, 0.15],
               rotate: [0, 360],
             }}
             transition={{

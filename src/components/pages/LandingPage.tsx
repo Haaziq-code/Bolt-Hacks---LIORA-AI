@@ -39,7 +39,7 @@ interface LandingPageProps {
   onEnterApp: () => void;
 }
 
-// Enhanced Scrambled text component with correct phrases
+// Enhanced Scrambled text component with continuous cycling
 const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
@@ -56,17 +56,19 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   useEffect(() => {
     if (mounted && scramblerRef.current && phrases.length > 0) {
       let counter = 0;
+      
       const next = () => {
         if (scramblerRef.current) {
           scramblerRef.current.setText(phrases[counter]).then(() => {
             setCurrentIndex(counter);
             counter = (counter + 1) % phrases.length;
-            setTimeout(next, 2500); // Slightly faster transitions
+            // Continue cycling every 2.5 seconds
+            setTimeout(next, 2500);
           });
         }
       };
 
-      // Start immediately
+      // Start the continuous cycle
       next();
     }
   }, [mounted, phrases]);
@@ -95,13 +97,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [typedText, setTypedText] = useState('');
   const [isAIActive, setIsAIActive] = useState(false);
 
-  // Correct scramble phrases
+  // Correct scramble phrases that will cycle continuously
   const scramblePhases = [
     'LIORA AI',
     'YOUR THERAPIST',
     'YOUR TUTOR', 
     'YOUR FRIEND',
-    'AI COMPANION'
+    'AI COMPANION',
+    'LIFE CO-PILOT'
   ];
 
   const demoMessages = [
@@ -228,7 +231,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               <Brain className="w-20 h-20 text-white" />
             </motion.div>
 
-            {/* Enhanced Scrambled Main Title */}
+            {/* Enhanced Scrambled Main Title with continuous cycling */}
             <ScrambledText phrases={scramblePhases} />
 
             <motion.div
