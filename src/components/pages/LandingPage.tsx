@@ -33,6 +33,7 @@ import {
   Smile
 } from 'lucide-react';
 import { TextScramble } from '../../utils/TextScramble';
+import Enhanced3DBackground from '../ui/Enhanced3DBackground';
 
 interface LandingPageProps {
   onEnterApp: () => void;
@@ -89,6 +90,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [currentDemo, setCurrentDemo] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [typedText, setTypedText] = useState('');
+  const [isAIActive, setIsAIActive] = useState(false);
 
   // Correct scramble phrases
   const scramblePhases = [
@@ -155,6 +157,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
     return () => clearTimeout(timer);
   }, [currentDemo]);
 
+  // Listen for AI activity
+  useEffect(() => {
+    const handleAIActivity = (event: CustomEvent) => {
+      setIsAIActive(event.detail.active);
+    };
+
+    window.addEventListener('ai-activity', handleAIActivity as EventListener);
+    return () => window.removeEventListener('ai-activity', handleAIActivity as EventListener);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -188,8 +200,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-      {/* Simple Purple Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-violet-900 to-indigo-900" />
+      {/* Enhanced 3D Neural Background */}
+      <Enhanced3DBackground isActive={isAIActive} intensity={0.8} />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-8">
@@ -673,7 +685,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
             >
               © 2024 LIORA AI. The world's most advanced AI companion.
-            </motion.p>
+            </p>
           </motion.div>
         </div>
       </section>
