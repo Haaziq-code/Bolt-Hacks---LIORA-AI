@@ -155,9 +155,9 @@ const AIFriendChat: React.FC = () => {
 
     setMessages([greetingMessage]);
     
-    // Speak the greeting
+    // Speak the greeting with gender-appropriate voice
     try {
-      await speak(greeting, 'friend');
+      await speak(greeting, 'friend', undefined, char.gender);
     } catch (error) {
       console.error('Failed to speak greeting:', error);
     }
@@ -238,9 +238,9 @@ Respond as this character would, maintaining consistency with their personality 
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Speak the response with character's voice settings
+      // Speak the response with character's gender-appropriate voice
       try {
-        await speak(response, 'friend');
+        await speak(response, 'friend', undefined, character.gender);
       } catch (speechError) {
         console.error('Speech error:', speechError);
       }
@@ -382,13 +382,46 @@ Respond as this character would, maintaining consistency with their personality 
     );
   }
 
+  // Get avatar URL based on gender for video chat
+  const getAvatarForVideoChat = () => {
+    // Beautiful, realistic avatars for video chat
+    const avatars = {
+      female: [
+        'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ],
+      male: [
+        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ],
+      'non-binary': [
+        'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ]
+    };
+    
+    const genderAvatars = avatars[character.gender as keyof typeof avatars] || avatars.female;
+    const randomIndex = Math.floor(Math.random() * genderAvatars.length);
+    return genderAvatars[randomIndex];
+  };
+
   return (
     <div className="min-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-2xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-white/20 dark:border-gray-700/20 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-xl">
-            <User className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-xl overflow-hidden">
+            {character.appearance?.avatarUrl ? (
+              <img 
+                src={character.appearance.avatarUrl} 
+                alt={character.name} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <User className="w-6 h-6 text-white" />
+            )}
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -458,8 +491,12 @@ Respond as this character would, maintaining consistency with their personality 
                 {isVideoConnected ? (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
-                      <div className="w-24 h-24 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl">
-                        <User className="w-12 h-12" />
+                      <div className="w-24 h-24 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl overflow-hidden">
+                        <img 
+                          src={getAvatarForVideoChat()} 
+                          alt={character.name} 
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <h3 className="text-xl font-bold mb-2">{character.name}</h3>
                       <p className="text-white/70">Video chat active</p>
@@ -621,8 +658,16 @@ Respond as this character would, maintaining consistency with their personality 
           <div className="space-y-6">
             {/* Character Profile */}
             <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <User className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl overflow-hidden">
+                {character.appearance?.avatarUrl ? (
+                  <img 
+                    src={character.appearance.avatarUrl} 
+                    alt={character.name} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-10 h-10 text-white" />
+                )}
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 {character.name}

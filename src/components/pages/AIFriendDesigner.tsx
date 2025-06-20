@@ -174,29 +174,51 @@ const AIFriendDesigner: React.FC = () => {
     style: ['casual', 'professional', 'artistic', 'sporty', 'elegant', 'alternative']
   };
 
-  // Generate avatar with improved error handling and working demo
+  // Enhanced avatar generation with beautiful, realistic results
   const generateTavusAvatar = async () => {
     setIsGeneratingAvatar(true);
     
     try {
-      console.log('🎭 Starting avatar generation process...');
+      console.log('🎭 Starting enhanced avatar generation process...');
       
       // Simulate realistic avatar generation process
       toast.loading('Analyzing character design...', { id: 'avatar-gen' });
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      toast.loading('Generating realistic avatar...', { id: 'avatar-gen' });
+      toast.loading('Creating beautiful, realistic avatar...', { id: 'avatar-gen' });
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      toast.loading('Applying personality traits...', { id: 'avatar-gen' });
+      toast.loading('Applying personality and beauty enhancements...', { id: 'avatar-gen' });
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Generate a realistic demo avatar based on character settings
-      const genderParam = character.gender === 'male' ? 'men' : character.gender === 'female' ? 'women' : 'people';
-      const randomId = Math.floor(Math.random() * 100);
-      const demoAvatarUrl = `https://randomuser.me/api/portraits/${genderParam}/${randomId}.jpg`;
+      // Generate a beautiful, realistic avatar based on character settings
+      const beautifulAvatars = {
+        female: [
+          'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+        ],
+        male: [
+          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+        ],
+        'non-binary': [
+          'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+        ]
+      };
       
-      setAvatarUrl(demoAvatarUrl);
+      const genderAvatars = beautifulAvatars[character.gender] || beautifulAvatars.female;
+      const randomIndex = Math.floor(Math.random() * genderAvatars.length);
+      const selectedAvatar = genderAvatars[randomIndex];
+      
+      setAvatarUrl(selectedAvatar);
       
       // Update character with generated ID
       const generatedId = `friend_${Date.now()}`;
@@ -206,8 +228,8 @@ const AIFriendDesigner: React.FC = () => {
         updatedAt: new Date().toISOString()
       }));
 
-      toast.success('🎭 Avatar generated successfully!', { id: 'avatar-gen' });
-      console.log('✅ Avatar generation completed successfully');
+      toast.success('🎭 Beautiful avatar generated successfully!', { id: 'avatar-gen' });
+      console.log('✅ Enhanced avatar generation completed successfully');
       
     } catch (error) {
       console.error('❌ Avatar generation failed:', error);
@@ -217,14 +239,14 @@ const AIFriendDesigner: React.FC = () => {
     }
   };
 
-  // Test voice with reliable browser speech synthesis
+  // Test voice with gender-appropriate speech synthesis
   const testVoice = async () => {
     if (isTestingVoice) return;
     
     setIsTestingVoice(true);
     
     try {
-      console.log('🎤 Starting voice test...');
+      console.log('🎤 Starting gender-appropriate voice test...');
       
       const testMessage = `Hi! I'm ${character.name || 'your AI friend'}. ${
         character.personality.traits.includes('funny') ? "I love making people laugh! 😄" :
@@ -235,11 +257,11 @@ const AIFriendDesigner: React.FC = () => {
 
       toast.loading('Testing voice...', { id: 'voice-test' });
       
-      // Use browser speech synthesis directly for reliability
-      await speakText(testMessage, 'friend', 'en');
+      // Use browser speech synthesis with gender preference
+      await speakText(testMessage, 'friend', 'en', character.gender);
       
-      toast.success('🎤 Voice test completed successfully!', { id: 'voice-test' });
-      console.log('✅ Voice test completed successfully');
+      toast.success(`🎤 ${character.gender} voice test completed successfully!`, { id: 'voice-test' });
+      console.log(`✅ ${character.gender} voice test completed successfully`);
       
     } catch (error) {
       console.error('❌ Voice test failed:', error);
@@ -375,13 +397,13 @@ const AIFriendDesigner: React.FC = () => {
 
             <div>
               <label className="block text-lg font-bold text-gray-900 dark:text-white mb-4">
-                Gender
+                Gender (affects voice and appearance)
               </label>
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { id: 'female', label: 'Female', icon: '👩' },
-                  { id: 'male', label: 'Male', icon: '👨' },
-                  { id: 'non-binary', label: 'Non-binary', icon: '🧑' }
+                  { id: 'female', label: 'Female', icon: '👩', desc: 'Feminine voice & appearance' },
+                  { id: 'male', label: 'Male', icon: '👨', desc: 'Masculine voice & appearance' },
+                  { id: 'non-binary', label: 'Non-binary', icon: '🧑', desc: 'Neutral voice & appearance' }
                 ].map((gender) => (
                   <motion.button
                     key={gender.id}
@@ -397,6 +419,7 @@ const AIFriendDesigner: React.FC = () => {
                     <div className="text-center">
                       <div className="text-3xl mb-2">{gender.icon}</div>
                       <div className="font-bold">{gender.label}</div>
+                      <div className="text-xs opacity-75 mt-1">{gender.desc}</div>
                     </div>
                   </motion.button>
                 ))}
@@ -504,6 +527,18 @@ const AIFriendDesigner: React.FC = () => {
       case 'voice':
         return (
           <div className="space-y-8">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-blue-200 dark:border-blue-700">
+              <div className="flex items-center space-x-3 mb-3">
+                <Volume2 className="w-6 h-6 text-blue-500" />
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white">
+                  Gender-Appropriate Voice
+                </h4>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Your AI friend will use a {character.gender} voice that matches their personality and tone preferences.
+              </p>
+            </div>
+
             <div>
               <label className="block text-lg font-bold text-gray-900 dark:text-white mb-4">
                 Voice Tone
@@ -590,12 +625,12 @@ const AIFriendDesigner: React.FC = () => {
                 {isTestingVoice ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Testing Voice...</span>
+                    <span>Testing {character.gender} Voice...</span>
                   </>
                 ) : (
                   <>
                     <Play className="w-5 h-5" />
-                    <span>Test Voice</span>
+                    <span>Test {character.gender} Voice</span>
                   </>
                 )}
               </motion.button>
@@ -645,12 +680,12 @@ const AIFriendDesigner: React.FC = () => {
                 {isGeneratingAvatar ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Generating Avatar...</span>
+                    <span>Generating Beautiful Avatar...</span>
                   </>
                 ) : (
                   <>
                     <Camera className="w-5 h-5" />
-                    <span>Generate Avatar</span>
+                    <span>Generate Beautiful Avatar</span>
                   </>
                 )}
               </motion.button>
@@ -800,7 +835,7 @@ const AIFriendDesigner: React.FC = () => {
               {/* Character Preview */}
               <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-3xl p-8 border border-white/30 dark:border-gray-700/30">
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-2xl">
+                  <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-2xl overflow-hidden">
                     {avatarUrl ? (
                       <img src={avatarUrl} alt={character.name} className="w-full h-full rounded-full object-cover" />
                     ) : (
@@ -834,6 +869,10 @@ const AIFriendDesigner: React.FC = () => {
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Voice Tone:</span>
                       <span className="font-medium capitalize">{character.voice.tone}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Gender:</span>
+                      <span className="font-medium capitalize">{character.gender}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Communication:</span>
@@ -909,12 +948,12 @@ const AIFriendDesigner: React.FC = () => {
                 {isTestingVoice ? (
                   <>
                     <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-                    <span>Testing...</span>
+                    <span>Testing {character.gender} Voice...</span>
                   </>
                 ) : (
                   <>
                     <Volume2 className="w-4 h-4" />
-                    <span>Test Voice</span>
+                    <span>Test {character.gender} Voice</span>
                   </>
                 )}
               </motion.button>

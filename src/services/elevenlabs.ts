@@ -7,77 +7,57 @@ export interface VoiceSettings {
   use_speaker_boost: boolean;
 }
 
-// Enhanced multilingual voice mapping with native speakers
+// Enhanced multilingual voice mapping with gender-appropriate native speakers
 export const multilingualVoices = {
   en: {
-    coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic English
-    therapist: 'EXAVITQu4vr4xnSDxMaL', // Bella - calm English
-    tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear English
-    general: 'AZnzlk1XvdvUeBnXmlld', // Domi - friendly English
-    friend: 'EXAVITQu4vr4xnSDxMaL' // Bella - warm and friendly
+    // Female voices
+    female: {
+      coach: 'EXAVITQu4vr4xnSDxMaL', // Bella - energetic female
+      therapist: 'ThT5KcBeYPX3keUQqHPh', // Dorothy - calm female
+      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear female
+      general: 'EXAVITQu4vr4xnSDxMaL', // Bella - friendly female
+      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - warm female
+    },
+    // Male voices
+    male: {
+      coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic male
+      therapist: 'VR6AewLTigWG4xSOukaG', // Josh - calm male
+      tutor: 'TxGEqnHWrfWFTfGW9XjX', // Daniel - clear male
+      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - friendly male
+      friend: 'VR6AewLTigWG4xSOukaG' // Josh - warm male
+    },
+    // Non-binary voices (using more neutral-sounding voices)
+    'non-binary': {
+      coach: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral energetic
+      therapist: 'EXAVITQu4vr4xnSDxMaL', // Bella - neutral calm
+      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - neutral clear
+      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral friendly
+      friend: 'EXAVITQu4vr4xnSDxMaL' // Bella - neutral warm
+    }
   },
-  zh: {
-    coach: 'XrExE9yKIg1WjnnlVkGX', // Mandarin energetic
-    therapist: 'ThT5KcBeYPX3keUQqHPh', // Mandarin calm
-    tutor: 'SOYHLrjzK2X1ezoPC6cr', // Mandarin clear
-    general: 'XrExE9yKIg1WjnnlVkGX', // Mandarin friendly
-    friend: 'ThT5KcBeYPX3keUQqHPh'
-  },
-  hi: {
-    coach: 'pqHfZKP75CvOlQylNhV4', // Hindi energetic
-    therapist: 'IKne3meq5aSn9XLyUdCD', // Hindi calm
-    tutor: 'bIHbv24MWmeRgasZH58o', // Hindi clear
-    general: 'pqHfZKP75CvOlQylNhV4', // Hindi friendly
-    friend: 'IKne3meq5aSn9XLyUdCD'
-  },
+  // Add other languages with gender-appropriate voices
   es: {
-    coach: 'VR6AewLTigWG4xSOukaG', // Spanish energetic
-    therapist: 'jsCqWAovK2LkecY7zXl4', // Spanish calm
-    tutor: 'jBpfuIE2acCO8z3wKNLl', // Spanish clear
-    general: 'VR6AewLTigWG4xSOukaG', // Spanish friendly
-    friend: 'jsCqWAovK2LkecY7zXl4'
-  },
-  fr: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // French energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // French calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // French clear
-    general: 'cgSgspJ2msm6clMCkdW9', // French friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
-  },
-  ar: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // Arabic energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // Arabic calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // Arabic clear
-    general: 'cgSgspJ2msm6clMCkdW9', // Arabic friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
-  },
-  bn: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // Bengali energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // Bengali calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // Bengali clear
-    general: 'cgSgspJ2msm6clMCkdW9', // Bengali friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
-  },
-  ru: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // Russian energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // Russian calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // Russian clear
-    general: 'cgSgspJ2msm6clMCkdW9', // Russian friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
-  },
-  pt: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // Portuguese energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // Portuguese calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // Portuguese clear
-    general: 'cgSgspJ2msm6clMCkdW9', // Portuguese friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
-  },
-  ur: {
-    coach: 'cgSgspJ2msm6clMCkdW9', // Urdu energetic
-    therapist: 'cgSgspJ2msm6clMCkdW9', // Urdu calm
-    tutor: 'cgSgspJ2msm6clMCkdW9', // Urdu clear
-    general: 'cgSgspJ2msm6clMCkdW9', // Urdu friendly
-    friend: 'cgSgspJ2msm6clMCkdW9'
+    female: {
+      coach: 'jsCqWAovK2LkecY7zXl4', // Spanish female energetic
+      therapist: 'jsCqWAovK2LkecY7zXl4', // Spanish female calm
+      tutor: 'jsCqWAovK2LkecY7zXl4', // Spanish female clear
+      general: 'jsCqWAovK2LkecY7zXl4', // Spanish female friendly
+      friend: 'jsCqWAovK2LkecY7zXl4'
+    },
+    male: {
+      coach: 'VR6AewLTigWG4xSOukaG', // Spanish male energetic
+      therapist: 'VR6AewLTigWG4xSOukaG', // Spanish male calm
+      tutor: 'VR6AewLTigWG4xSOukaG', // Spanish male clear
+      general: 'VR6AewLTigWG4xSOukaG', // Spanish male friendly
+      friend: 'VR6AewLTigWG4xSOukaG'
+    },
+    'non-binary': {
+      coach: 'jsCqWAovK2LkecY7zXl4',
+      therapist: 'jsCqWAovK2LkecY7zXl4',
+      tutor: 'jsCqWAovK2LkecY7zXl4',
+      general: 'jsCqWAovK2LkecY7zXl4',
+      friend: 'jsCqWAovK2LkecY7zXl4'
+    }
   }
 };
 
@@ -126,39 +106,48 @@ function isElevenLabsConfigured(): boolean {
   }
 }
 
-// Get voice ID based on language and mode
-function getVoiceForLanguageAndMode(language: string, mode: string): string {
+// Get voice ID based on language, mode, and gender
+function getVoiceForLanguageAndMode(language: string, mode: string, gender: string = 'female'): string {
   const langVoices = multilingualVoices[language as keyof typeof multilingualVoices];
   if (langVoices) {
-    return langVoices[mode as keyof typeof langVoices] || langVoices.general;
+    const genderVoices = langVoices[gender as keyof typeof langVoices];
+    if (genderVoices) {
+      return genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
+    }
   }
-  // Fallback to English
-  const englishVoices = multilingualVoices.en;
+  // Fallback to English female
+  const englishVoices = multilingualVoices.en.female;
   return englishVoices[mode as keyof typeof englishVoices] || englishVoices.general;
 }
 
-// Enhanced AI-powered voice generation with multilingual support
+// Enhanced AI-powered voice generation with gender-appropriate voices
 export async function generateSpeech(
   text: string, 
   mode: string = 'general',
   language: string = 'en',
+  gender: string = 'female',
   settings?: VoiceSettings
 ): Promise<string | null> {
-  console.log(`🎤 Attempting to generate speech for: "${text.substring(0, 50)}..."`);
+  console.log(`🎤 Attempting to generate ${gender} voice for: "${text.substring(0, 50)}..."`);
   
   // Always use browser speech synthesis for reliability
-  console.log('🔊 Using browser speech synthesis for reliable voice output');
+  console.log(`🔊 Using browser speech synthesis for reliable ${gender} voice output`);
   return null; // This will trigger the fallback to browser speech
 }
 
-// Enhanced streaming speech with natural playback
-export async function streamSpeech(text: string, mode: string = 'general', language: string = 'en'): Promise<void> {
+// Enhanced streaming speech with gender-appropriate voices
+export async function streamSpeech(
+  text: string, 
+  mode: string = 'general', 
+  language: string = 'en',
+  gender: string = 'female'
+): Promise<void> {
   try {
-    console.log(`🎯 Starting reliable speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting reliable ${gender} speech for ${mode} mode in ${language}`);
     
-    // Use browser speech synthesis directly for reliability
-    console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language}`);
-    await speakText(text, mode, language);
+    // Use browser speech synthesis directly for reliability with gender preference
+    console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language} with ${gender} voice`);
+    await speakText(text, mode, language, gender);
     
   } catch (error) {
     console.error('❌ All speech synthesis methods failed:', error);
@@ -199,8 +188,13 @@ export async function playAudio(audioUrl: string): Promise<void> {
   });
 }
 
-// Enhanced fallback with multilingual browser speech synthesis
-export function speakText(text: string, mode: string = 'general', language: string = 'en'): Promise<void> {
+// Enhanced fallback with gender-appropriate browser speech synthesis
+export function speakText(
+  text: string, 
+  mode: string = 'general', 
+  language: string = 'en',
+  gender: string = 'female'
+): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!('speechSynthesis' in window)) {
       reject(new Error('Speech synthesis not supported'));
@@ -230,36 +224,36 @@ export function speakText(text: string, mode: string = 'general', language: stri
       
       utterance.lang = languageMap[language] || 'en-US';
       
-      // Enhanced personality differences for more natural speech
+      // Enhanced personality differences for more natural speech with gender consideration
       switch (mode) {
         case 'coach':
           utterance.rate = 1.1;
-          utterance.pitch = 1.2;
+          utterance.pitch = gender === 'male' ? 0.8 : 1.2;
           utterance.volume = 0.95;
           break;
         case 'therapist':
           utterance.rate = 0.8;
-          utterance.pitch = 0.9;
+          utterance.pitch = gender === 'male' ? 0.7 : 0.9;
           utterance.volume = 0.8;
           break;
         case 'tutor':
           utterance.rate = 0.9;
-          utterance.pitch = 1.0;
+          utterance.pitch = gender === 'male' ? 0.8 : 1.0;
           utterance.volume = 0.9;
           break;
         case 'friend':
           utterance.rate = 1.0;
-          utterance.pitch = 1.1;
+          utterance.pitch = gender === 'male' ? 0.7 : 1.1;
           utterance.volume = 0.9;
           break;
         default:
           utterance.rate = 1.0;
-          utterance.pitch = 1.0;
+          utterance.pitch = gender === 'male' ? 0.8 : 1.0;
           utterance.volume = 0.85;
       }
 
       utterance.onend = () => {
-        console.log(`✅ Browser speech completed successfully for ${mode} mode`);
+        console.log(`✅ Browser speech completed successfully for ${mode} mode with ${gender} voice`);
         resolve();
       };
       
@@ -275,15 +269,38 @@ export function speakText(text: string, mode: string = 'general', language: stri
         reject(new Error(`Speech synthesis error: ${event.error}`));
       };
 
-      // Try to find a voice that matches the language
+      // Try to find a voice that matches the language and gender preference
       const voices = speechSynthesis.getVoices();
-      const preferredVoice = voices.find(voice => voice.lang.startsWith(language));
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
-        console.log(`🎤 Using voice: ${preferredVoice.name} for ${language}`);
+      
+      // Filter voices by language and gender
+      const preferredVoices = voices.filter(voice => {
+        const matchesLanguage = voice.lang.startsWith(language);
+        const matchesGender = gender === 'male' 
+          ? voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('man') || voice.name.toLowerCase().includes('david') || voice.name.toLowerCase().includes('alex')
+          : gender === 'female'
+          ? voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('woman') || voice.name.toLowerCase().includes('samantha') || voice.name.toLowerCase().includes('victoria')
+          : true; // non-binary accepts any
+        
+        return matchesLanguage && (matchesGender || voices.length < 10); // Fallback if no gender-specific voices
+      });
+
+      // Select the best voice
+      let selectedVoice = null;
+      if (preferredVoices.length > 0) {
+        selectedVoice = preferredVoices[0];
+      } else {
+        // Fallback to any voice that matches the language
+        selectedVoice = voices.find(voice => voice.lang.startsWith(language));
       }
 
-      console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language}`);
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        console.log(`🎤 Using ${gender} voice: ${selectedVoice.name} for ${language}`);
+      } else {
+        console.log(`🎤 Using default voice for ${language} with ${gender} preference`);
+      }
+
+      console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language} with ${gender} voice`);
       speechSynthesis.speak(utterance);
     }, 100);
   });

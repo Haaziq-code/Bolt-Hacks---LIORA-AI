@@ -122,7 +122,8 @@ const AIFriendManager: React.FC = () => {
     const matchesFilter = selectedFilter === 'all' || 
                          (selectedFilter === 'active' && friend.stats && new Date(friend.stats.lastActive) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) ||
                          (selectedFilter === 'favorites' && friend.relationship.level > 70) ||
-                         (selectedFilter === friend.age);
+                         (selectedFilter === friend.age) ||
+                         (selectedFilter === friend.gender);
     
     return matchesSearch && matchesFilter;
   });
@@ -159,6 +160,11 @@ const AIFriendManager: React.FC = () => {
   const setCurrentFriend = (friend: AIFriendCharacter) => {
     localStorage.setItem('current_ai_friend', JSON.stringify(friend));
     toast.success(`${friend.name} is now your active AI friend!`);
+    
+    // Redirect to chat
+    setTimeout(() => {
+      window.location.href = '/ai-friend-chat';
+    }, 1000);
   };
 
   // Export friend
@@ -223,6 +229,38 @@ const AIFriendManager: React.FC = () => {
     if (diffInHours < 24) return `${diffInHours}h ago`;
     if (diffInHours < 168) return `${Math.floor(diffInHours / 24)}d ago`;
     return `${Math.floor(diffInHours / 168)}w ago`;
+  };
+
+  // Get avatar URL based on gender
+  const getAvatarForFriend = (friend: AIFriendCharacter) => {
+    // Beautiful, realistic avatars
+    const avatars = {
+      female: [
+        'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ],
+      male: [
+        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ],
+      'non-binary': [
+        'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1',
+        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1'
+      ]
+    };
+    
+    // Use friend's ID as a seed for consistent avatar selection
+    const seed = parseInt(friend.id.replace(/\D/g, '')) || 0;
+    const genderAvatars = avatars[friend.gender as keyof typeof avatars] || avatars.female;
+    const index = seed % genderAvatars.length;
+    return genderAvatars[index];
   };
 
   if (isLoading) {
@@ -309,6 +347,9 @@ const AIFriendManager: React.FC = () => {
               <option value="all">All Friends</option>
               <option value="active">Recently Active</option>
               <option value="favorites">Favorites (70%+ relationship)</option>
+              <option value="female">Female Friends</option>
+              <option value="male">Male Friends</option>
+              <option value="non-binary">Non-binary Friends</option>
               <option value="teen">Teen Friends</option>
               <option value="young-adult">Young Adult Friends</option>
               <option value="adult">Adult Friends</option>
@@ -339,8 +380,12 @@ const AIFriendManager: React.FC = () => {
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4 relative z-10">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg">
-                        <User className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                        <img 
+                          src={getAvatarForFriend(friend)} 
+                          alt={friend.name} 
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 dark:text-white text-lg">
@@ -378,7 +423,7 @@ const AIFriendManager: React.FC = () => {
                               className="w-full text-left px-4 py-3 rounded-xl hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all flex items-center space-x-3"
                             >
                               <MessageCircle className="w-4 h-4 text-green-500" />
-                              <span>Set as Active</span>
+                              <span>Chat Now</span>
                             </button>
                             <button
                               onClick={() => exportFriend(friend)}

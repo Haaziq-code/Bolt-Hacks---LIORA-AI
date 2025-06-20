@@ -8,7 +8,7 @@ export interface UseVoiceReturn {
   isRecording: boolean;
   currentLanguage: string;
   apiUsage: {charactersUsed: number, charactersLimit: number} | null;
-  speak: (text: string, mode?: string, language?: string) => Promise<void>;
+  speak: (text: string, mode?: string, language?: string, gender?: string) => Promise<void>;
   startRecording: () => void;
   stopRecording: () => void;
   stopSpeaking: () => void;
@@ -30,7 +30,7 @@ export function useVoice(): UseVoiceReturn {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const currentAudioUrl = useRef<string | null>(null);
 
-  const speak = useCallback(async (text: string, mode: string = 'general', language?: string) => {
+  const speak = useCallback(async (text: string, mode: string = 'general', language?: string, gender: string = 'female') => {
     const targetLanguage = language || currentLanguage;
     
     if (isPlaying) {
@@ -42,19 +42,19 @@ export function useVoice(): UseVoiceReturn {
     dispatchAIActivity(true); // Notify brain background of AI activity
     
     try {
-      console.log(`🎤 Starting natural AI speech for ${mode} mode in ${targetLanguage}: "${text.substring(0, 50)}..."`);
+      console.log(`🎤 Starting natural AI speech for ${mode} mode in ${targetLanguage} with ${gender} voice: "${text.substring(0, 50)}..."`);
       
-      // Use enhanced AI-powered ElevenLabs voice generation with language support
-      await streamSpeech(text, mode, targetLanguage);
+      // Use enhanced AI-powered speech generation with gender support
+      await streamSpeech(text, mode, targetLanguage, gender);
       
-      console.log(`✅ Natural AI speech completed successfully for ${mode} mode in ${targetLanguage}`);
+      console.log(`✅ Natural AI speech completed successfully for ${mode} mode in ${targetLanguage} with ${gender} voice`);
     } catch (error) {
       console.error('❌ AI speech error:', error);
       
-      // Enhanced fallback with language support
+      // Enhanced fallback with gender and language support
       try {
-        console.log(`⚠️ Using enhanced browser speech synthesis for ${targetLanguage}`);
-        await speakText(text, mode, targetLanguage);
+        console.log(`⚠️ Using enhanced browser speech synthesis for ${targetLanguage} with ${gender} voice`);
+        await speakText(text, mode, targetLanguage, gender);
         console.log('✅ Enhanced browser speech completed');
       } catch (fallbackError) {
         console.error('❌ Enhanced browser speech error:', fallbackError);
