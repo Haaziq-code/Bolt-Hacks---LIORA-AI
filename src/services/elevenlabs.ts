@@ -10,53 +10,53 @@ export interface VoiceSettings {
 // Enhanced multilingual voice mapping with the most natural, human-like voices
 export const multilingualVoices = {
   en: {
-    // Female voices - using the most natural sounding ones
+    // Female voices - using the most natural sounding ones with your custom voice ID
     female: {
       coach: 'aEO01A4wXwd1O8GPgGlF', // Your custom voice ID
-      therapist: 'ThT5KcBeYPX3keUQqHPh', // Dorothy - warm, empathetic female
+      therapist: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
       tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
-      general: 'jsCqWAovK2LkecY7zXl4', // Elli - most natural conversational female
-      friend: 'UgBBYS2sOqTuMpoF3BR0' // Your custom voice ID
+      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
+      friend: 'zFLlkq72ysbq1TWC0Mlx' // Your specified female voice ID
     },
     // Male voices - using the most natural sounding ones
     male: {
-      coach: '2BJW5coyhAzSr8STdHbE', // Your custom voice ID
-      therapist: 'VR6AewLTigWG4xSOukaG', // Josh - calm, supportive male
-      tutor: 'TxGEqnHWrfWFTfGW9XjX', // Daniel - clear, natural male
-      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - most natural conversational male
-      friend: 'ulZgFXalzbrnPUGQGs0S' // Your custom voice ID
+      coach: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
+      therapist: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
+      tutor: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
+      general: '2BJW5coyhAzSr8STdHbE', // Your specified male voice ID
+      friend: '2BJW5coyhAzSr8STdHbE' // Your specified male voice ID
     },
     // Non-binary voices (using most neutral-sounding natural voices)
     'non-binary': {
-      coach: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral energetic
-      therapist: 'jsCqWAovK2LkecY7zXl4', // Elli - neutral calm
-      tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - neutral clear
-      general: 'AZnzlk1XvdvUeBnXmlld', // Domi - neutral friendly
-      friend: 'jsCqWAovK2LkecY7zXl4' // Elli - neutral warm
+      coach: 'ulZgFXalzbrnPUGQGs0S', // Your custom voice ID
+      therapist: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
+      tutor: 'UgBBYS2sOqTuMpoF3BR0', // Your custom voice ID
+      general: 'zFLlkq72ysbq1TWC0Mlx', // Your specified female voice ID
+      friend: 'ulZgFXalzbrnPUGQGs0S' // Your custom voice ID
     }
   },
   // Add other languages with natural voices
   es: {
     female: {
-      coach: 'jsCqWAovK2LkecY7zXl4',
-      therapist: 'jsCqWAovK2LkecY7zXl4',
-      tutor: 'jsCqWAovK2LkecY7zXl4',
-      general: 'jsCqWAovK2LkecY7zXl4',
-      friend: 'jsCqWAovK2LkecY7zXl4'
+      coach: 'zFLlkq72ysbq1TWC0Mlx',
+      therapist: 'zFLlkq72ysbq1TWC0Mlx',
+      tutor: 'zFLlkq72ysbq1TWC0Mlx',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'zFLlkq72ysbq1TWC0Mlx'
     },
     male: {
-      coach: 'VR6AewLTigWG4xSOukaG',
-      therapist: 'VR6AewLTigWG4xSOukaG',
-      tutor: 'VR6AewLTigWG4xSOukaG',
-      general: 'VR6AewLTigWG4xSOukaG',
-      friend: 'VR6AewLTigWG4xSOukaG'
+      coach: '2BJW5coyhAzSr8STdHbE',
+      therapist: '2BJW5coyhAzSr8STdHbE',
+      tutor: '2BJW5coyhAzSr8STdHbE',
+      general: '2BJW5coyhAzSr8STdHbE',
+      friend: '2BJW5coyhAzSr8STdHbE'
     },
     'non-binary': {
-      coach: 'jsCqWAovK2LkecY7zXl4',
-      therapist: 'jsCqWAovK2LkecY7zXl4',
-      tutor: 'jsCqWAovK2LkecY7zXl4',
-      general: 'jsCqWAovK2LkecY7zXl4',
-      friend: 'jsCqWAovK2LkecY7zXl4'
+      coach: 'ulZgFXalzbrnPUGQGs0S',
+      therapist: 'zFLlkq72ysbq1TWC0Mlx',
+      tutor: 'UgBBYS2sOqTuMpoF3BR0',
+      general: 'zFLlkq72ysbq1TWC0Mlx',
+      friend: 'ulZgFXalzbrnPUGQGs0S'
     }
   }
 };
@@ -64,33 +64,33 @@ export const multilingualVoices = {
 // COMPLETELY REDESIGNED voice settings for maximum naturalness
 export const naturalVoiceSettings = {
   coach: {
-    stability: 0.25, // Lower for more natural variation
-    similarity_boost: 0.75, // Slightly lower for more natural sound
-    style: 0.9, // High expressiveness for energy
+    stability: 0.15, // Very low for maximum natural variation
+    similarity_boost: 0.65, // Lower for more natural sound
+    style: 0.95, // Very high expressiveness for energy
     use_speaker_boost: true
   },
   therapist: {
-    stability: 0.35, // Balanced for calm but natural
-    similarity_boost: 0.8, // Natural warmth
-    style: 0.65, // Moderate expressiveness for empathy
+    stability: 0.25, // Low for natural warmth
+    similarity_boost: 0.70, // Natural warmth
+    style: 0.75, // Good expressiveness for empathy
     use_speaker_boost: true
   },
   tutor: {
-    stability: 0.3, // Natural variation for engagement
-    similarity_boost: 0.75, // Clear but natural
-    style: 0.7, // Good expressiveness for teaching
+    stability: 0.20, // Low for natural variation
+    similarity_boost: 0.65, // Clear but natural
+    style: 0.80, // High expressiveness for teaching
     use_speaker_boost: true
   },
   friend: {
-    stability: 0.2, // Lowest for most natural conversation
-    similarity_boost: 0.7, // Most natural and conversational
-    style: 0.85, // High expressiveness for friendship
+    stability: 0.10, // Lowest for most natural conversation
+    similarity_boost: 0.60, // Most natural and conversational
+    style: 0.90, // Very high expressiveness for friendship
     use_speaker_boost: true
   },
   general: {
-    stability: 0.25, // Natural conversation
-    similarity_boost: 0.75, // Balanced naturalness
-    style: 0.75, // Good expressiveness
+    stability: 0.15, // Very natural conversation
+    similarity_boost: 0.65, // Balanced naturalness
+    style: 0.85, // High expressiveness
     use_speaker_boost: true
   }
 };
@@ -115,9 +115,8 @@ function getVoiceForLanguageAndMode(language: string, mode: string, gender: stri
       return genderVoices[mode as keyof typeof genderVoices] || genderVoices.general;
     }
   }
-  // Fallback to English female with most natural voice
-  const englishVoices = multilingualVoices.en.female;
-  return englishVoices[mode as keyof typeof englishVoices] || englishVoices.friend;
+  // Fallback to English female with your specified voice ID
+  return 'zFLlkq72ysbq1TWC0Mlx';
 }
 
 // Enhanced AI-powered voice generation with maximum naturalness
