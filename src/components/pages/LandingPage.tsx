@@ -39,7 +39,7 @@ interface LandingPageProps {
   onEnterApp: () => void;
 }
 
-// Enhanced Scrambled text component with perfect timing
+// Enhanced Scrambled text component with perfect slow timing
 const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
@@ -63,7 +63,7 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
       const nextPhrase = phrases[currentIdx];
       
       try {
-        // Wait for scrambling to complete
+        // Wait for scrambling to complete (now much slower)
         await scramblerRef.current.setText(nextPhrase);
         
         // Update state after scrambling is done
@@ -74,18 +74,18 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
         // Move to next phrase
         currentIdx = (currentIdx + 1) % phrases.length;
         
-        // Schedule next cycle - 2.5 seconds total (0.8s scramble + 1.7s display)
-        timeoutId = setTimeout(cyclePhrases, 2500);
+        // Much longer cycle - 4 seconds total (1.5s scramble + 2.5s display)
+        timeoutId = setTimeout(cyclePhrases, 4000);
         
       } catch (error) {
         console.error('Scrambling error:', error);
         setIsScrambling(false);
-        timeoutId = setTimeout(cyclePhrases, 2500);
+        timeoutId = setTimeout(cyclePhrases, 4000);
       }
     };
 
-    // Start the cycle
-    cyclePhrases();
+    // Start the cycle after a brief delay
+    timeoutId = setTimeout(cyclePhrases, 1000);
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
@@ -111,13 +111,14 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
         textShadow: isScrambling ? [
           '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)',
           '0 0 40px rgba(168, 85, 247, 0.6), 0 0 80px rgba(168, 85, 247, 0.4)',
+          '0 0 50px rgba(34, 211, 238, 0.7), 0 0 100px rgba(34, 211, 238, 0.5)',
           '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
         ] : '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
       }}
       transition={{ 
         duration: 2, 
         ease: "easeOut",
-        textShadow: { duration: 0.5, repeat: isScrambling ? Infinity : 0 }
+        textShadow: { duration: 0.8, repeat: isScrambling ? Infinity : 0 }
       }}
     >
       {currentText}
@@ -131,7 +132,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [typedText, setTypedText] = useState('');
   const [isAIActive, setIsAIActive] = useState(false);
 
-  // All scramble phrases that will cycle continuously with perfect timing
+  // All scramble phrases that will cycle continuously with perfect slow timing
   const scramblePhases = [
     'LIORA AI',
     'YOUR THERAPIST',
@@ -265,7 +266,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               <Brain className="w-20 h-20 text-white" />
             </motion.div>
 
-            {/* Enhanced Scrambled Main Title with perfect timing */}
+            {/* Enhanced Scrambled Main Title with perfect slow timing */}
             <ScrambledText phrases={scramblePhases} />
 
             <motion.div
