@@ -103,7 +103,7 @@ export const naturalVoiceSettings = {
 function isElevenLabsConfigured(): boolean {
   try {
     const apiKey = getSecureApiKey('elevenlabs') as string;
-    return !!(apiKey && apiKey.startsWith('sk_'));
+    return !!(apiKey && apiKey.startsWith('sk_') && apiKey !== 'your_elevenlabs_api_key_here');
   } catch (error) {
     console.error('🔒 Failed to access secure ElevenLabs API key:', error);
     return false;
@@ -130,7 +130,7 @@ export async function generateSpeech(
 ): Promise<string | null> {
   try {
     if (!isElevenLabsConfigured()) {
-      console.log('🔒 ElevenLabs API key not configured securely - using browser speech synthesis');
+      console.log('🔊 ElevenLabs API key not configured - using browser speech synthesis');
       return null; // Return null to trigger fallback
     }
 
@@ -138,7 +138,7 @@ export async function generateSpeech(
     const voiceId = getVoiceForLanguageAndMode(language, mode);
     const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.general;
 
-    console.log(`🎤 Generating secure natural speech for ${mode} mode in ${language} with voice ${voiceId}`);
+    console.log(`🎤 Generating speech for ${mode} mode in ${language} with voice ${voiceId}`);
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
       method: 'POST',
@@ -158,17 +158,35 @@ export async function generateSpeech(
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`❌ ElevenLabs API error: ${response.status} - ${errorText}`);
-      throw new Error(`ElevenLabs API error: ${response.status}`);
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { detail: { message: errorText } };
+      }
+
+      // Handle specific error cases
+      if (response.status === 401) {
+        if (errorData.detail?.status === 'quota_exceeded') {
+          console.warn('⚠️ ElevenLabs quota exceeded - falling back to browser speech');
+          return null; // Trigger fallback instead of throwing
+        } else {
+          console.warn('⚠️ ElevenLabs API authentication failed - falling back to browser speech');
+          return null; // Trigger fallback instead of throwing
+        }
+      }
+
+      console.warn(`⚠️ ElevenLabs API error ${response.status}: ${errorData.detail?.message || errorText} - falling back to browser speech`);
+      return null; // Always return null to trigger fallback instead of throwing
     }
 
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
     
-    console.log(`✅ Successfully generated secure natural speech for ${mode} mode in ${language}`);
+    console.log(`✅ Successfully generated speech for ${mode} mode in ${language}`);
     return audioUrl;
   } catch (error) {
-    console.error('❌ ElevenLabs speech generation error:', error);
+    console.warn('⚠️ ElevenLabs speech generation failed - falling back to browser speech:', error);
     return null; // Return null to trigger fallback instead of throwing
   }
 }
@@ -176,27 +194,27 @@ export async function generateSpeech(
 // Enhanced streaming speech with natural playback
 export async function streamSpeech(text: string, mode: string = 'general', language: string = 'en'): Promise<void> {
   try {
-    console.log(`🎯 Starting secure speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting speech for ${mode} mode in ${language}`);
     
     // Try ElevenLabs first
     const audioUrl = await generateSpeech(text, mode, language);
     
     if (audioUrl) {
       await playAudio(audioUrl);
-      console.log(`🔊 Secure ElevenLabs speech playback completed for ${mode} mode in ${language}`);
+      console.log(`🔊 ElevenLabs speech playback completed for ${mode} mode in ${language}`);
     } else {
       // Fallback to browser speech synthesis
-      console.log(`🔊 Falling back to browser speech synthesis for ${mode} mode in ${language}`);
+      console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language}`);
       await speakText(text, mode, language);
     }
   } catch (error) {
-    console.error('❌ Speech stream error, trying fallback:', error);
+    console.warn('⚠️ Speech stream error, trying fallback:', error);
     // Final fallback to browser speech synthesis
     try {
       await speakText(text, mode, language);
     } catch (fallbackError) {
-      console.error('❌ Fallback speech synthesis also failed:', fallbackError);
-      throw fallbackError;
+      console.error('❌ All speech synthesis methods failed:', fallbackError);
+      throw new Error('Speech synthesis unavailable');
     }
   }
 }
@@ -317,7 +335,8 @@ export async function checkApiUsage(): Promise<{charactersUsed: number, characte
     });
 
     if (!response.ok) {
-      throw new Error(`API usage check failed: ${response.status}`);
+      console.warn(`API usage check failed: ${response.status}`);
+      return null;
     }
 
     const data = await response.json();
@@ -326,7 +345,7 @@ export async function checkApiUsage(): Promise<{charactersUsed: number, characte
       charactersLimit: data.character_limit
     };
   } catch (error) {
-    console.error('API usage check error:', error);
+    console.warn('API usage check error:', error);
     return null;
   }
 }
