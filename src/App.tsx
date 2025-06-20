@@ -10,6 +10,9 @@ import Memory from './components/pages/Memory';
 import Settings from './components/pages/Settings';
 import About from './components/pages/About';
 import LandingPage from './components/pages/LandingPage';
+import AIFriendDesigner from './components/pages/AIFriendDesigner';
+import AIFriendManager from './components/pages/AIFriendManager';
+import AIFriendChat from './components/chat/AIFriendChat';
 import ProModal from './components/modals/ProModal';
 import TavusWidget from './components/ui/TavusWidget';
 import Enhanced3DBackground from './components/ui/Enhanced3DBackground';
@@ -107,6 +110,24 @@ function App() {
         return (
           <div className="p-8 pt-32">
             <ChatInterface onBack={handleBackToHome} />
+          </div>
+        );
+      case 'ai-friend-designer':
+        return (
+          <div className="pt-32 px-8">
+            <AIFriendDesigner />
+          </div>
+        );
+      case 'ai-friend-manager':
+        return (
+          <div className="pt-32 px-8">
+            <AIFriendManager />
+          </div>
+        );
+      case 'ai-friend-chat':
+        return (
+          <div className="pt-32 px-8">
+            <AIFriendChat />
           </div>
         );
       case 'settings':
@@ -293,7 +314,6 @@ function App() {
               transition={{ 
                 duration: 0.6,
                 ease: [0.25, 0.46, 0.45, 0.94]
-              
               }}
             >
               {renderMainContent()}

@@ -14,7 +14,9 @@ import {
   Sparkles,
   Crown,
   Shield,
-  BookOpen
+  BookOpen,
+  UserPlus,
+  Palette
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AIMode } from '../../types';
@@ -66,6 +68,20 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({ currentPage, onPa
       mode: 'friend' as AIMode, 
       color: 'from-pink-500 to-rose-500',
       description: 'Customizable companion'
+    },
+    { 
+      id: 'ai-friend-designer', 
+      label: 'Friend Designer', 
+      icon: Palette, 
+      color: 'from-purple-500 to-indigo-500',
+      description: 'Create AI friends'
+    },
+    { 
+      id: 'ai-friend-manager', 
+      label: 'Friend Manager', 
+      icon: UserPlus, 
+      color: 'from-blue-500 to-cyan-500',
+      description: 'Manage AI friends'
     },
     { 
       id: 'settings', 
