@@ -27,8 +27,9 @@ export class TextScramble {
       for (let i = 0; i < length; i++) {
         const from = oldText[i] || '';
         const to = newText[i] || '';
-        const start = Math.floor(Math.random() * 40);
-        const end = start + Math.floor(Math.random() * 40);
+        // Faster, more synchronized timing
+        const start = Math.floor(Math.random() * 15); // Reduced from 40
+        const end = start + Math.floor(Math.random() * 20); // Reduced from 40
         this.queue.push({ from, to, start, end });
       }
       
@@ -52,7 +53,7 @@ export class TextScramble {
         complete++;
         output += to;
       } else if (this.frame >= start) {
-        if (!char || Math.random() < 0.28) {
+        if (!char || Math.random() < 0.4) { // Increased from 0.28 for more scrambling
           char = this.randomChar();
           this.queue[i].char = char;
         }

@@ -39,43 +39,60 @@ interface LandingPageProps {
   onEnterApp: () => void;
 }
 
-// Enhanced Scrambled text component with visible cycling
+// Enhanced Scrambled text component with perfect timing
 const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentText, setCurrentText] = useState(phrases[0] || 'LIORA AI');
+  const [isScrambling, setIsScrambling] = useState(false);
 
   useEffect(() => {
-    if (!elementRef.current) return;
+    if (!elementRef.current || phrases.length === 0) return;
 
     // Initialize the scrambler
     scramblerRef.current = new TextScramble(elementRef.current);
     
-    let intervalId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout;
     let currentIdx = 0;
 
-    const cyclePhrases = () => {
-      if (scramblerRef.current && phrases.length > 0) {
-        const nextPhrase = phrases[currentIdx];
+    const cyclePhrases = async () => {
+      if (!scramblerRef.current) return;
+      
+      setIsScrambling(true);
+      const nextPhrase = phrases[currentIdx];
+      
+      try {
+        // Wait for scrambling to complete
+        await scramblerRef.current.setText(nextPhrase);
+        
+        // Update state after scrambling is done
         setCurrentText(nextPhrase);
         setCurrentIndex(currentIdx);
+        setIsScrambling(false);
         
-        scramblerRef.current.setText(nextPhrase).then(() => {
-          // Move to next phrase
-          currentIdx = (currentIdx + 1) % phrases.length;
-        });
+        // Move to next phrase
+        currentIdx = (currentIdx + 1) % phrases.length;
+        
+        // Schedule next cycle - 2.5 seconds total (0.8s scramble + 1.7s display)
+        timeoutId = setTimeout(cyclePhrases, 2500);
+        
+      } catch (error) {
+        console.error('Scrambling error:', error);
+        setIsScrambling(false);
+        timeoutId = setTimeout(cyclePhrases, 2500);
       }
     };
 
-    // Start immediately
+    // Start the cycle
     cyclePhrases();
-    
-    // Set up interval for continuous cycling
-    intervalId = setInterval(cyclePhrases, 3000); // 3 seconds per phrase
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
+      if (scramblerRef.current) {
+        // Clean up any ongoing animation
+        scramblerRef.current = null;
+      }
     };
   }, [phrases]);
 
@@ -89,8 +106,19 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
         textShadow: '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
       }}
       initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 2, ease: "easeOut" }}
+      animate={{ 
+        scale: 1,
+        textShadow: isScrambling ? [
+          '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)',
+          '0 0 40px rgba(168, 85, 247, 0.6), 0 0 80px rgba(168, 85, 247, 0.4)',
+          '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
+        ] : '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
+      }}
+      transition={{ 
+        duration: 2, 
+        ease: "easeOut",
+        textShadow: { duration: 0.5, repeat: isScrambling ? Infinity : 0 }
+      }}
     >
       {currentText}
     </motion.h1>
@@ -103,7 +131,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [typedText, setTypedText] = useState('');
   const [isAIActive, setIsAIActive] = useState(false);
 
-  // All scramble phrases that will cycle continuously
+  // All scramble phrases that will cycle continuously with perfect timing
   const scramblePhases = [
     'LIORA AI',
     'YOUR THERAPIST',
@@ -237,7 +265,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               <Brain className="w-20 h-20 text-white" />
             </motion.div>
 
-            {/* Enhanced Scrambled Main Title with continuous cycling */}
+            {/* Enhanced Scrambled Main Title with perfect timing */}
             <ScrambledText phrases={scramblePhases} />
 
             <motion.div
