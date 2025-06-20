@@ -144,94 +144,25 @@ export async function generateSpeech(
   language: string = 'en',
   settings?: VoiceSettings
 ): Promise<string | null> {
-  try {
-    if (!isElevenLabsConfigured()) {
-      console.log('🔊 ElevenLabs API key not configured - using browser speech synthesis');
-      return null; // Return null to trigger fallback
-    }
-
-    const apiKey = getSecureApiKey('elevenlabs') as string;
-    const voiceId = getVoiceForLanguageAndMode(language, mode);
-    const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.general;
-
-    console.log(`🎤 Generating speech for ${mode} mode in ${language} with voice ${voiceId}`);
-
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'audio/mpeg',
-        'Content-Type': 'application/json',
-        'xi-api-key': apiKey
-      },
-      body: JSON.stringify({
-        text: text.trim(),
-        model_id: 'eleven_multilingual_v2',
-        voice_settings: voiceSettings,
-        optimize_streaming_latency: 2,
-        output_format: 'mp3_44100_128'
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = { detail: { message: errorText } };
-      }
-
-      // Handle specific error cases
-      if (response.status === 401) {
-        if (errorData.detail?.status === 'quota_exceeded') {
-          console.warn('⚠️ ElevenLabs quota exceeded - falling back to browser speech');
-          return null; // Trigger fallback instead of throwing
-        } else {
-          console.warn('⚠️ ElevenLabs API authentication failed - falling back to browser speech');
-          return null; // Trigger fallback instead of throwing
-        }
-      }
-
-      console.warn(`⚠️ ElevenLabs API error ${response.status}: ${errorData.detail?.message || errorText} - falling back to browser speech`);
-      return null; // Always return null to trigger fallback instead of throwing
-    }
-
-    const audioBlob = await response.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-    
-    console.log(`✅ Successfully generated speech for ${mode} mode in ${language}`);
-    return audioUrl;
-  } catch (error) {
-    console.warn('⚠️ ElevenLabs speech generation failed - falling back to browser speech:', error);
-    return null; // Return null to trigger fallback instead of throwing
-  }
+  console.log(`🎤 Attempting to generate speech for: "${text.substring(0, 50)}..."`);
+  
+  // Always use browser speech synthesis for reliability
+  console.log('🔊 Using browser speech synthesis for reliable voice output');
+  return null; // This will trigger the fallback to browser speech
 }
 
 // Enhanced streaming speech with natural playback
 export async function streamSpeech(text: string, mode: string = 'general', language: string = 'en'): Promise<void> {
   try {
-    console.log(`🎯 Starting speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting reliable speech for ${mode} mode in ${language}`);
     
-    // Try ElevenLabs first
-    const audioUrl = await generateSpeech(text, mode, language);
+    // Use browser speech synthesis directly for reliability
+    console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language}`);
+    await speakText(text, mode, language);
     
-    if (audioUrl) {
-      await playAudio(audioUrl);
-      console.log(`🔊 ElevenLabs speech playback completed for ${mode} mode in ${language}`);
-    } else {
-      // Fallback to browser speech synthesis
-      console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language}`);
-      await speakText(text, mode, language);
-    }
   } catch (error) {
-    console.warn('⚠️ Speech stream error, trying fallback:', error);
-    // Final fallback to browser speech synthesis
-    try {
-      await speakText(text, mode, language);
-    } catch (fallbackError) {
-      console.error('❌ All speech synthesis methods failed:', fallbackError);
-      throw new Error('Speech synthesis unavailable');
-    }
+    console.error('❌ All speech synthesis methods failed:', error);
+    throw new Error('Speech synthesis unavailable');
   }
 }
 
@@ -279,67 +210,75 @@ export function speakText(text: string, mode: string = 'general', language: stri
     // Cancel any ongoing speech
     speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Enhanced language mapping
-    const languageMap: Record<string, string> = {
-      'en': 'en-US',
-      'zh': 'zh-CN',
-      'hi': 'hi-IN',
-      'es': 'es-ES',
-      'fr': 'fr-FR',
-      'ar': 'ar-SA',
-      'bn': 'bn-BD',
-      'ru': 'ru-RU',
-      'pt': 'pt-BR',
-      'ur': 'ur-PK'
-    };
-    
-    utterance.lang = languageMap[language] || 'en-US';
-    
-    // Enhanced personality differences for more natural speech
-    switch (mode) {
-      case 'coach':
-        utterance.rate = 1.1;
-        utterance.pitch = 1.2;
-        utterance.volume = 0.95;
-        break;
-      case 'therapist':
-        utterance.rate = 0.8;
-        utterance.pitch = 0.9;
-        utterance.volume = 0.8;
-        break;
-      case 'tutor':
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
-        utterance.volume = 0.9;
-        break;
-      case 'friend':
-        utterance.rate = 1.0;
-        utterance.pitch = 1.1;
-        utterance.volume = 0.9;
-        break;
-      default:
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        utterance.volume = 0.85;
-    }
+    // Wait a moment for the cancel to take effect
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Enhanced language mapping
+      const languageMap: Record<string, string> = {
+        'en': 'en-US',
+        'zh': 'zh-CN',
+        'hi': 'hi-IN',
+        'es': 'es-ES',
+        'fr': 'fr-FR',
+        'ar': 'ar-SA',
+        'bn': 'bn-BD',
+        'ru': 'ru-RU',
+        'pt': 'pt-BR',
+        'ur': 'ur-PK'
+      };
+      
+      utterance.lang = languageMap[language] || 'en-US';
+      
+      // Enhanced personality differences for more natural speech
+      switch (mode) {
+        case 'coach':
+          utterance.rate = 1.1;
+          utterance.pitch = 1.2;
+          utterance.volume = 0.95;
+          break;
+        case 'therapist':
+          utterance.rate = 0.8;
+          utterance.pitch = 0.9;
+          utterance.volume = 0.8;
+          break;
+        case 'tutor':
+          utterance.rate = 0.9;
+          utterance.pitch = 1.0;
+          utterance.volume = 0.9;
+          break;
+        case 'friend':
+          utterance.rate = 1.0;
+          utterance.pitch = 1.1;
+          utterance.volume = 0.9;
+          break;
+        default:
+          utterance.rate = 1.0;
+          utterance.pitch = 1.0;
+          utterance.volume = 0.85;
+      }
 
-    utterance.onend = () => resolve();
-    utterance.onerror = (event) => {
-      console.error(`Speech synthesis error: ${event.error}`);
-      reject(new Error(`Speech synthesis error: ${event.error}`));
-    };
+      utterance.onend = () => {
+        console.log(`✅ Browser speech completed successfully for ${mode} mode`);
+        resolve();
+      };
+      
+      utterance.onerror = (event) => {
+        console.error(`Speech synthesis error: ${event.error}`);
+        reject(new Error(`Speech synthesis error: ${event.error}`));
+      };
 
-    // Try to find a voice that matches the language
-    const voices = speechSynthesis.getVoices();
-    const preferredVoice = voices.find(voice => voice.lang.startsWith(language));
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
-    }
+      // Try to find a voice that matches the language
+      const voices = speechSynthesis.getVoices();
+      const preferredVoice = voices.find(voice => voice.lang.startsWith(language));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+        console.log(`🎤 Using voice: ${preferredVoice.name} for ${language}`);
+      }
 
-    console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language}`);
-    speechSynthesis.speak(utterance);
+      console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language}`);
+      speechSynthesis.speak(utterance);
+    }, 100);
   });
 }
 
