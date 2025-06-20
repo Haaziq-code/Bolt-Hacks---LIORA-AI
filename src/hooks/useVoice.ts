@@ -167,6 +167,7 @@ export function useVoice(): UseVoiceReturn {
     
     setIsPlaying(false);
     dispatchAIActivity(false); // Notify brain background that speaking ended
+    toast.success('Voice playback stopped');
   }, []);
 
   const setLanguage = useCallback((language: string) => {

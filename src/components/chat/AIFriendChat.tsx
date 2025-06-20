@@ -23,7 +23,8 @@ import {
   Clock,
   Send,
   Pause,
-  Play
+  Play,
+  Square
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { useVoice } from '../../hooks/useVoice';
@@ -88,6 +89,7 @@ const AIFriendChat: React.FC = () => {
   const [currentMood, setCurrentMood] = useState<'happy' | 'sad' | 'neutral' | 'excited' | 'calm'>('neutral');
   const [relationshipLevel, setRelationshipLevel] = useState(0);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
+  const [isPlayingMessage, setIsPlayingMessage] = useState<string | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -157,9 +159,12 @@ const AIFriendChat: React.FC = () => {
     
     // Speak the greeting with gender-appropriate voice
     try {
+      setIsPlayingMessage(greetingMessage.id);
       await speak(greeting, 'friend', undefined, char.gender);
+      setIsPlayingMessage(null);
     } catch (error) {
       console.error('Failed to speak greeting:', error);
+      setIsPlayingMessage(null);
     }
   };
 
@@ -183,6 +188,8 @@ Current relationship level: ${relationshipLevel}%
 
 Remember these conversation topics: ${conversationContext.slice(-5).join(', ')}
 
+IMPORTANT: Your response must be directly relevant to what the user just said. Always acknowledge their message and respond appropriately to their specific question or statement.
+
 Respond as this character would, maintaining consistency with their personality traits and relationship level. Be natural, engaging, and remember details from our conversation.`;
 
     try {
@@ -190,7 +197,7 @@ Respond as this character would, maintaining consistency with their personality 
         userMessage,
         'friend',
         [
-          { role: 'assistant', content: personalityPrompt },
+          { role: 'system', content: personalityPrompt },
           ...messages.slice(-6).map(msg => ({ role: msg.role, content: msg.content })),
           { role: 'user', content: userMessage }
         ]
@@ -240,9 +247,12 @@ Respond as this character would, maintaining consistency with their personality 
 
       // Speak the response with character's gender-appropriate voice
       try {
+        setIsPlayingMessage(assistantMessage.id);
         await speak(response, 'friend', undefined, character.gender);
+        setIsPlayingMessage(null);
       } catch (speechError) {
         console.error('Speech error:', speechError);
+        setIsPlayingMessage(null);
       }
 
       // Update character's last interaction
@@ -358,6 +368,32 @@ Respond as this character would, maintaining consistency with their personality 
     }
   };
 
+  // Stop speaking current message
+  const stopCurrentSpeaking = () => {
+    stopSpeaking();
+    setIsPlayingMessage(null);
+  };
+
+  // Play specific message
+  const playMessage = async (message: ChatMessage) => {
+    if (message.role !== 'assistant' || !character) return;
+    
+    if (isPlayingMessage) {
+      stopSpeaking();
+      setIsPlayingMessage(null);
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    try {
+      setIsPlayingMessage(message.id);
+      await speak(message.content, 'friend', undefined, character.gender);
+      setIsPlayingMessage(null);
+    } catch (error) {
+      console.error('Failed to play message:', error);
+      setIsPlayingMessage(null);
+    }
+  };
+
   if (!character) {
     return (
       <div className="min-h-screen bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-white/30 dark:border-gray-700/30 shadow-2xl flex items-center justify-center">
@@ -462,7 +498,7 @@ Respond as this character would, maintaining consistency with their personality 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+            {isPlaying ? <Square className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </motion.button>
 
           {/* Settings */}
@@ -565,12 +601,39 @@ Respond as this character would, maintaining consistency with their personality 
                           <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                         </div>
                         
-                        {/* Timestamp */}
+                        {/* Timestamp and Actions */}
                         <div className={`flex items-center space-x-2 mt-2 text-xs text-gray-500 dark:text-gray-400 ${
                           message.role === 'user' ? 'justify-end' : 'justify-start'
                         }`}>
-                          <Clock className="w-3 h-3" />
-                          <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                          <div className="flex items-center space-x-2 bg-white/60 dark:bg-gray-700/60 backdrop-blur-sm rounded-full px-3 py-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                          </div>
+                          
+                          {message.role === 'assistant' && (
+                            <>
+                              {isPlayingMessage === message.id ? (
+                                <motion.button 
+                                  onClick={stopCurrentSpeaking}
+                                  className="p-2 bg-white/60 dark:bg-gray-700/60 rounded-full hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all text-primary-500"
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  <Square className="w-3 h-3" />
+                                </motion.button>
+                              ) : (
+                                <motion.button 
+                                  onClick={() => playMessage(message)}
+                                  className="p-2 bg-white/60 dark:bg-gray-700/60 rounded-full hover:bg-white/80 dark:hover:bg-gray-700/80 transition-all"
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  <Volume2 className="w-3 h-3" />
+                                </motion.button>
+                              )}
+                            </>
+                          )}
+                          
                           {message.emotion && (
                             <span className="px-2 py-1 bg-white/60 dark:bg-gray-700/60 rounded-full text-xs capitalize">
                               {message.emotion}

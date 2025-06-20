@@ -61,6 +61,12 @@ export const multilingualVoices = {
   }
 };
 
+// Add the new voice IDs
+multilingualVoices.en.female.coach = 'aEO01A4wXwd1O8GPgGlF';
+multilingualVoices.en.male.coach = '2BJW5coyhAzSr8STdHbE';
+multilingualVoices.en.female.friend = 'UgBBYS2sOqTuMpoF3BR0';
+multilingualVoices.en.male.friend = 'ulZgFXalzbrnPUGQGs0S';
+
 // COMPLETELY REDESIGNED voice settings for maximum naturalness
 export const naturalVoiceSettings = {
   coach: {

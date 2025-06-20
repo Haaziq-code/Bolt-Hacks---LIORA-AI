@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Bot, Clock, Volume2, Copy, Check } from 'lucide-react';
+import { User, Bot, Clock, Volume2, Copy, Check, Pause, Play, Square } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ChatMessage as ChatMessageType } from '../../types';
 import { useVoice } from '../../hooks/useVoice';
@@ -10,7 +10,7 @@ interface ChatMessageProps {
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
-  const { speak, isPlaying } = useVoice();
+  const { speak, isPlaying, stopSpeaking } = useVoice();
   const [copied, setCopied] = React.useState(false);
   const [isPlayingThis, setIsPlayingThis] = React.useState(false);
 
@@ -49,6 +49,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         setIsPlayingThis(false);
       }
     }
+  };
+
+  const handleStopSpeaking = () => {
+    stopSpeaking();
+    setIsPlayingThis(false);
   };
 
   const handleCopy = async () => {
@@ -112,16 +117,27 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               </div>
               
               {message.role === 'assistant' && (
-                <motion.button 
-                  onClick={handleSpeak}
-                  className={`p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30 ${
-                    isPlayingThis ? 'text-primary-500 animate-pulse' : ''
-                  }`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Volume2 className="w-3 h-3" />
-                </motion.button>
+                <>
+                  {isPlayingThis ? (
+                    <motion.button 
+                      onClick={handleStopSpeaking}
+                      className="p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30 text-primary-500 animate-pulse"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Square className="w-3 h-3" />
+                    </motion.button>
+                  ) : (
+                    <motion.button 
+                      onClick={handleSpeak}
+                      className="p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Volume2 className="w-3 h-3" />
+                    </motion.button>
+                  )}
+                </>
               )}
               
               <motion.button 
