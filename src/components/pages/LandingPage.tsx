@@ -39,44 +39,50 @@ interface LandingPageProps {
   onEnterApp: () => void;
 }
 
-// Enhanced Scrambled text component with continuous cycling
+// Enhanced Scrambled text component with visible cycling
 const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
-  const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentText, setCurrentText] = useState(phrases[0] || 'LIORA AI');
 
   useEffect(() => {
-    if (elementRef.current && !scramblerRef.current) {
-      scramblerRef.current = new TextScramble(elementRef.current);
-      setMounted(true);
-    }
-  }, []);
+    if (!elementRef.current) return;
 
-  useEffect(() => {
-    if (mounted && scramblerRef.current && phrases.length > 0) {
-      let counter = 0;
-      
-      const next = () => {
-        if (scramblerRef.current) {
-          scramblerRef.current.setText(phrases[counter]).then(() => {
-            setCurrentIndex(counter);
-            counter = (counter + 1) % phrases.length;
-            // Continue cycling every 2.5 seconds
-            setTimeout(next, 2500);
-          });
-        }
-      };
+    // Initialize the scrambler
+    scramblerRef.current = new TextScramble(elementRef.current);
+    
+    let intervalId: NodeJS.Timeout;
+    let currentIdx = 0;
 
-      // Start the continuous cycle
-      next();
-    }
-  }, [mounted, phrases]);
+    const cyclePhrases = () => {
+      if (scramblerRef.current && phrases.length > 0) {
+        const nextPhrase = phrases[currentIdx];
+        setCurrentText(nextPhrase);
+        setCurrentIndex(currentIdx);
+        
+        scramblerRef.current.setText(nextPhrase).then(() => {
+          // Move to next phrase
+          currentIdx = (currentIdx + 1) % phrases.length;
+        });
+      }
+    };
+
+    // Start immediately
+    cyclePhrases();
+    
+    // Set up interval for continuous cycling
+    intervalId = setInterval(cyclePhrases, 3000); // 3 seconds per phrase
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [phrases]);
 
   return (
     <motion.h1 
       ref={elementRef}
-      className="text-6xl md:text-8xl font-bold text-white mb-8 tracking-wider"
+      className="text-6xl md:text-8xl font-bold text-white mb-8 tracking-wider min-h-[120px] flex items-center justify-center"
       style={{ 
         fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif",
         fontWeight: 800,
@@ -86,7 +92,7 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
       animate={{ scale: 1 }}
       transition={{ duration: 2, ease: "easeOut" }}
     >
-      LIORA AI
+      {currentText}
     </motion.h1>
   );
 };
@@ -97,7 +103,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [typedText, setTypedText] = useState('');
   const [isAIActive, setIsAIActive] = useState(false);
 
-  // Correct scramble phrases that will cycle continuously
+  // All scramble phrases that will cycle continuously
   const scramblePhases = [
     'LIORA AI',
     'YOUR THERAPIST',
