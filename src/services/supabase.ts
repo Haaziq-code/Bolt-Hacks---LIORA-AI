@@ -112,78 +112,8 @@ export async function clearMessages(): Promise<void> {
   }
 }
 
-// Mock data for demo mode
-const mockSessions: ChatSession[] = [
-  {
-    id: '1',
-    title: 'Career Development Goals',
-    mode: 'coach',
-    messages: [
-      {
-        id: '1',
-        role: 'user',
-        content: 'I want to discuss my career goals for the next 5 years.',
-        timestamp: '2024-01-15T10:00:00Z',
-        mode: 'coach'
-      },
-      {
-        id: '2',
-        role: 'assistant',
-        content: 'Fantastic! Setting 5-year career goals shows real vision and commitment. Let\'s break this down into actionable steps that will set you up for success. What industry or role are you most passionate about pursuing?',
-        timestamp: '2024-01-15T10:01:00Z',
-        mode: 'coach'
-      }
-    ],
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:30:00Z'
-  },
-  {
-    id: '2',
-    title: 'Managing Work Stress',
-    mode: 'therapist',
-    messages: [
-      {
-        id: '3',
-        role: 'user',
-        content: 'I\'ve been feeling overwhelmed at work lately.',
-        timestamp: '2024-01-14T15:30:00Z',
-        mode: 'therapist'
-      },
-      {
-        id: '4',
-        role: 'assistant',
-        content: 'I hear you, and I want you to know that feeling overwhelmed is completely valid. Work stress can feel all-consuming sometimes. Can you tell me what specific aspects of work are contributing most to these feelings?',
-        timestamp: '2024-01-14T15:31:00Z',
-        mode: 'therapist'
-      }
-    ],
-    createdAt: '2024-01-14T15:30:00Z',
-    updatedAt: '2024-01-14T16:00:00Z'
-  },
-  {
-    id: '3',
-    title: 'Learning Python Fundamentals',
-    mode: 'tutor',
-    messages: [
-      {
-        id: '5',
-        role: 'user',
-        content: 'Can you help me understand Python dictionaries?',
-        timestamp: '2024-01-13T09:15:00Z',
-        mode: 'tutor'
-      },
-      {
-        id: '6',
-        role: 'assistant',
-        content: 'Absolutely! Python dictionaries are fantastic data structures. Think of them like a real dictionary - you look up a word (key) to find its definition (value). Let\'s start with a simple example: {\'name\': \'Alice\', \'age\': 25}. Would you like me to show you how to create and use them?',
-        timestamp: '2024-01-13T09:16:00Z',
-        mode: 'tutor'
-      }
-    ],
-    createdAt: '2024-01-13T09:15:00Z',
-    updatedAt: '2024-01-13T10:45:00Z'
-  }
-];
+// No mock sessions - start fresh
+const mockSessions: ChatSession[] = [];
 
 export async function saveSession(session: ChatSession): Promise<void> {
   try {
@@ -216,7 +146,7 @@ export async function saveSession(session: ChatSession): Promise<void> {
 export async function loadSessions(): Promise<ChatSession[]> {
   try {
     if (isDemoMode || !supabase) {
-      console.log('🔒 Demo mode: Loading mock sessions');
+      console.log('🔒 Demo mode: No premade sessions - starting fresh');
       return mockSessions;
     }
 
@@ -237,8 +167,8 @@ export async function loadSessions(): Promise<ChatSession[]> {
     })) || [];
   } catch (error) {
     console.error('Error loading sessions:', error);
-    // Always return mock data as fallback
-    return mockSessions;
+    // Always return empty array instead of mock data
+    return [];
   }
 }
 

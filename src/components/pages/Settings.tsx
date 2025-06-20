@@ -23,7 +23,8 @@ import {
   Mail,
   UserCheck,
   ToggleLeft,
-  ToggleRight
+  ToggleRight,
+  Database
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
@@ -58,7 +59,7 @@ const Settings: React.FC = () => {
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User, color: 'from-blue-500 to-cyan-500' },
     { id: 'ai-modes', label: 'AI Modes', icon: Brain, color: 'from-purple-500 to-pink-500' },
-    { id: 'learning', label: 'Learning', icon: Brain, color: 'from-green-500 to-emerald-500' },
+    { id: 'learning', label: 'Learning & Data', icon: Database, color: 'from-green-500 to-emerald-500' },
     { id: 'voice', label: 'Voice & Video', icon: Volume2, color: 'from-indigo-500 to-purple-500' },
     { id: 'emergency', label: 'Emergency', icon: Phone, color: 'from-red-500 to-pink-500' },
     { id: 'security', label: 'Security', icon: Shield, color: 'from-orange-500 to-red-500' },
@@ -267,8 +268,8 @@ const Settings: React.FC = () => {
           >
             <div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 font-heading flex items-center space-x-3">
-                <Brain className="w-8 h-8 text-green-500" />
-                <span>LIORA Learning Settings</span>
+                <Database className="w-8 h-8 text-blue-500" />
+                <span>Data & Learning Settings</span>
               </h3>
               
               {/* Learning Mode Toggle */}
@@ -330,6 +331,62 @@ const Settings: React.FC = () => {
                     </ul>
                   </motion.div>
                 )}
+              </div>
+
+              {/* Data Saving Preference */}
+              <div className="p-8 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-3xl border-2 border-blue-200 dark:border-blue-700 mb-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl">
+                      <Database className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-900 dark:text-white">Save Conversation Data</h4>
+                      <p className="text-gray-600 dark:text-gray-400 text-lg">
+                        Choose whether to save your conversations for future reference and learning
+                      </p>
+                    </div>
+                  </div>
+                  <motion.button
+                    onClick={() => setPreferences(prev => ({ ...prev, saveData: !prev.saveData }))}
+                    className={`relative w-20 h-10 rounded-full transition-all duration-300 ${
+                      preferences.saveData !== false
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500' 
+                        : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div
+                      className="absolute top-1 w-8 h-8 bg-white rounded-full shadow-lg"
+                      animate={{ x: preferences.saveData !== false ? 44 : 4 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  </motion.button>
+                </div>
+                
+                <div className="mt-6 p-6 bg-white/60 dark:bg-gray-800/60 rounded-2xl">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h6 className="font-bold text-blue-700 dark:text-blue-300 mb-2">✅ When Enabled:</h6>
+                      <ul className="space-y-1 text-blue-600 dark:text-blue-400 text-sm">
+                        <li>• Conversations saved for future reference</li>
+                        <li>• Better personalized responses over time</li>
+                        <li>• Progress tracking and analytics</li>
+                        <li>• Export conversation history</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h6 className="font-bold text-gray-700 dark:text-gray-300 mb-2">❌ When Disabled:</h6>
+                      <ul className="space-y-1 text-gray-600 dark:text-gray-400 text-sm">
+                        <li>• Conversations not saved permanently</li>
+                        <li>• Fresh start each session</li>
+                        <li>• Maximum privacy protection</li>
+                        <li>• No conversation history</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Crisis Detection */}

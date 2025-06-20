@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Check, Crown, Zap, Shield, Headphones, Sparkles, CreditCard, Lock, Star } from 'lucide-react';
+import { X, Check, Crown, Zap, Shield, Headphones, Sparkles, CreditCard, Lock, Star, Brain, Heart, Users, Globe, Video, Mic, Database, Target, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PricingPlan } from '../../types';
 import { purchaseSubscription, simulateProUpgrade } from '../../services/revenuecat';
@@ -26,14 +26,16 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
       price: 29,
       interval: 'monthly',
       features: [
-        'Unlimited AI conversations',
-        'Priority response times',
-        'Advanced personality modes',
-        'Emotional check-ins',
-        'Progress tracking',
-        'Custom voice selection',
-        'Session recordings',
-        'Premium support'
+        'Unlimited AI conversations across all modes',
+        'Priority response times (2x faster)',
+        'Advanced emotional intelligence & crisis detection',
+        'Personalized learning mode with memory retention',
+        'Custom voice selection & ultra-realistic speech',
+        'HD video chat with expressive AI avatar',
+        'Session recordings & conversation exports',
+        'Premium 24/7 priority support',
+        'Advanced analytics & mood tracking',
+        'Multi-language support (12+ languages)'
       ]
     },
     {
@@ -43,14 +45,18 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
       interval: 'yearly',
       popular: true,
       features: [
-        'Everything in Monthly',
-        '2 months free',
-        'Early access to new features',
-        'Priority customer support',
-        'Advanced analytics',
-        'Custom AI training',
-        'API access',
-        'White-label options'
+        'Everything in Monthly Plan included',
+        'Save $58 per year (2 months free)',
+        'Early access to new AI personalities',
+        'Beta features & experimental capabilities',
+        'Advanced relationship building algorithms',
+        'Custom AI training on your preferences',
+        'API access for developers',
+        'White-label options for businesses',
+        'Dedicated account manager',
+        'Custom integrations & enterprise features',
+        'Lifetime conversation history backup',
+        'Advanced crisis intervention protocols'
       ]
     }
   ];
@@ -90,17 +96,17 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       <motion.div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start justify-center z-50 p-4 overflow-y-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
       >
         <motion.div 
-          className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/30 dark:border-gray-700/30"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
+          className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl max-w-7xl w-full mt-8 mb-8 shadow-2xl border border-white/30 dark:border-gray-700/30"
+          initial={{ scale: 0.9, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 50 }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -135,7 +141,7 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Features Overview */}
+          {/* Enhanced Features Overview */}
           <motion.div 
             className="p-8 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-gray-800 dark:to-gray-700"
             initial={{ y: 20, opacity: 0 }}
@@ -147,24 +153,34 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: Zap, title: 'Priority Responses', color: 'text-primary-500' },
-                { icon: Shield, title: 'Advanced Security', color: 'text-secondary-500' },
-                { icon: Headphones, title: 'Premium Support', color: 'text-accent-500' },
-                { icon: Sparkles, title: 'Unlimited Access', color: 'text-success-500' }
+                { icon: Brain, title: 'Advanced AI Intelligence', desc: 'Enhanced emotional awareness & learning', color: 'text-violet-500' },
+                { icon: Heart, title: 'Crisis Protection', desc: 'Advanced safety & emergency protocols', color: 'text-green-500' },
+                { icon: Video, title: 'HD Video Chat', desc: 'Realistic AI avatar conversations', color: 'text-blue-500' },
+                { icon: Globe, title: 'Global Access', desc: '12+ languages with native speakers', color: 'text-cyan-500' },
+                { icon: Database, title: 'Unlimited Memory', desc: 'Lifetime conversation history', color: 'text-purple-500' },
+                { icon: Target, title: '100% Accuracy', desc: 'Verified sources & fact-checking', color: 'text-orange-500' },
+                { icon: Lightbulb, title: 'Personalized Learning', desc: 'AI adapts to your unique style', color: 'text-yellow-500' },
+                { icon: Shield, title: 'Enterprise Security', desc: 'Bank-level encryption & privacy', color: 'text-red-500' }
               ].map((feature, index) => (
                 <motion.div 
                   key={feature.title}
-                  className="flex items-center space-x-4 p-4 bg-white/50 dark:bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-white/30 dark:border-gray-700/30"
+                  className="flex flex-col items-center space-y-3 p-6 bg-white/50 dark:bg-gray-800/50 rounded-2xl backdrop-blur-sm border border-white/30 dark:border-gray-700/30"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
                 >
                   <div className={`w-12 h-12 ${feature.color} bg-current/10 rounded-xl flex items-center justify-center`}>
                     <feature.icon className={`w-6 h-6 ${feature.color}`} />
                   </div>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    {feature.title}
-                  </span>
+                  <div className="text-center">
+                    <h4 className="font-bold text-gray-900 dark:text-white text-sm">
+                      {feature.title}
+                    </h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {feature.desc}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -194,8 +210,10 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.6, type: 'spring' }}
                       >
-                        <span className="bg-gradient-to-r from-accent-500 to-accent-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-xl">
-                          Most Popular
+                        <span className="bg-gradient-to-r from-accent-500 to-accent-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-xl flex items-center space-x-2">
+                          <Star className="w-4 h-4" />
+                          <span>Most Popular</span>
+                          <Sparkles className="w-4 h-4" />
                         </span>
                       </motion.div>
                     )}
@@ -219,7 +237,7 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.7 }}
                         >
-                          Save $58 per year
+                          💰 Save $58 per year (17% off)
                         </motion.p>
                       )}
                     </div>
@@ -228,13 +246,13 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
                       {plan.features.map((feature, featureIndex) => (
                         <motion.li 
                           key={featureIndex} 
-                          className="flex items-center space-x-3"
+                          className="flex items-start space-x-3"
                           initial={{ x: -10, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.8 + featureIndex * 0.05 }}
                         >
-                          <Check className="w-5 h-5 text-success-500 flex-shrink-0" />
-                          <span className="text-gray-700 dark:text-gray-300">
+                          <Check className="w-5 h-5 text-success-500 flex-shrink-0 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
                             {feature}
                           </span>
                         </motion.li>
@@ -279,7 +297,7 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
             transition={{ delay: 0.9 }}
           >
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              <div className="flex items-center justify-center space-x-4 mb-4">
+              <div className="flex items-center justify-center space-x-6 mb-4">
                 <div className="flex items-center space-x-2">
                   <Shield className="w-4 h-4 text-green-500" />
                   <span>Secure Payment</span>
@@ -292,8 +310,12 @@ const ProModal: React.FC<ProModalProps> = ({ isOpen, onClose }) => {
                   <Lock className="w-4 h-4 text-purple-500" />
                   <span>SSL Encrypted</span>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span>30-Day Guarantee</span>
+                </div>
               </div>
-              <p className="text-lg mb-2">30-day money-back guarantee • Cancel anytime • Secure payments</p>
+              <p className="text-lg mb-2">✅ 30-day money-back guarantee • ❌ Cancel anytime • 🔒 Secure payments</p>
               <p>
                 Powered by RevenueCat & Stripe • Questions? Contact{' '}
                 <a href="mailto:support@liora-ai.life" className="text-primary-600 hover:text-primary-700 font-semibold">

@@ -38,7 +38,7 @@ interface LandingPageProps {
   onEnterApp: () => void;
 }
 
-// Scrambled text component
+// Scrambled text component with correct phrases
 const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
@@ -89,11 +89,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [typedText, setTypedText] = useState('');
 
+  // Updated scramble phrases
   const scramblePhases = [
     'LIORA AI',
-    'NEURAL AI',
-    'FUTURE AI',
-    'LIORA AI'
+    'YOUR THERAPIST',
+    'TUTOR',
+    'FRIEND'
   ];
 
   const demoMessages = [
@@ -157,16 +158,31 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const getModeColor = (mode: string) => {
-    switch (mode) {
-      case 'therapist':
-        return 'from-green-500 to-emerald-500';
-      case 'tutor':
-        return 'from-violet-500 to-purple-500';
-      case 'friend':
-        return 'from-pink-500 to-rose-500';
-      default:
-        return 'from-neon-500 to-cyan-500';
+  // Enhanced color schemes for light and dark themes
+  const getModeColor = (mode: string, isDark: boolean = true) => {
+    if (isDark) {
+      switch (mode) {
+        case 'therapist':
+          return 'from-green-500 to-emerald-500';
+        case 'tutor':
+          return 'from-violet-500 to-purple-500';
+        case 'friend':
+          return 'from-pink-500 to-rose-500';
+        default:
+          return 'from-neon-500 to-cyan-500';
+      }
+    } else {
+      // Light theme colors - more vibrant and contrasted
+      switch (mode) {
+        case 'therapist':
+          return 'from-green-600 to-emerald-700';
+        case 'tutor':
+          return 'from-indigo-600 to-purple-700';
+        case 'friend':
+          return 'from-rose-600 to-pink-700';
+        default:
+          return 'from-blue-600 to-cyan-700';
+      }
     }
   };
 

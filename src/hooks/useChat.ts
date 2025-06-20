@@ -32,10 +32,20 @@ export function useChat(mode: AIMode): UseChatReturn {
   const hasInitialized = useRef(false);
   const hasLoadedFromMemory = useRef(false);
 
-  // Load chat history from Supabase on mount
+  // Load chat history from Supabase on mount - but only if user wants data saved
   useEffect(() => {
     const loadChatHistory = async () => {
       if (hasLoadedFromMemory.current) return;
+      
+      // Check if user wants data saved (default to true for backward compatibility)
+      const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+      const saveData = userPreferences.saveData !== false;
+      
+      if (!saveData) {
+        console.log('🔒 Data saving disabled - starting fresh session');
+        hasLoadedFromMemory.current = true;
+        return;
+      }
       
       try {
         const savedMessages = await getMessages();
@@ -83,11 +93,16 @@ export function useChat(mode: AIMode): UseChatReturn {
     conversationHistory.current = [{ role: 'assistant', content: greeting }];
     hasInitialized.current = true;
 
-    // Save greeting to Supabase
-    try {
-      await saveMessage({ sender: 'ai', content: greeting });
-    } catch (error) {
-      console.error('Failed to save greeting:', error);
+    // Save greeting only if user wants data saved
+    const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+    const saveData = userPreferences.saveData !== false;
+    
+    if (saveData) {
+      try {
+        await saveMessage({ sender: 'ai', content: greeting });
+      } catch (error) {
+        console.error('Failed to save greeting:', error);
+      }
     }
   }, [mode, currentLanguage]);
 
@@ -110,11 +125,16 @@ export function useChat(mode: AIMode): UseChatReturn {
     // Add to conversation history
     conversationHistory.current.push({ role: 'user', content: content.trim() });
 
-    // Save user message to Supabase
-    try {
-      await saveMessage({ sender: 'user', content: content.trim() });
-    } catch (error) {
-      console.error('Failed to save user message:', error);
+    // Save user message only if user wants data saved
+    const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+    const saveData = userPreferences.saveData !== false;
+    
+    if (saveData) {
+      try {
+        await saveMessage({ sender: 'user', content: content.trim() });
+      } catch (error) {
+        console.error('Failed to save user message:', error);
+      }
     }
 
     try {
@@ -141,11 +161,13 @@ export function useChat(mode: AIMode): UseChatReturn {
       // Add to conversation history
       conversationHistory.current.push({ role: 'assistant', content: aiResponse });
 
-      // Save AI response to Supabase
-      try {
-        await saveMessage({ sender: 'ai', content: aiResponse });
-      } catch (error) {
-        console.error('Failed to save AI message:', error);
+      // Save AI response only if user wants data saved
+      if (saveData) {
+        try {
+          await saveMessage({ sender: 'ai', content: aiResponse });
+        } catch (error) {
+          console.error('Failed to save AI message:', error);
+        }
       }
 
       // Speak the response with language support
@@ -156,24 +178,26 @@ export function useChat(mode: AIMode): UseChatReturn {
         // Don't show error to user for speech issues
       }
 
-      // Save session
-      const session: ChatSession = {
-        id: currentSession?.id || Date.now().toString(),
-        title: currentSession?.title || generateSessionTitle(content),
-        mode,
-        messages: [...messages, userMessage, assistantMessage],
-        createdAt: currentSession?.createdAt || new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        language: currentLanguage
-      };
+      // Save session only if user wants data saved
+      if (saveData) {
+        const session: ChatSession = {
+          id: currentSession?.id || Date.now().toString(),
+          title: currentSession?.title || generateSessionTitle(content),
+          mode,
+          messages: [...messages, userMessage, assistantMessage],
+          createdAt: currentSession?.createdAt || new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          language: currentLanguage
+        };
 
-      setCurrentSession(session);
-      
-      try {
-        await saveSession(session);
-      } catch (saveError) {
-        console.error('Failed to save session:', saveError);
-        // Don't show error to user for save issues in demo mode
+        setCurrentSession(session);
+        
+        try {
+          await saveSession(session);
+        } catch (saveError) {
+          console.error('Failed to save session:', saveError);
+          // Don't show error to user for save issues in demo mode
+        }
       }
 
     } catch (error) {
@@ -196,13 +220,18 @@ export function useChat(mode: AIMode): UseChatReturn {
     hasInitialized.current = false;
     hasLoadedFromMemory.current = false;
 
-    // Clear messages from Supabase
-    try {
-      const { clearMessages } = await import('../services/supabase');
-      await clearMessages();
-      console.log('🔒 Chat memory cleared from secure storage');
-    } catch (error) {
-      console.error('Failed to clear chat memory:', error);
+    // Clear messages from Supabase only if user wants data saved
+    const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+    const saveData = userPreferences.saveData !== false;
+    
+    if (saveData) {
+      try {
+        const { clearMessages } = await import('../services/supabase');
+        await clearMessages();
+        console.log('🔒 Chat memory cleared from secure storage');
+      } catch (error) {
+        console.error('Failed to clear chat memory:', error);
+      }
     }
   }, []);
 

@@ -86,7 +86,7 @@ function App() {
         return <LandingPage onEnterApp={() => setCurrentPage('home')} />;
       case 'home':
         return (
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 h-full p-8">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 h-full p-8 pt-32">
             <div className="xl:col-span-3">
               <ChatInterface onBack={() => setCurrentPage('landing')} />
             </div>
@@ -96,22 +96,34 @@ function App() {
           </div>
         );
       case 'memory':
-        return <Memory />;
+        return (
+          <div className="pt-32 px-8">
+            <Memory />
+          </div>
+        );
       case 'therapist':
       case 'tutor':
       case 'friend':
         return (
-          <div className="p-8">
+          <div className="p-8 pt-32">
             <ChatInterface onBack={handleBackToHome} />
           </div>
         );
       case 'settings':
-        return <Settings />;
+        return (
+          <div className="pt-32 px-8">
+            <Settings />
+          </div>
+        );
       case 'about':
-        return <About />;
+        return (
+          <div className="pt-32 px-8">
+            <About />
+          </div>
+        );
       default:
         return (
-          <div className="p-8">
+          <div className="p-8 pt-32">
             <ChatInterface onBack={handleBackToHome} />
           </div>
         );
@@ -281,6 +293,7 @@ function App() {
               transition={{ 
                 duration: 0.6,
                 ease: [0.25, 0.46, 0.45, 0.94]
+              
               }}
             >
               {renderMainContent()}
