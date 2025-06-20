@@ -41,7 +41,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
         const gender = userPreferences?.gender || 'female';
         
-        await speak(message.content, message.mode, message.language, gender);
+        // Use the message's language if available, otherwise use current language
+        const messageLanguage = message.language || 'en';
+        console.log(`🎤 Playing message in language: ${messageLanguage} with ${gender} voice`);
+        
+        await speak(message.content, message.mode, messageLanguage, gender);
       } catch (error) {
         console.error('Failed to play audio:', error);
         toast.error('Failed to play audio');

@@ -42,18 +42,18 @@ export function useVoice(): UseVoiceReturn {
     dispatchAIActivity(true); // Notify brain background of AI activity
     
     try {
-      console.log(`🎤 Starting natural AI speech for ${mode} mode in ${targetLanguage} with ${gender} voice: "${text.substring(0, 50)}..."`);
+      console.log(`🎤 Starting NATIVE ${targetLanguage} speech for ${mode} mode with ${gender} voice: "${text.substring(0, 50)}..."`);
       
-      // Use enhanced AI-powered speech generation with gender support
+      // Use enhanced AI-powered speech generation with native language support
       await streamSpeech(text, mode, targetLanguage, gender);
       
-      console.log(`✅ Natural AI speech completed successfully for ${mode} mode in ${targetLanguage} with ${gender} voice`);
+      console.log(`✅ NATIVE ${targetLanguage} speech completed successfully for ${mode} mode with ${gender} voice`);
     } catch (error) {
       console.error('❌ AI speech error:', error);
       
-      // Enhanced fallback with gender and language support
+      // Enhanced fallback with native language support
       try {
-        console.log(`⚠️ Using enhanced browser speech synthesis for ${targetLanguage} with ${gender} voice`);
+        console.log(`⚠️ Using enhanced browser speech synthesis for NATIVE ${targetLanguage} with ${gender} voice`);
         await speakText(text, mode, targetLanguage, gender);
         console.log('✅ Enhanced browser speech completed');
       } catch (fallbackError) {
@@ -172,7 +172,7 @@ export function useVoice(): UseVoiceReturn {
 
   const setLanguage = useCallback((language: string) => {
     setCurrentLanguage(language);
-    console.log(`🌍 Language changed to: ${language}`);
+    console.log(`🌍 Voice language changed to: ${language}`);
   }, []);
 
   const checkUsage = useCallback(async () => {
