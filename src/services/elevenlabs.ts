@@ -13,61 +13,71 @@ export const multilingualVoices = {
     coach: 'pNInz6obpgDQGcFmaJgB', // Adam - energetic English
     therapist: 'EXAVITQu4vr4xnSDxMaL', // Bella - calm English
     tutor: '21m00Tcm4TlvDq8ikWAM', // Rachel - clear English
-    general: 'AZnzlk1XvdvUeBnXmlld' // Domi - friendly English
+    general: 'AZnzlk1XvdvUeBnXmlld', // Domi - friendly English
+    friend: 'EXAVITQu4vr4xnSDxMaL' // Bella - warm and friendly
   },
   zh: {
     coach: 'XrExE9yKIg1WjnnlVkGX', // Mandarin energetic
     therapist: 'ThT5KcBeYPX3keUQqHPh', // Mandarin calm
     tutor: 'SOYHLrjzK2X1ezoPC6cr', // Mandarin clear
-    general: 'XrExE9yKIg1WjnnlVkGX' // Mandarin friendly
+    general: 'XrExE9yKIg1WjnnlVkGX', // Mandarin friendly
+    friend: 'ThT5KcBeYPX3keUQqHPh'
   },
   hi: {
     coach: 'pqHfZKP75CvOlQylNhV4', // Hindi energetic
     therapist: 'IKne3meq5aSn9XLyUdCD', // Hindi calm
     tutor: 'bIHbv24MWmeRgasZH58o', // Hindi clear
-    general: 'pqHfZKP75CvOlQylNhV4' // Hindi friendly
+    general: 'pqHfZKP75CvOlQylNhV4', // Hindi friendly
+    friend: 'IKne3meq5aSn9XLyUdCD'
   },
   es: {
     coach: 'VR6AewLTigWG4xSOukaG', // Spanish energetic
     therapist: 'jsCqWAovK2LkecY7zXl4', // Spanish calm
     tutor: 'jBpfuIE2acCO8z3wKNLl', // Spanish clear
-    general: 'VR6AewLTigWG4xSOukaG' // Spanish friendly
+    general: 'VR6AewLTigWG4xSOukaG', // Spanish friendly
+    friend: 'jsCqWAovK2LkecY7zXl4'
   },
   fr: {
     coach: 'cgSgspJ2msm6clMCkdW9', // French energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // French calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // French clear
-    general: 'cgSgspJ2msm6clMCkdW9' // French friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // French friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   },
   ar: {
     coach: 'cgSgspJ2msm6clMCkdW9', // Arabic energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // Arabic calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // Arabic clear
-    general: 'cgSgspJ2msm6clMCkdW9' // Arabic friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // Arabic friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   },
   bn: {
     coach: 'cgSgspJ2msm6clMCkdW9', // Bengali energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // Bengali calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // Bengali clear
-    general: 'cgSgspJ2msm6clMCkdW9' // Bengali friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // Bengali friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   },
   ru: {
     coach: 'cgSgspJ2msm6clMCkdW9', // Russian energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // Russian calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // Russian clear
-    general: 'cgSgspJ2msm6clMCkdW9' // Russian friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // Russian friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   },
   pt: {
     coach: 'cgSgspJ2msm6clMCkdW9', // Portuguese energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // Portuguese calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // Portuguese clear
-    general: 'cgSgspJ2msm6clMCkdW9' // Portuguese friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // Portuguese friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   },
   ur: {
     coach: 'cgSgspJ2msm6clMCkdW9', // Urdu energetic
     therapist: 'cgSgspJ2msm6clMCkdW9', // Urdu calm
     tutor: 'cgSgspJ2msm6clMCkdW9', // Urdu clear
-    general: 'cgSgspJ2msm6clMCkdW9' // Urdu friendly
+    general: 'cgSgspJ2msm6clMCkdW9', // Urdu friendly
+    friend: 'cgSgspJ2msm6clMCkdW9'
   }
 };
 
@@ -89,6 +99,12 @@ export const naturalVoiceSettings = {
     stability: 0.6, // Clear but engaging
     similarity_boost: 0.85,
     style: 0.5, // Balanced engagement
+    use_speaker_boost: true
+  },
+  friend: {
+    stability: 0.5, // Natural conversation
+    similarity_boost: 0.8,
+    style: 0.6, // Friendly and warm
     use_speaker_boost: true
   },
   general: {
@@ -241,6 +257,7 @@ export async function playAudio(audioUrl: string): Promise<void> {
       audio.play().catch(reject);
     };
     
+    // Set a timeout for loading
     setTimeout(() => {
       if (audio.readyState < 2) {
         reject(new Error('Audio loading timeout'));
@@ -259,6 +276,7 @@ export function speakText(text: string, mode: string = 'general', language: stri
       return;
     }
 
+    // Cancel any ongoing speech
     speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
@@ -296,6 +314,11 @@ export function speakText(text: string, mode: string = 'general', language: stri
         utterance.pitch = 1.0;
         utterance.volume = 0.9;
         break;
+      case 'friend':
+        utterance.rate = 1.0;
+        utterance.pitch = 1.1;
+        utterance.volume = 0.9;
+        break;
       default:
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
@@ -315,6 +338,7 @@ export function speakText(text: string, mode: string = 'general', language: stri
       utterance.voice = preferredVoice;
     }
 
+    console.log(`🔊 Speaking with browser synthesis: ${mode} mode in ${language}`);
     speechSynthesis.speak(utterance);
   });
 }

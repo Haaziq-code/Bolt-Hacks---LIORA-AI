@@ -60,7 +60,7 @@ export function useVoice(): UseVoiceReturn {
         console.error('❌ Enhanced browser speech error:', fallbackError);
         // Only show error for non-interruption errors
         if (!fallbackError.message.includes('interrupted')) {
-          toast.error('Voice temporarily unavailable - please check your ElevenLabs API key');
+          toast.error('Voice temporarily unavailable');
         }
       }
     } finally {
