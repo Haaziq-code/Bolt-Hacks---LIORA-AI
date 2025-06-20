@@ -15,7 +15,6 @@ import TavusWidget from './components/ui/TavusWidget';
 import ParticleSystem from './components/ui/ParticleSystem';
 import BrainBackground from './components/ui/BrainBackground';
 import Enhanced3DBackground from './components/ui/Enhanced3DBackground';
-import IntroAnimation from './components/ui/IntroAnimation';
 import { checkSubscriptionStatus } from './services/revenuecat';
 
 function App() {
@@ -24,8 +23,6 @@ function App() {
   const [isProModalOpen, setIsProModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAIActive, setIsAIActive] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
-  const [introComplete, setIntroComplete] = useState(false);
 
   useEffect(() => {
     // Check for saved theme preference or default to light mode
@@ -59,22 +56,6 @@ function App() {
 
     window.addEventListener('ai-activity', handleAIActivity as EventListener);
     return () => window.removeEventListener('ai-activity', handleAIActivity as EventListener);
-  }, []);
-
-  // Handle intro completion
-  const handleIntroComplete = () => {
-    setShowIntro(false);
-    setIntroComplete(true);
-    // Mark intro as seen
-    localStorage.setItem('liora-intro-seen', 'true');
-  };
-
-  // Always show the new ink animation for now (for testing)
-  useEffect(() => {
-    // TESTING: Always show the new ink-in-water animation
-    console.log('🎬 Showing new ink-in-water animation');
-    setShowIntro(true);
-    setIntroComplete(false);
   }, []);
 
   const toggleTheme = () => {
@@ -135,15 +116,6 @@ function App() {
         );
     }
   };
-
-  // Show the NEW ink-in-water animation first
-  if (showIntro) {
-    return (
-      <AppProvider>
-        <IntroAnimation onComplete={handleIntroComplete} />
-      </AppProvider>
-    );
-  }
 
   // Show landing page without nav/header
   if (currentPage === 'landing') {
