@@ -446,7 +446,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onBack }) => {
             {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </motion.button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
