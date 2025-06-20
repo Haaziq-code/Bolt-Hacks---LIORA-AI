@@ -12,6 +12,7 @@ interface ChatMessageProps {
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
   const { speak, isPlaying } = useVoice();
   const [copied, setCopied] = React.useState(false);
+  const [isPlayingThis, setIsPlayingThis] = React.useState(false);
 
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -25,6 +26,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         return 'from-green-500 to-emerald-500';
       case 'tutor':
         return 'from-indigo-500 to-purple-500';
+      case 'friend':
+        return 'from-pink-500 to-rose-500';
       default:
         return 'from-primary-500 to-accent-500';
     }
@@ -33,9 +36,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
   const handleSpeak = async () => {
     if (message.role === 'assistant') {
       try {
-        await speak(message.content, message.mode);
+        setIsPlayingThis(true);
+        // Get user gender preference from localStorage
+        const userPreferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+        const gender = userPreferences?.gender || 'female';
+        
+        await speak(message.content, message.mode, message.language, gender);
       } catch (error) {
+        console.error('Failed to play audio:', error);
         toast.error('Failed to play audio');
+      } finally {
+        setIsPlayingThis(false);
       }
     }
   };
@@ -103,12 +114,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               {message.role === 'assistant' && (
                 <motion.button 
                   onClick={handleSpeak}
-                  className="p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30"
+                  className={`p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all border border-white/30 dark:border-gray-700/30 ${
+                    isPlayingThis ? 'text-primary-500 animate-pulse' : ''
+                  }`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  disabled={isPlaying}
                 >
-                  <Volume2 className={`w-3 h-3 ${isPlaying ? 'animate-pulse text-primary-500' : ''}`} />
+                  <Volume2 className="w-3 h-3" />
                 </motion.button>
               )}
               

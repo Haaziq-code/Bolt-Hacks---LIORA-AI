@@ -128,11 +128,49 @@ export async function generateSpeech(
   gender: string = 'female',
   settings?: VoiceSettings
 ): Promise<string | null> {
-  console.log(`🎤 Attempting to generate ${gender} voice for: "${text.substring(0, 50)}..."`);
-  
-  // Always use browser speech synthesis for reliability
-  console.log(`🔊 Using browser speech synthesis for reliable ${gender} voice output`);
-  return null; // This will trigger the fallback to browser speech
+  try {
+    if (!isElevenLabsConfigured()) {
+      console.log('🔒 ElevenLabs API key not configured - using browser speech synthesis');
+      return null; // Return null to trigger fallback
+    }
+
+    const apiKey = getSecureApiKey('elevenlabs') as string;
+    const voiceId = getVoiceForLanguageAndMode(language, mode, gender);
+    const voiceSettings = settings || naturalVoiceSettings[mode as keyof typeof naturalVoiceSettings] || naturalVoiceSettings.general;
+
+    console.log(`🎤 Generating natural ${gender} speech for ${mode} mode in ${language} with voice ${voiceId}`);
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'audio/mpeg',
+        'Content-Type': 'application/json',
+        'xi-api-key': apiKey
+      },
+      body: JSON.stringify({
+        text: text.trim(),
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: voiceSettings,
+        optimize_streaming_latency: 2,
+        output_format: 'mp3_44100_128'
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ ElevenLabs API error: ${response.status} - ${errorText}`);
+      throw new Error(`ElevenLabs API error: ${response.status}`);
+    }
+
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    
+    console.log(`✅ Successfully generated natural ${gender} speech for ${mode} mode in ${language}`);
+    return audioUrl;
+  } catch (error) {
+    console.error('❌ ElevenLabs speech generation error:', error);
+    return null; // Return null to trigger fallback instead of throwing
+  }
 }
 
 // Enhanced streaming speech with gender-appropriate voices
@@ -143,15 +181,28 @@ export async function streamSpeech(
   gender: string = 'female'
 ): Promise<void> {
   try {
-    console.log(`🎯 Starting reliable ${gender} speech for ${mode} mode in ${language}`);
+    console.log(`🎯 Starting natural ${gender} speech for ${mode} mode in ${language}`);
     
-    // Use browser speech synthesis directly for reliability with gender preference
-    console.log(`🔊 Using browser speech synthesis for ${mode} mode in ${language} with ${gender} voice`);
-    await speakText(text, mode, language, gender);
+    // Try ElevenLabs first
+    const audioUrl = await generateSpeech(text, mode, language, gender);
     
+    if (audioUrl) {
+      await playAudio(audioUrl);
+      console.log(`🔊 ElevenLabs speech playback completed for ${mode} mode in ${language} with ${gender} voice`);
+    } else {
+      // Fallback to browser speech synthesis
+      console.log(`🔊 Falling back to browser speech synthesis for ${mode} mode in ${language} with ${gender} voice`);
+      await speakText(text, mode, language, gender);
+    }
   } catch (error) {
-    console.error('❌ All speech synthesis methods failed:', error);
-    throw new Error('Speech synthesis unavailable');
+    console.error('❌ Speech stream error, trying fallback:', error);
+    // Final fallback to browser speech synthesis
+    try {
+      await speakText(text, mode, language, gender);
+    } catch (fallbackError) {
+      console.error('❌ All speech synthesis methods failed:', fallbackError);
+      throw new Error('Speech synthesis unavailable');
+    }
   }
 }
 

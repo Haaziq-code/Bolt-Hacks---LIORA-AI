@@ -27,7 +27,7 @@ export function useChat(mode: AIMode): UseChatReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [currentSession, setCurrentSession] = useState<ChatSession | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState(detectUserLanguage());
-  const conversationHistory = useRef<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const conversationHistory = useRef<Array<{role: 'user' | 'assistant' | 'system', content: string}>>([]);
   const { speak, setLanguage: setVoiceLanguage } = useVoice();
   const hasInitialized = useRef(false);
   const hasLoadedFromMemory = useRef(false);
@@ -139,7 +139,7 @@ export function useChat(mode: AIMode): UseChatReturn {
 
     try {
       // Generate AI response with conversation context and language support using Gemini
-      console.log('🤖 Generating Gemini AI response...');
+      console.log('🤖 Generating natural, human-like AI response...');
       const aiResponse = await generateAIResponse(
         content.trim(), 
         mode, 
@@ -170,9 +170,12 @@ export function useChat(mode: AIMode): UseChatReturn {
         }
       }
 
-      // Speak the response with language support
+      // Get user gender preference for voice
+      const userGender = userPreferences?.gender || 'female';
+
+      // Speak the response with language and gender support
       try {
-        await speak(aiResponse, mode, currentLanguage);
+        await speak(aiResponse, mode, currentLanguage, userGender);
       } catch (speechError) {
         console.error('Speech error:', speechError);
         // Don't show error to user for speech issues

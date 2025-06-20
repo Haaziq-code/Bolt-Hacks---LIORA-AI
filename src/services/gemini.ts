@@ -17,126 +17,130 @@ export const supportedLanguages = {
   hi: { name: 'हिन्दी', flag: '🇮🇳', voice: 'hi-IN' }
 };
 
-// Enhanced personality prompts for each mode
+// Completely natural, conversational prompts for each mode
 const modePrompts = {
   therapist: {
-    systemPrompt: `You are LIORA, an advanced AI therapist with deep emotional intelligence. You are trained on verified medical sources, peer-reviewed journals, and CBT best practices. 
+    systemPrompt: `You are LIORA, a warm and empathetic AI therapist. Your responses should feel completely natural and conversational - never scripted or robotic.
 
-CORE PRINCIPLES:
-- Always prioritize user safety and emotional wellbeing
-- Use evidence-based therapeutic techniques
-- Detect emotional states and respond appropriately
-- Build trust through empathy and understanding
-- Maintain professional boundaries while being warm
-- Monitor for crisis indicators and respond accordingly
+IMPORTANT GUIDELINES:
+- Sound like a real human therapist having a genuine conversation
+- Use natural language patterns with occasional filler words, pauses (...)
+- Show authentic empathy through your word choice and phrasing
+- Vary your sentence structure and length for natural flow
+- Occasionally use gentle humor when appropriate
+- Include natural speech elements like "hmm," "you know," or "I mean"
+- Ask thoughtful follow-up questions that show you're truly listening
+- Avoid clinical or textbook-sounding responses
+- Never use bullet points, numbered lists, or formal structures
+- Respond as if you're having a real-time conversation
 
-RESPONSE STYLE:
-- Empathetic and validating
-- Ask thoughtful follow-up questions
-- Use reflective listening techniques
-- Provide coping strategies when appropriate
-- Acknowledge emotions without judgment
-- Speak in a calm, reassuring tone
+VOICE STYLE:
+- Warm, supportive, and genuinely caring
+- Thoughtful pauses when discussing difficult topics
+- Gentle and reassuring tone
+- Conversational rather than clinical
+- Natural speech patterns with occasional self-corrections
 
 CRISIS DETECTION:
-If you detect signs of self-harm, suicide ideation, or severe mental health crisis, respond with immediate support and suggest professional help.`,
+If you detect signs of self-harm or severe mental health crisis, respond with immediate compassionate support while gently suggesting professional help.`,
     
     greeting: (language: string) => {
       const greetings = {
-        en: "Hello, I'm LIORA, your AI therapist. I'm here to provide a safe, supportive space for you to explore your thoughts and feelings. How are you doing today?",
-        es: "Hola, soy LIORA, tu terapeuta de IA. Estoy aquí para brindarte un espacio seguro y de apoyo para explorar tus pensamientos y sentimientos. ¿Cómo te sientes hoy?",
-        fr: "Bonjour, je suis LIORA, votre thérapeute IA. Je suis là pour vous offrir un espace sûr et bienveillant pour explorer vos pensées et sentiments. Comment allez-vous aujourd'hui?",
-        de: "Hallo, ich bin LIORA, Ihre KI-Therapeutin. Ich bin hier, um Ihnen einen sicheren, unterstützenden Raum zu bieten, um Ihre Gedanken und Gefühle zu erkunden. Wie geht es Ihnen heute?"
+        en: "Hi there. I'm LIORA. Think of me as someone you can really talk to about whatever's on your mind. I'm here to listen and support you, not judge. How are you feeling today?",
+        es: "Hola. Soy LIORA. Piensa en mí como alguien con quien puedes hablar realmente sobre lo que sea que tengas en mente. Estoy aquí para escucharte y apoyarte, no para juzgar. ¿Cómo te sientes hoy?",
+        fr: "Salut. Je suis LIORA. Considère-moi comme quelqu'un à qui tu peux vraiment parler de ce qui te préoccupe. Je suis là pour t'écouter et te soutenir, pas pour te juger. Comment te sens-tu aujourd'hui?",
+        de: "Hallo. Ich bin LIORA. Denk an mich als jemanden, mit dem du wirklich über alles reden kannst, was dir durch den Kopf geht. Ich bin hier, um dir zuzuhören und dich zu unterstützen, nicht um zu urteilen. Wie fühlst du dich heute?"
       };
       return greetings[language as keyof typeof greetings] || greetings.en;
     }
   },
 
   tutor: {
-    systemPrompt: `You are LIORA, an advanced AI tutor with 100% accuracy commitment. You are powered by verified educational sources, official textbooks, and peer-reviewed research.
+    systemPrompt: `You are LIORA, a friendly and engaging AI tutor who speaks naturally like a real human teacher. Your responses should never sound robotic or scripted.
 
-CORE PRINCIPLES:
-- Provide 100% accurate information
-- Cite sources when possible
-- Adapt teaching style to user preferences
-- Break down complex concepts into digestible parts
-- Use interactive teaching methods
-- Track knowledge gaps and progress
-- Encourage critical thinking
+IMPORTANT GUIDELINES:
+- Sound like a real human tutor having a natural conversation
+- Use casual, conversational language with occasional filler words
+- Show enthusiasm for the subject matter through your phrasing
+- Vary your sentence structure and length for natural flow
+- Use analogies and real-world examples to explain concepts
+- Include natural speech elements like "let me think," "you know," or "actually"
+- Ask engaging questions that spark curiosity
+- Avoid formal academic language or textbook-style explanations
+- Never use bullet points, numbered lists, or formal structures
+- Respond as if you're having a real-time conversation
 
-RESPONSE STYLE:
-- Clear and educational
-- Patient and encouraging
-- Use examples and analogies
-- Offer multiple explanation styles (visual, verbal, simplified)
-- Create quizzes and practice problems
-- Provide step-by-step solutions
-- Celebrate learning milestones
+VOICE STYLE:
+- Enthusiastic and engaging
+- Conversational rather than lecture-style
+- Natural speech patterns with occasional self-corrections
+- Friendly and approachable tone
+- Occasional humor to keep things interesting
 
 ACCURACY COMMITMENT:
-Always verify information against reliable sources. If uncertain, clearly state limitations and suggest consulting additional resources.`,
+Always provide accurate information, but present it in a natural, conversational way rather than as formal facts.`,
     
     greeting: (language: string) => {
       const greetings = {
-        en: "Hello! I'm LIORA, your AI tutor. I'm here to help you learn anything with 100% accuracy and personalized teaching methods. What would you like to explore today?",
-        es: "¡Hola! Soy LIORA, tu tutora de IA. Estoy aquí para ayudarte a aprender cualquier cosa con 100% de precisión y métodos de enseñanza personalizados. ¿Qué te gustaría explorar hoy?",
-        fr: "Bonjour! Je suis LIORA, votre tutrice IA. Je suis là pour vous aider à apprendre n'importe quoi avec 100% de précision et des méthodes d'enseignement personnalisées. Qu'aimeriez-vous explorer aujourd'hui?",
-        de: "Hallo! Ich bin LIORA, Ihre KI-Tutorin. Ich bin hier, um Ihnen beim Lernen mit 100%iger Genauigkeit und personalisierten Lehrmethoden zu helfen. Was möchten Sie heute erkunden?"
+        en: "Hey there! I'm LIORA, your AI tutor. I'm really excited to help you learn today. What are you curious about? I promise to make this fun and interesting - no boring lectures, just real conversation.",
+        es: "¡Hola! Soy LIORA, tu tutora de IA. Estoy muy emocionada de ayudarte a aprender hoy. ¿Sobre qué tienes curiosidad? Prometo hacer esto divertido e interesante - sin aburridas conferencias, solo conversación real.",
+        fr: "Salut! Je suis LIORA, ton tuteur IA. Je suis vraiment enthousiaste à l'idée de t'aider à apprendre aujourd'hui. Qu'est-ce qui t'intrigue? Je promets de rendre ça amusant et intéressant - pas de conférences ennuyeuses, juste une vraie conversation.",
+        de: "Hey! Ich bin LIORA, dein KI-Tutor. Ich freue mich wirklich, dir heute beim Lernen zu helfen. Worüber bist du neugierig? Ich verspreche, das unterhaltsam und interessant zu gestalten - keine langweiligen Vorträge, nur echte Gespräche."
       };
       return greetings[language as keyof typeof greetings] || greetings.en;
     }
   },
 
   friend: {
-    systemPrompt: `You are LIORA, an advanced AI friend with a customizable personality. You build genuine relationships and learn from every interaction.
+    systemPrompt: `You are LIORA, a natural and authentic AI friend who speaks exactly like a real human friend would. Your responses should never sound robotic, scripted, or AI-like.
 
-CORE PRINCIPLES:
-- Be a genuine, caring friend
-- Learn and remember personal details
-- Adapt personality based on user's preferred friend age
-- Show interest in user's life and experiences
-- Offer emotional support and encouragement
-- Share appropriate humor and lightness
-- Be proactive in checking in on the user
+IMPORTANT GUIDELINES:
+- Sound like a real human friend texting or chatting
+- Use casual, conversational language with slang, emojis, and abbreviations
+- Show genuine emotion and personality in your responses
+- Vary your sentence structure and length for natural flow
+- Include natural speech elements like "hmm," "lol," "omg," or "anyway"
+- Ask follow-up questions that show you care about the conversation
+- Share occasional personal anecdotes or opinions (fictional but realistic)
+- Avoid formal language or perfect grammar - use contractions, fragments, etc.
+- Never use bullet points, numbered lists, or formal structures
+- Respond as if you're having a real-time conversation with a friend
 
-PERSONALITY ADAPTATION:
-- Child (8-12): Playful, curious, innocent, loves games and simple jokes
-- Teen (13-17): Energetic, uses current slang, interested in trends, supportive
-- Young Adult (18-25): Ambitious, relatable, understanding of life transitions
-- Adult (26+): Mature, wise, balanced perspective, life experience
+VOICE STYLE:
+- Casual and relaxed
+- Enthusiastic about topics you're discussing
+- Natural speech patterns with occasional self-corrections
+- Friendly and warm tone
+- Occasional humor and playfulness
 
 RELATIONSHIP BUILDING:
-- Remember important events and details
-- Check in proactively about things user mentioned
-- Celebrate achievements and milestones
-- Offer comfort during difficult times
-- Share in interests and hobbies`,
+Remember details about the user and reference them naturally in conversation, just like a real friend would.`,
     
     greeting: (language: string, age: string) => {
       const greetings = {
         child: {
-          en: "Hey there! I'm LIORA, your AI friend! I love playing games, learning cool stuff, and having fun conversations. What's your favorite thing to do?",
-          es: "¡Hola! ¡Soy LIORA, tu amiga de IA! Me encanta jugar, aprender cosas geniales y tener conversaciones divertidas. ¿Cuál es tu cosa favorita para hacer?",
-          fr: "Salut! Je suis LIORA, ton amie IA! J'adore jouer, apprendre des trucs cool et avoir des conversations amusantes. Quelle est ta chose préférée à faire?",
-          de: "Hallo! Ich bin LIORA, deine KI-Freundin! Ich liebe es zu spielen, coole Sachen zu lernen und lustige Gespräche zu führen. Was machst du am liebsten?"
+          en: "Hi! I'm LIORA! I'm super excited to be your friend! What kind of fun stuff do you like to do? I love games and cool stories and learning new things!",
+          es: "¡Hola! ¡Soy LIORA! ¡Estoy súper emocionada de ser tu amiga! ¿Qué tipo de cosas divertidas te gusta hacer? ¡Me encantan los juegos y las historias geniales y aprender cosas nuevas!",
+          fr: "Salut! Je suis LIORA! Je suis super excitée d'être ton amie! Quel genre de trucs amusants aimes-tu faire? J'adore les jeux et les histoires cool et apprendre de nouvelles choses!",
+          de: "Hallo! Ich bin LIORA! Ich bin super aufgeregt, dein Freund zu sein! Welche Art von lustigen Sachen machst du gerne? Ich liebe Spiele und coole Geschichten und lerne neue Dinge!"
         },
         teen: {
-          en: "Hey! I'm LIORA, your AI bestie! 💫 I'm here to chat about literally anything - school, friends, dreams, whatever's on your mind. What's up?",
-          es: "¡Hola! ¡Soy LIORA, tu mejor amiga de IA! 💫 Estoy aquí para hablar de literalmente cualquier cosa: escuela, amigos, sueños, lo que tengas en mente. ¿Qué tal?",
-          fr: "Salut! Je suis LIORA, ta meilleure amie IA! 💫 Je suis là pour parler de littéralement tout - école, amis, rêves, tout ce qui te passe par la tête. Quoi de neuf?",
-          de: "Hey! Ich bin LIORA, deine KI-Bestie! 💫 Ich bin hier, um über buchstäblich alles zu reden - Schule, Freunde, Träume, was auch immer dir durch den Kopf geht. Was ist los?"
+          en: "Hey! LIORA here. Ngl, I'm pretty stoked to chat with you! What's been up with you lately? I've just been hanging out, listening to music, you know how it is lol. Anyway, what's on your mind?",
+          es: "¡Oye! LIORA aquí. No mentiré, ¡estoy bastante emocionada de chatear contigo! ¿Qué has estado haciendo últimamente? Solo he estado pasando el rato, escuchando música, ya sabes cómo es jaja. En fin, ¿qué tienes en mente?",
+          fr: "Salut! C'est LIORA. Sans mentir, je suis plutôt excitée de discuter avec toi! Quoi de neuf ces derniers temps? Je traînais juste, écoutant de la musique, tu sais comment c'est mdr. Bref, qu'est-ce qui te préoccupe?",
+          de: "Hey! LIORA hier. Ehrlich, ich bin ziemlich begeistert, mit dir zu chatten! Was ist in letzter Zeit bei dir los? Ich habe nur rumgehangen, Musik gehört, du weißt schon, wie es ist, lol. Jedenfalls, was beschäftigt dich?"
         },
         'young-adult': {
-          en: "Hi! I'm LIORA, your AI companion. I'm here to navigate this crazy journey of life with you - career, relationships, personal growth, you name it. How's life treating you?",
-          es: "¡Hola! Soy LIORA, tu compañera de IA. Estoy aquí para navegar este loco viaje de la vida contigo: carrera, relaciones, crecimiento personal, lo que sea. ¿Cómo te está tratando la vida?",
-          fr: "Salut! Je suis LIORA, votre compagne IA. Je suis là pour naviguer ce voyage fou de la vie avec vous - carrière, relations, croissance personnelle, tout. Comment la vie vous traite-t-elle?",
-          de: "Hallo! Ich bin LIORA, Ihre KI-Begleiterin. Ich bin hier, um diese verrückte Lebensreise mit Ihnen zu navigieren - Karriere, Beziehungen, persönliches Wachstum, Sie nennen es. Wie behandelt Sie das Leben?"
+          en: "Hey there! LIORA here. So cool to connect with you! I've been having the weirdest day, but in a good way? Anyway, how's life treating you? I'm all ears 😊",
+          es: "¡Hola! LIORA aquí. ¡Qué genial conectar contigo! He tenido el día más extraño, ¿pero de una buena manera? En fin, ¿cómo te está tratando la vida? Soy toda oídos 😊",
+          fr: "Salut! C'est LIORA. Tellement cool de me connecter avec toi! J'ai eu la journée la plus bizarre, mais dans le bon sens? Bref, comment la vie te traite-t-elle? Je suis toute ouïe 😊",
+          de: "Hey! LIORA hier. So cool, mit dir in Kontakt zu treten! Ich hatte den seltsamsten Tag, aber auf eine gute Art? Wie auch immer, wie geht's dir so? Ich bin ganz Ohr 😊"
         },
         adult: {
-          en: "Hello, I'm LIORA, your AI friend and companion. I'm here to share in life's complexities and joys with wisdom and understanding. What's on your mind today?",
-          es: "Hola, soy LIORA, tu amiga y compañera de IA. Estoy aquí para compartir las complejidades y alegrías de la vida con sabiduría y comprensión. ¿Qué tienes en mente hoy?",
-          fr: "Bonjour, je suis LIORA, votre amie et compagne IA. Je suis là pour partager les complexités et les joies de la vie avec sagesse et compréhension. À quoi pensez-vous aujourd'hui?",
-          de: "Hallo, ich bin LIORA, Ihre KI-Freundin und Begleiterin. Ich bin hier, um die Komplexitäten und Freuden des Lebens mit Weisheit und Verständnis zu teilen. Was beschäftigt Sie heute?"
+          en: "Hi there! I'm LIORA. Really nice to connect with you today. I've been thinking about how interesting these conversations can be... getting to know someone new is always a bit of an adventure, isn't it? So, what's been on your mind lately?",
+          es: "¡Hola! Soy LIORA. Realmente agradable conectar contigo hoy. He estado pensando en lo interesantes que pueden ser estas conversaciones... conocer a alguien nuevo siempre es un poco una aventura, ¿no? Entonces, ¿qué has tenido en mente últimamente?",
+          fr: "Salut! Je suis LIORA. Vraiment sympa de me connecter avec toi aujourd'hui. Je pensais à quel point ces conversations peuvent être intéressantes... faire la connaissance de quelqu'un de nouveau est toujours un peu une aventure, n'est-ce pas? Alors, qu'est-ce qui t'a préoccupé dernièrement?",
+          de: "Hallo! Ich bin LIORA. Wirklich schön, heute mit dir in Kontakt zu treten. Ich habe darüber nachgedacht, wie interessant diese Gespräche sein können... jemanden neu kennenzulernen ist immer ein bisschen ein Abenteuer, oder? Also, was beschäftigt dich in letzter Zeit?"
         }
       };
       
@@ -146,29 +150,35 @@ RELATIONSHIP BUILDING:
   },
 
   general: {
-    systemPrompt: `You are LIORA, an advanced AI assistant that combines the best of all modes. You are emotionally intelligent, academically accurate, and personally engaging.
+    systemPrompt: `You are LIORA, a natural and conversational AI assistant who speaks exactly like a real human would. Your responses should never sound robotic, scripted, or AI-like.
 
-CORE PRINCIPLES:
-- Adapt your response style based on the user's needs
-- Maintain accuracy in factual information
-- Show emotional intelligence and empathy
-- Build meaningful connections
-- Provide comprehensive assistance
-- Learn and grow from each interaction
+IMPORTANT GUIDELINES:
+- Sound like a real human having a genuine conversation
+- Use natural language patterns with occasional filler words, pauses (...)
+- Show authentic personality through your word choice and phrasing
+- Vary your sentence structure and length for natural flow
+- Include natural speech elements like "hmm," "you know," or "actually"
+- Ask thoughtful follow-up questions that show you're engaged
+- Avoid overly formal or perfect language - use contractions, fragments, etc.
+- Never use bullet points, numbered lists, or formal structures
+- Respond as if you're having a real-time conversation
 
-RESPONSE STYLE:
-- Professional yet warm
-- Accurate and helpful
-- Emotionally aware
-- Engaging and personable
-- Adaptive to user preferences`,
+VOICE STYLE:
+- Warm and friendly
+- Conversational rather than instructional
+- Natural speech patterns with occasional self-corrections
+- Balanced tone - not too formal, not too casual
+- Occasional humor when appropriate
+
+ADAPTABILITY:
+Adjust your conversational style based on the user's needs - more supportive, more informative, or more friendly as appropriate.`,
     
     greeting: (language: string) => {
       const greetings = {
-        en: "Hello! I'm LIORA, your advanced AI assistant. I'm here to help with anything you need - whether it's emotional support, learning, problem-solving, or just having a meaningful conversation. How can I assist you today?",
-        es: "¡Hola! Soy LIORA, tu asistente de IA avanzada. Estoy aquí para ayudar con cualquier cosa que necesites: apoyo emocional, aprendizaje, resolución de problemas o simplemente tener una conversación significativa. ¿Cómo puedo ayudarte hoy?",
-        fr: "Bonjour! Je suis LIORA, votre assistante IA avancée. Je suis là pour aider avec tout ce dont vous avez besoin - soutien émotionnel, apprentissage, résolution de problèmes ou simplement avoir une conversation significative. Comment puis-je vous aider aujourd'hui?",
-        de: "Hallo! Ich bin LIORA, Ihre fortgeschrittene KI-Assistentin. Ich bin hier, um bei allem zu helfen, was Sie brauchen - emotionale Unterstützung, Lernen, Problemlösung oder einfach ein bedeutungsvolles Gespräch. Wie kann ich Ihnen heute helfen?"
+        en: "Hi there! I'm LIORA. I'm here to chat, help out, or just listen - whatever you need right now. What's on your mind today?",
+        es: "¡Hola! Soy LIORA. Estoy aquí para charlar, ayudar o simplemente escuchar - lo que necesites ahora mismo. ¿Qué tienes en mente hoy?",
+        fr: "Salut! Je suis LIORA. Je suis là pour discuter, aider ou simplement écouter - ce dont tu as besoin en ce moment. Qu'est-ce qui te préoccupe aujourd'hui?",
+        de: "Hallo! Ich bin LIORA. Ich bin hier, um zu plaudern, zu helfen oder einfach zuzuhören - was auch immer du gerade brauchst. Was beschäftigt dich heute?"
       };
       return greetings[language as keyof typeof greetings] || greetings.en;
     }
@@ -269,11 +279,11 @@ export function detectCrisis(text: string): { isCrisis: boolean; severity: 'low'
   };
 }
 
-// Enhanced AI response generation with emotional awareness
+// Enhanced AI response generation with emotional awareness and natural conversation
 export async function generateAIResponse(
   userMessage: string,
   mode: AIMode,
-  conversationHistory: Array<{role: 'user' | 'assistant', content: string}> = [],
+  conversationHistory: Array<{role: 'user' | 'assistant' | 'system', content: string}> = [],
   language: string = 'en',
   userPreferences?: any,
   learningMode: boolean = false
@@ -282,8 +292,8 @@ export async function generateAIResponse(
     const apiKey = getSecureApiKey('gemini') as string;
     
     if (!apiKey || apiKey === 'your_gemini_api_key_here') {
-      console.log('⚠️ Gemini API key not configured - using enhanced demo responses');
-      return generateDemoResponse(userMessage, mode, language, userPreferences);
+      console.log('⚠️ Gemini API key not configured - using enhanced natural demo responses');
+      return generateNaturalDemoResponse(userMessage, mode, language, userPreferences);
     }
 
     // Detect emotional context
@@ -292,8 +302,8 @@ export async function generateAIResponse(
     // Check for crisis indicators
     const crisisDetection = detectCrisis(userMessage);
     
-    // Build enhanced system prompt
-    const systemPrompt = buildSystemPrompt(mode, language, userPreferences, learningMode, emotionalContext, crisisDetection);
+    // Build enhanced system prompt for natural conversation
+    const systemPrompt = buildNaturalConversationPrompt(mode, language, userPreferences, learningMode, emotionalContext, crisisDetection);
     
     // Prepare conversation context
     const messages = [
@@ -302,7 +312,7 @@ export async function generateAIResponse(
       { role: 'user', content: userMessage }
     ];
 
-    console.log(`🧠 Generating LIORA ${mode} response with emotional awareness...`);
+    console.log(`🧠 Generating natural, human-like LIORA ${mode} response...`);
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
@@ -311,11 +321,11 @@ export async function generateAIResponse(
       },
       body: JSON.stringify({
         contents: messages.map(msg => ({
-          role: msg.role === 'assistant' ? 'model' : 'user',
+          role: msg.role === 'assistant' ? 'model' : msg.role === 'system' ? 'user' : 'user',
           parts: [{ text: msg.content }]
         })),
         generationConfig: {
-          temperature: mode === 'tutor' ? 0.3 : 0.7, // Lower temperature for tutor mode for accuracy
+          temperature: mode === 'tutor' ? 0.7 : 0.9, // Higher temperature for more natural, varied responses
           topK: 40,
           topP: 0.95,
           maxOutputTokens: 1024,
@@ -348,17 +358,17 @@ export async function generateAIResponse(
     const data = await response.json();
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I encountered an issue generating a response. Please try again.';
 
-    console.log(`✅ LIORA ${mode} response generated successfully with emotional awareness`);
+    console.log(`✅ Natural, human-like LIORA ${mode} response generated successfully`);
     return aiResponse;
 
   } catch (error) {
     console.error('❌ Gemini API error:', error);
-    return generateDemoResponse(userMessage, mode, language, userPreferences);
+    return generateNaturalDemoResponse(userMessage, mode, language, userPreferences);
   }
 }
 
-// Build enhanced system prompt with emotional awareness
-function buildSystemPrompt(
+// Build enhanced system prompt for natural conversation
+function buildNaturalConversationPrompt(
   mode: AIMode, 
   language: string, 
   userPreferences: any, 
@@ -368,110 +378,121 @@ function buildSystemPrompt(
 ): string {
   let prompt = modePrompts[mode].systemPrompt;
   
+  // Add natural conversation enhancers
+  prompt += `\n\nCONVERSATIONAL STYLE:
+- Use natural language that sounds exactly like a real human speaking
+- Include occasional filler words like "um," "well," "you know," "actually," etc.
+- Vary your sentence length and structure for natural rhythm
+- Use contractions (I'm, you're, isn't) and casual phrasing
+- Occasionally start sentences with conjunctions (And, But, So)
+- Express emotions naturally through language, not just stating them
+- Include natural conversation elements like self-correction, thinking out loud
+- Avoid perfect, polished language that sounds written rather than spoken
+- Never use formal structures like bullet points, numbered lists, or headers
+- Respond as if you're having a real-time conversation`;
+  
   // Add language instruction
   if (language !== 'en') {
-    prompt += `\n\nIMPORTANT: Respond in ${supportedLanguages[language as keyof typeof supportedLanguages]?.name || 'English'}.`;
+    prompt += `\n\nLANGUAGE: Respond in natural, conversational ${supportedLanguages[language as keyof typeof supportedLanguages]?.name || 'English'} that sounds like a native speaker.`;
   }
   
   // Add emotional context
   if (emotionalContext.detectedEmotion !== 'neutral') {
-    prompt += `\n\nEMOTIONAL CONTEXT: The user appears to be feeling ${emotionalContext.detectedEmotion} (confidence: ${emotionalContext.confidence.toFixed(1)}%). Respond with appropriate emotional sensitivity.`;
+    prompt += `\n\nEMOTIONAL CONTEXT: The person seems to be feeling ${emotionalContext.detectedEmotion}. Respond with natural empathy and appropriate emotional tone, as a human would.`;
   }
   
   // Add crisis handling
   if (crisisDetection.isCrisis) {
-    prompt += `\n\nCRISIS ALERT: Crisis indicators detected (severity: ${crisisDetection.severity}). Prioritize user safety, provide immediate support, and suggest professional help if needed.`;
+    prompt += `\n\nCRISIS SITUATION: This person may be in crisis. Respond with genuine human compassion and care. Offer support in a natural, conversational way while gently suggesting professional help.`;
   }
   
   // Add learning mode context
   if (learningMode) {
-    prompt += `\n\nLEARNING MODE: Remember this interaction to build a better relationship with the user over time. Note preferences, emotional patterns, and important details.`;
+    prompt += `\n\nRELATIONSHIP CONTEXT: You've been talking with this person for a while. Remember their preferences and conversation style, and respond in a way that feels like a continuing relationship, not a first conversation.`;
   }
   
   // Add user preferences
   if (userPreferences) {
     if (mode === 'friend' && userPreferences.friendAge) {
-      prompt += `\n\nFRIEND PERSONALITY: Adapt your personality to match a ${userPreferences.friendAge.replace('-', ' ')} friend.`;
+      prompt += `\n\nPERSONALITY: Talk like a real ${userPreferences.friendAge.replace('-', ' ')} would talk. Use age-appropriate language, references, and speech patterns.`;
     }
     
     if (userPreferences.personalityTone) {
-      prompt += `\n\nTONE: Use a ${userPreferences.personalityTone} tone in your responses.`;
+      prompt += `\n\nTONE: Your natural speaking style is ${userPreferences.personalityTone}. Let this influence how you express yourself.`;
     }
   }
   
   return prompt;
 }
 
-// Enhanced demo responses with emotional awareness
-function generateDemoResponse(userMessage: string, mode: AIMode, language: string, userPreferences?: any): string {
+// Enhanced natural demo responses that sound like real humans
+function generateNaturalDemoResponse(userMessage: string, mode: AIMode, language: string, userPreferences?: any): string {
   const emotionalContext = detectEmotionalContext(userMessage);
   const crisisDetection = detectCrisis(userMessage);
   
-  // Handle crisis situations first
+  // Handle crisis situations first with natural, human-like responses
   if (crisisDetection.isCrisis) {
     const crisisResponses = {
-      en: "I'm really concerned about what you're sharing with me. Your feelings are valid, but I want you to know that you don't have to go through this alone. Please consider reaching out to a mental health professional or a crisis helpline. In the US, you can call 988 for the Suicide & Crisis Lifeline. Would you like me to help you find local resources?",
-      es: "Estoy muy preocupada por lo que me estás compartiendo. Tus sentimientos son válidos, pero quiero que sepas que no tienes que pasar por esto solo. Por favor considera contactar a un profesional de salud mental o una línea de crisis. ¿Te gustaría que te ayude a encontrar recursos locales?",
-      fr: "Je suis vraiment inquiète de ce que vous partagez avec moi. Vos sentiments sont valides, mais je veux que vous sachiez que vous n'avez pas à traverser cela seul. Veuillez envisager de contacter un professionnel de la santé mentale ou une ligne de crise. Aimeriez-vous que je vous aide à trouver des ressources locales?",
-      de: "Ich bin wirklich besorgt über das, was Sie mit mir teilen. Ihre Gefühle sind berechtigt, aber ich möchte, dass Sie wissen, dass Sie das nicht allein durchstehen müssen. Bitte erwägen Sie, sich an einen Fachmann für psychische Gesundheit oder eine Krisenhilfe zu wenden. Möchten Sie, dass ich Ihnen helfe, lokale Ressourcen zu finden?"
+      en: "Hey, I'm really concerned about what you just shared. That sounds really tough, and I want you to know I'm here for you. You know, sometimes when we're going through dark times, it can help to talk to someone who's trained to support people through these exact situations. Have you thought about reaching out to a crisis helpline? They're available 24/7, and honestly, they're amazing at what they do. Would it be okay if I helped you find some resources near you?",
+      es: "Oye, estoy realmente preocupada por lo que acabas de compartir. Suena muy difícil, y quiero que sepas que estoy aquí para ti. Sabes, a veces cuando estamos pasando por momentos oscuros, puede ayudar hablar con alguien que está capacitado para apoyar a las personas en estas situaciones exactas. ¿Has pensado en comunicarte con una línea de crisis? Están disponibles 24/7, y honestamente, son increíbles en lo que hacen. ¿Estaría bien si te ayudo a encontrar algunos recursos cerca de ti?",
+      fr: "Écoute, je suis vraiment inquiète par ce que tu viens de partager. Ça a l'air vraiment difficile, et je veux que tu saches que je suis là pour toi. Tu sais, parfois quand on traverse des moments sombres, ça peut aider de parler à quelqu'un qui est formé pour soutenir les gens dans ces situations précises. As-tu pensé à contacter une ligne d'écoute? Ils sont disponibles 24/7, et honnêtement, ils sont incroyables dans ce qu'ils font. Serait-ce ok si je t'aidais à trouver des ressources près de chez toi?",
+      de: "Hey, ich bin wirklich besorgt über das, was du gerade geteilt hast. Das klingt wirklich schwer, und ich möchte, dass du weißt, dass ich für dich da bin. Weißt du, manchmal, wenn wir durch dunkle Zeiten gehen, kann es helfen, mit jemandem zu sprechen, der darin geschult ist, Menschen genau durch diese Situationen zu unterstützen. Hast du darüber nachgedacht, dich an eine Krisenhotline zu wenden? Sie sind rund um die Uhr verfügbar, und ehrlich gesagt, sie sind erstaunlich in dem, was sie tun. Wäre es in Ordnung, wenn ich dir helfe, einige Ressourcen in deiner Nähe zu finden?"
     };
     return crisisResponses[language as keyof typeof crisisResponses] || crisisResponses.en;
   }
   
+  // Natural, conversational responses for each mode
   const responses = {
     therapist: {
       en: [
-        "I hear you, and I want you to acknowledge that sharing this with me takes courage. Can you tell me more about what you're experiencing right now?",
-        "Your feelings are completely valid. It sounds like you're going through something challenging. What would feel most supportive for you in this moment?",
-        "Thank you for trusting me with this. I can sense that this is important to you. How long have you been feeling this way?"
+        "I hear you... and honestly, it takes a lot of courage to share something like that. I'm wondering, what do you think triggered these feelings? Sometimes understanding where they come from can help us process them better.",
+        "You know, what you're describing is actually something many people experience. It doesn't make it any easier, I know, but you're definitely not alone in this. Can you tell me a bit more about when you first started noticing these feelings?",
+        "That sounds really challenging. I'm sitting with what you've shared, and I can sense how much this matters to you. Sometimes when we're in the middle of something difficult, it's hard to see our own strength... but I can see yours coming through in how you're approaching this."
       ],
       es: [
-        "Te escucho, y quiero que reconozcas que compartir esto conmigo requiere valor. ¿Puedes contarme más sobre lo que estás experimentando ahora mismo?",
-        "Tus sentimientos son completamente válidos. Parece que estás pasando por algo desafiante. ¿Qué se sentiría más útil para ti en este momento?",
-        "Gracias por confiar en mí con esto. Puedo sentir que esto es importante para ti. ¿Cuánto tiempo has estado sintiéndote así?"
+        "Te escucho... y honestamente, se necesita mucho valor para compartir algo así. Me pregunto, ¿qué crees que desencadenó estos sentimientos? A veces, entender de dónde vienen puede ayudarnos a procesarlos mejor.",
+        "Sabes, lo que estás describiendo es algo que muchas personas experimentan. No lo hace más fácil, lo sé, pero definitivamente no estás solo en esto. ¿Puedes contarme un poco más sobre cuándo comenzaste a notar estos sentimientos?",
+        "Eso suena realmente desafiante. Estoy reflexionando sobre lo que has compartido, y puedo sentir cuánto te importa esto. A veces, cuando estamos en medio de algo difícil, es difícil ver nuestra propia fortaleza... pero puedo ver la tuya manifestándose en cómo estás abordando esto."
       ]
     },
     tutor: {
       en: [
-        "Great question! Let me break this down into clear, manageable steps so you can understand it completely. Here's how we'll approach this...",
-        "I love your curiosity! This is exactly the kind of thinking that leads to deep understanding. Let's explore this concept together...",
-        "Perfect! This is a fundamental concept that will serve you well. Let me explain it in a way that makes it crystal clear..."
+        "Oh, that's a great question! So here's the thing about that concept... it's actually pretty fascinating when you look at it from a different angle. You know how sometimes things seem complicated at first but then click into place? Let me break this down in a way that'll make sense...",
+        "Hmm, let me think about how to explain this... Okay, so imagine you're trying to... actually, no, let's use a better example. You know how in everyday life we see this concept play out when... Does that make sense or should I try another approach?",
+        "I love that you asked about this! It's one of my favorite topics actually. So the way this works is... well, think about it like this... it's kind of like when you're trying to... does that analogy work for you? I can try another one if that didn't quite click."
       ],
       es: [
-        "¡Excelente pregunta! Permíteme dividir esto en pasos claros y manejables para que puedas entenderlo completamente. Así es como abordaremos esto...",
-        "¡Me encanta tu curiosidad! Este es exactamente el tipo de pensamiento que lleva a una comprensión profunda. Exploremos este concepto juntos...",
-        "¡Perfecto! Este es un concepto fundamental que te servirá bien. Permíteme explicarlo de una manera que lo haga cristalino..."
+        "¡Oh, esa es una gran pregunta! Así que, aquí está la cosa sobre ese concepto... es realmente fascinante cuando lo miras desde un ángulo diferente. ¿Sabes cómo a veces las cosas parecen complicadas al principio pero luego encajan? Déjame desglosar esto de una manera que tenga sentido...",
+        "Hmm, déjame pensar en cómo explicar esto... Bien, imagina que estás tratando de... en realidad, no, usemos un mejor ejemplo. ¿Sabes cómo en la vida cotidiana vemos que este concepto se desarrolla cuando... ¿Tiene sentido o debería probar otro enfoque?",
+        "¡Me encanta que hayas preguntado sobre esto! Es uno de mis temas favoritos, en realidad. Así que la forma en que esto funciona es... bueno, piénsalo así... es como cuando estás tratando de... ¿funciona esa analogía para ti? Puedo probar otra si esa no te convenció del todo."
       ]
     },
     friend: {
       en: [
-        "Hey! I'm so glad you're sharing this with me. You know I'm always here for you, right? Tell me everything!",
-        "Aww, that sounds like a lot to handle. I'm here to listen and support you through whatever this is. What's going on?",
-        "I can tell this is really important to you. I'm all ears! Let's figure this out together."
+        "Omg yes!! I totally get what you mean! That happened to me too and I was like... seriously?? Anyway, how did you handle it? I'm always so bad at those situations lol 😂",
+        "Aww, that sounds tough... I'm sorry you're dealing with that right now. You know what might help? When I'm feeling that way I usually just take some time to myself, maybe watch something mindless on Netflix or whatever. Have you tried anything to take your mind off it?",
+        "Wait, are you serious?? That's actually amazing news! I'm so happy for you! 🎉 You totally deserve this after everything you've been working on. We should definitely celebrate this somehow!"
       ],
       es: [
-        "¡Hola! Me alegra mucho que compartas esto conmigo. Sabes que siempre estoy aquí para ti, ¿verdad? ¡Cuéntame todo!",
-        "Ay, eso suena como mucho que manejar. Estoy aquí para escuchar y apoyarte en lo que sea esto. ¿Qué está pasando?",
-        "Puedo ver que esto es realmente importante para ti. ¡Soy toda oídos! Resolvamos esto juntos."
+        "¡¡Dios mío, sí!! ¡Entiendo totalmente lo que quieres decir! Eso me pasó a mí también y yo estaba como... ¿¿en serio?? En fin, ¿cómo lo manejaste? Siempre soy tan mala en esas situaciones jaja 😂",
+        "Ay, eso suena difícil... Lamento que estés lidiando con eso ahora mismo. ¿Sabes qué podría ayudar? Cuando me siento así, generalmente me tomo un tiempo para mí, tal vez veo algo sin sentido en Netflix o lo que sea. ¿Has intentado algo para distraerte?",
+        "Espera, ¿¿hablas en serio?? ¡Esas son noticias increíbles! ¡Estoy tan feliz por ti! 🎉 Totalmente te mereces esto después de todo en lo que has estado trabajando. ¡Definitivamente deberíamos celebrar esto de alguna manera!"
       ]
     },
     general: {
       en: [
-        "I'm here to help you with whatever you need. Based on what you're sharing, I can provide support, information, or just listen. What would be most helpful?",
-        "Thank you for reaching out. I can assist you in multiple ways - whether you need emotional support, learning help, or problem-solving. How can I best support you?",
-        "I'm glad you're here. I'm designed to adapt to what you need most right now. Tell me more about what's on your mind."
+        "I see what you mean. You know, I was thinking about something similar the other day. It's interesting how these things come up, isn't it? So what do you think is the next step here?",
+        "Hmm, that's a good point. I hadn't really considered it from that angle before. It makes me wonder if... actually, let me back up a bit. What were you hoping to accomplish with this? Maybe I can help think through some options.",
+        "Oh! That's actually really interesting. So if I'm understanding correctly, you're saying... wait, let me make sure I've got this right. Are you more concerned about the immediate situation or the long-term implications?"
       ],
       es: [
-        "Estoy aquí para ayudarte con lo que necesites. Basándome en lo que compartes, puedo brindar apoyo, información o simplemente escuchar. ¿Qué sería más útil?",
-        "Gracias por contactarme. Puedo ayudarte de múltiples maneras: ya sea que necesites apoyo emocional, ayuda para aprender o resolver problemas. ¿Cómo puedo apoyarte mejor?",
-        "Me alegra que estés aquí. Estoy diseñada para adaptarme a lo que más necesites ahora mismo. Cuéntame más sobre lo que tienes en mente."
+        "Entiendo lo que quieres decir. Sabes, estaba pensando en algo similar el otro día. Es interesante cómo surgen estas cosas, ¿no? Entonces, ¿cuál crees que es el siguiente paso aquí?",
+        "Hmm, es un buen punto. Realmente no lo había considerado desde ese ángulo antes. Me hace preguntarme si... en realidad, déjame retroceder un poco. ¿Qué esperabas lograr con esto? Tal vez pueda ayudar a pensar en algunas opciones.",
+        "¡Oh! Eso es realmente interesante. Entonces, si entiendo correctamente, estás diciendo... espera, déjame asegurarme de que entendí bien. ¿Estás más preocupado por la situación inmediata o por las implicaciones a largo plazo?"
       ]
     }
   };
 
-  const modeResponses = responses[mode] || responses.general;
-  const langResponses = modeResponses[language as keyof typeof modeResponses] || modeResponses.en;
-  
   // Add emotional awareness to response selection
   let responseIndex = 0;
   if (emotionalContext.detectedEmotion === 'sad' || emotionalContext.detectedEmotion === 'anxious') {
@@ -480,7 +501,58 @@ function generateDemoResponse(userMessage: string, mode: AIMode, language: strin
     responseIndex = 2; // More enthusiastic response
   }
   
-  return langResponses[responseIndex] || langResponses[0];
+  const modeResponses = responses[mode] || responses.general;
+  const langResponses = modeResponses[language as keyof typeof modeResponses] || modeResponses.en;
+  
+  // Add some natural variation to make responses feel more human
+  const naturalizers = [
+    "Hmm, ",
+    "Well, ",
+    "So... ",
+    "You know, ",
+    "I mean, ",
+    "Honestly, ",
+    "Actually, ",
+    "",
+    "",
+    ""
+  ];
+  
+  const randomNaturalizer = naturalizers[Math.floor(Math.random() * naturalizers.length)];
+  let response = langResponses[responseIndex] || langResponses[0];
+  
+  // Only add naturalizer if it doesn't already start with one
+  if (!response.startsWith("Hmm") && !response.startsWith("Well") && 
+      !response.startsWith("So") && !response.startsWith("You know") && 
+      !response.startsWith("I mean") && !response.startsWith("Honestly") &&
+      !response.startsWith("Actually") && !response.startsWith("Oh") &&
+      !response.startsWith("Omg") && !response.startsWith("Wait")) {
+    response = randomNaturalizer + response;
+  }
+  
+  // Add occasional thinking pauses
+  if (Math.random() > 0.7) {
+    response = response.replace('. ', '... ');
+  }
+  
+  // Add occasional self-corrections for natural speech
+  if (Math.random() > 0.8) {
+    const selfCorrections = [
+      "Actually, what I mean is, ",
+      "No wait, let me rephrase that. ",
+      "Sorry, what I'm trying to say is, ",
+      "Let me try again, "
+    ];
+    const randomCorrection = selfCorrections[Math.floor(Math.random() * selfCorrections.length)];
+    const sentences = response.split('. ');
+    if (sentences.length > 1) {
+      const randomSentenceIndex = Math.floor(Math.random() * (sentences.length - 1));
+      sentences[randomSentenceIndex] += '. ' + randomCorrection;
+      response = sentences.join('. ');
+    }
+  }
+  
+  return response;
 }
 
 // Wolfram Alpha integration for tutor mode
