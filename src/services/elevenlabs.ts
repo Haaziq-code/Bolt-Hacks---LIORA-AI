@@ -264,6 +264,13 @@ export function speakText(text: string, mode: string = 'general', language: stri
       };
       
       utterance.onerror = (event) => {
+        // Handle 'interrupted' as expected behavior, not an error
+        if (event.error === 'interrupted') {
+          console.log(`🔄 Speech interrupted (expected behavior) for ${mode} mode`);
+          resolve(); // Resolve instead of reject for interruptions
+          return;
+        }
+        
         console.error(`Speech synthesis error: ${event.error}`);
         reject(new Error(`Speech synthesis error: ${event.error}`));
       };
