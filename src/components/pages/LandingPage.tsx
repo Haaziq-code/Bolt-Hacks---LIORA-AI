@@ -33,7 +33,6 @@ import {
   Smile
 } from 'lucide-react';
 import { TextScramble } from '../../utils/TextScramble';
-import Enhanced3DBackground from '../ui/Enhanced3DBackground';
 
 interface LandingPageProps {
   onEnterApp: () => void;
@@ -103,17 +102,17 @@ const ScrambledText: React.FC<{ phrases: string[] }> = ({ phrases }) => {
       style={{ 
         fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif",
         fontWeight: 800,
-        textShadow: '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
+        textShadow: '0 0 30px rgba(93, 106, 255, 0.8), 0 0 60px rgba(93, 106, 255, 0.6)'
       }}
       initial={{ scale: 0.9 }}
       animate={{ 
         scale: 1,
         textShadow: isScrambling ? [
-          '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)',
-          '0 0 40px rgba(168, 85, 247, 0.6), 0 0 80px rgba(168, 85, 247, 0.4)',
-          '0 0 50px rgba(34, 211, 238, 0.7), 0 0 100px rgba(34, 211, 238, 0.5)',
-          '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
-        ] : '0 0 30px rgba(93, 106, 255, 0.5), 0 0 60px rgba(93, 106, 255, 0.3)'
+          '0 0 30px rgba(93, 106, 255, 0.8), 0 0 60px rgba(93, 106, 255, 0.6)',
+          '0 0 40px rgba(168, 85, 247, 0.9), 0 0 80px rgba(168, 85, 247, 0.7)',
+          '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 0.8)',
+          '0 0 30px rgba(93, 106, 255, 0.8), 0 0 60px rgba(93, 106, 255, 0.6)'
+        ] : '0 0 30px rgba(93, 106, 255, 0.8), 0 0 60px rgba(93, 106, 255, 0.6)'
       }}
       transition={{ 
         duration: 2, 
@@ -241,9 +240,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
-      {/* Enhanced 3D Neural Background */}
-      <Enhanced3DBackground isActive={isAIActive} intensity={0.8} />
+    <div className="min-h-screen overflow-x-hidden bg-black">
+      {/* Pure Black Background with Subtle Particles */}
+      <div className="fixed inset-0 bg-black">
+        {/* Subtle floating particles */}
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 8 + Math.random() * 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-8">
@@ -254,19 +276,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="mb-12"
           >
-            {/* Enhanced Neural Logo */}
+            {/* Neural Logo */}
             <motion.div 
               className="inline-flex items-center justify-center w-36 h-36 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 rounded-[2.5rem] mb-12 shadow-2xl"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
               style={{
-                boxShadow: '0 0 60px rgba(59, 130, 246, 0.4), 0 0 120px rgba(99, 102, 241, 0.2)'
+                boxShadow: '0 0 60px rgba(59, 130, 246, 0.6), 0 0 120px rgba(99, 102, 241, 0.4)'
               }}
             >
               <Brain className="w-20 h-20 text-white" />
             </motion.div>
 
-            {/* Enhanced Scrambled Main Title with perfect slow timing */}
+            {/* Scrambled Main Title */}
             <ScrambledText phrases={scramblePhases} />
 
             <motion.div
@@ -282,7 +304,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 Three intelligent personalities in one: <span className="text-emerald-400 font-bold">Therapist</span>, <span className="text-violet-400 font-bold">Tutor</span>, and <span className="text-rose-400 font-bold">Friend</span>
               </p>
               
-              {/* Enhanced Key Features */}
+              {/* Key Features */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
                 <motion.div 
                   className="flex items-center space-x-3 text-xl text-gray-300"
@@ -314,7 +336,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               </div>
             </motion.div>
 
-            {/* Enhanced CTA Buttons */}
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -328,10 +350,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 whileTap={{ scale: 0.95 }}
                 style={{ 
                   fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif",
-                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)'
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)'
                 }}
               >
-                {/* Animated Sparkle Icon with continuous spinning */}
                 <motion.div
                   animate={{ 
                     rotate: 360,
@@ -376,8 +397,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
         </div>
       </section>
 
-      {/* Enhanced Three Modes Section with Rich Gradient Backgrounds */}
-      <section id="modes" className="relative py-40 px-8">
+      {/* Three Modes Section */}
+      <section id="modes" className="relative py-40 px-8 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -485,8 +506,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
         </div>
       </section>
 
-      {/* Enhanced Demo Section */}
-      <section id="demo" className="relative py-40 px-8">
+      {/* Demo Section */}
+      <section id="demo" className="relative py-40 px-8 bg-black">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -592,7 +613,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
               whileTap={{ scale: 0.95 }}
               style={{ 
                 fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif",
-                boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)'
+                boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)'
               }}
             >
               <Rocket className="w-8 h-8" />
@@ -602,8 +623,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
         </div>
       </section>
 
-      {/* Enhanced Features Section */}
-      <section className="relative py-40 px-8 bg-gradient-to-br from-slate-900/50 to-indigo-900/50 backdrop-blur-sm">
+      {/* Features Section */}
+      <section className="relative py-40 px-8 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -655,8 +676,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
         </div>
       </section>
 
-      {/* Enhanced CTA Footer */}
-      <section className="relative py-40 px-8 bg-gradient-to-br from-slate-900 to-indigo-900">
+      {/* CTA Footer */}
+      <section className="relative py-40 px-8 bg-black">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -679,7 +700,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
                 whileTap={{ scale: 0.95 }}
                 style={{ 
                   fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif",
-                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)'
+                  boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)'
                 }}
               >
                 <Rocket className="w-8 h-8" />

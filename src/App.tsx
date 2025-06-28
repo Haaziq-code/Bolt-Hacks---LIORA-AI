@@ -20,21 +20,16 @@ import { checkSubscriptionStatus } from './services/revenuecat';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true); // Always start in dark mode for black background
   const [isProModalOpen, setIsProModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAIActive, setIsAIActive] = useState(false);
 
   useEffect(() => {
-    // Check for saved theme preference or default to dark mode for futuristic feel
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    } else {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
+    // Force dark mode for black background design
+    setIsDarkMode(true);
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
 
     // Check subscription status
     checkSubscriptionStatus().then(isSubscribed => {
@@ -63,14 +58,10 @@ function App() {
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
+    // Keep dark mode for black background design
+    setIsDarkMode(true);
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
   };
 
   const handleOpenSettings = () => {
@@ -155,19 +146,16 @@ function App() {
   if (currentPage === 'landing') {
     return (
       <AppProvider>
-        <div className="min-h-screen relative overflow-hidden">
+        <div className="min-h-screen relative overflow-hidden bg-black">
           {/* Enhanced 3D Neural Background */}
           <Enhanced3DBackground isActive={isAIActive} intensity={0.8} />
           
-          {/* Neural gradient overlay */}
-          <div className="fixed inset-0 bg-gradient-to-br from-midnight-950/90 via-midnight-900/80 to-violet-950/90 dark:from-midnight-950/95 dark:via-midnight-900/90 dark:to-violet-950/95 opacity-60" />
-          
           <LandingPage onEnterApp={() => setCurrentPage('home')} />
           
-          {/* Futuristic Theme Toggle */}
+          {/* Futuristic Theme Toggle - Hidden for black background design */}
           <motion.button
             onClick={toggleTheme}
-            className="fixed top-8 right-8 z-50 p-4 glass-morphism dark:glass-morphism-dark rounded-2xl neural-glow hover:neural-glow-lg transition-all duration-500 group"
+            className="fixed top-8 right-8 z-50 p-4 glass-morphism dark:glass-morphism-dark rounded-2xl neural-glow hover:neural-glow-lg transition-all duration-500 group opacity-0 pointer-events-none"
             whileHover={{ scale: 1.1, rotate: 180 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -175,23 +163,13 @@ function App() {
               className="w-6 h-6 text-gray-800 dark:text-white transition-all duration-500"
               animate={{ rotate: isDarkMode ? 180 : 0 }}
             >
-              {isDarkMode ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-neon-400 animate-neon-glow"
-                >
-                  ☀️
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-violet-600 animate-neon-glow"
-                >
-                  🌙
-                </motion.div>
-              )}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-neon-400 animate-neon-glow"
+              >
+                🌙
+              </motion.div>
             </motion.div>
           </motion.button>
 
@@ -239,9 +217,9 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: isDarkMode ? 'rgba(26, 27, 75, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-                color: isDarkMode ? '#ffffff' : '#000000',
-                border: `1px solid ${isDarkMode ? 'rgba(93, 106, 255, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
+                background: 'rgba(26, 27, 75, 0.9)',
+                color: '#ffffff',
+                border: '1px solid rgba(93, 106, 255, 0.3)',
                 borderRadius: '16px',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -255,7 +233,7 @@ function App() {
 
   return (
     <AppProvider>
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden bg-black">
         {/* Enhanced 3D Neural Background */}
         <Enhanced3DBackground isActive={isAIActive} intensity={1.0} />
         
@@ -374,9 +352,9 @@ function App() {
           toastOptions={{
             duration: 4000,
             style: {
-              background: isDarkMode ? 'rgba(26, 27, 75, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-              color: isDarkMode ? '#ffffff' : '#000000',
-              border: `1px solid ${isDarkMode ? 'rgba(93, 106, 255, 0.3)' : 'rgba(229, 231, 235, 0.3)'}`,
+              background: 'rgba(26, 27, 75, 0.9)',
+              color: '#ffffff',
+              border: '1px solid rgba(93, 106, 255, 0.3)',
               borderRadius: '16px',
               backdropFilter: 'blur(20px) saturate(180%)',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
